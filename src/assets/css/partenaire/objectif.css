@@ -1,0 +1,38 @@
+.objectif-section{
+  margin-top: -40px;
+display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+
+}
+
+.objectif-section div{
+  height:70px;
+  font-size: 16px;
+  align-items: center;
+  display: flex;
+}
+.objectif-section div:not(:nth-child(2)){
+  justify-content: center;
+}
+
+.objectif-section div:nth-child(2){
+  border-radius: 0;
+}
+.objectif-section .black-div{
+  background-color: #e2e1e1;
+  
+}
+.objectif-section .parrainer:hover{
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+.objectif-section .blue-div{
+  background-color: #007bff;
+  color: white;
+}
+
+.progress > span {
+  color: black !important;
+}

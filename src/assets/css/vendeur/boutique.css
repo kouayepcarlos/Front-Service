@@ -1,0 +1,96 @@
+
+/* gestion des cards */
+
+/* Styles pour Swiper */
+.swiper {
+  width: 100%;
+  padding: 20px 0;
+  
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: #0056b3; */
+}
+
+/* Cartes uniformes */
+.sujet-card {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  border-radius: 0;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  /* background-color: #0056b3; */
+
+}
+
+.sujet-card:hover {
+  transform: translateY(-5px);
+  box-shadow:none;
+}
+
+/* Image ajustée */
+.sujet-card img {
+  height: 150px;
+  object-fit: cover;
+  aspect-ratio: 1/2;
+}
+
+/* Texte bien espacé */
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* background-color: #e0b880; */
+}
+
+/* Bouton personnalisé */
+.btn-custom1 {
+  background-color:#ef8f0a;
+  width: 95%;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+}
+.disabled-button {
+  background-color: #d1d5db; /* Gris clair */
+  color: #6b7280; /* Gris foncé */
+  cursor: not-allowed;
+  opacity: 0.6;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+.disabled-button:hover{
+  background-color: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+
+}
+
+.btn-custom1:hover {
+  background-color: #0056b3;
+}
+
+.card-error{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+.card-error p{
+  font-size: 25px;
+}
+
+.form-contact h5{
+  text-align: center;
+  color: #ef8f0a;
+  font-size: 1.5rem;
+  padding: 30px 0;
+}

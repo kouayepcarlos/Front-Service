@@ -1,0 +1,49 @@
+.partenaire-marquee {
+  background-color: #f9f9f9;
+  padding: 2rem 1rem;
+  overflow: hidden;
+}
+
+.partenaire-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.marquee {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.marquee-content {
+  display: flex;
+  animation: scroll-left 20s linear infinite;
+  gap: 2rem;
+}
+
+.marquee-logo {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .marquee-logo {
+    width: 80px;
+  }
+  .partenaire-title {
+    font-size: 1.5rem;
+  }
+}

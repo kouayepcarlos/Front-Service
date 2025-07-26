@@ -1,0 +1,41 @@
+/* Loader Container: centrer le loader au centre de l'écran */
+/* .loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.5); Fond semi-transparent
+    z-index: 9999;
+  } */
+
+  /* Style du loader avec des bordures fines et des couleurs plus subtiles */
+  .loader {
+    border: 4px solid transparent; /* Bordure fine, transparente */
+    border-top: 4px solid #ef8f0a; /* Bordure du dessus (orange) */
+    border-radius: 50%; /* Pour avoir un cercle */
+    width: 40px; /* Taille du loader */
+    height: 40px; /* Taille du loader */
+    animation: spin 1.7s linear infinite; /* Animation de rotation plus rapide */
+    box-shadow: 0 0 15px rgba(239, 143, 10, 0.5); /* Ombre douce pour effet lumineux */
+  }
+
+  /* Animation de rotation */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .div-loader{
+    /* position: absolute; */
+    width: 100%;
+    height: 200px;
+    /* background: red; */
+  }
+  .div-loader p{
+    font-size: 20px;
+    font-weight: bolds;
+  }

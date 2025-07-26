@@ -1,0 +1,11 @@
+.info-vendeur div  p{
+  font-weight: 100 !important;
+}
+
+.info-vendeur div span{
+  font-weight: bolder !important;
+}
+
+.info-vendeur div{
+  display: flex;
+}

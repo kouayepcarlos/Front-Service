@@ -1,0 +1,202 @@
+/* top categories */
+.se {
+  font-size: 1.5rem;
+  font-weight: 450;
+  margin-left: 2%;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.card {
+  display: block;
+  text-decoration: none;
+  border: 1px solid #ddd;
+
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  color: white;
+
+}
+
+.card-recent{
+  display: block;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  color: #000;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  
+}
+
+
+
+
+
+.card-body {
+  height: 150px;
+  
+  background-color: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-body .bgimg,
+.card-body .bgimg4,
+.card-body .bgimg1,
+.card-body .bgimg5 {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px 8px 0 0;
+}
+
+.bgimg {
+  background-image: url("../images/img3.jpg");
+}
+
+.bgimg4 {
+  background-image: url("../images/img1.jpg");
+}
+
+.bgimg1 {
+  background-image: url("../images/img4.jpg");
+}
+
+.bgimg5 {
+  background-image: url("../images/img6.jpg");
+  background-size: cover;
+  
+}
+
+.card-header p {
+  font-size: 1.3vmax;
+  color: white;
+}
+
+ul li:nth-child(4) a .card-header p {
+  color: #000
+}
+
+.card-header {
+  padding: 10px;
+  text-align: center;
+
+  background: none;
+  border: none;
+  text-decoration: none;
+}
+/* Conteneur global du slider */
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 96%;
+  margin: 0 auto;
+}
+
+/* Wrapper des images */
+.image-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.images {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.images div{
+   border: none;
+   margin: 0 5px
+}
+.images a ,.images .card.img{
+  display: block;  /* Force l'élément à occuper tout l'espace de la grille */
+  width: 100%;
+  height: 100%;
+  
+}
+
+
+.images a ,.images .card.img ,.post-recent{
+  flex-shrink: 0;
+  width: calc(25% - 10px); /* Par défaut, 4 images visibles */
+  margin: 0 5px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.post-recent a {
+  width: 100%;
+}
+/* Boutons de navigation */
+.navigation-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.nav-btn {
+  background-color: transparent;
+  color: white;
+  border: 1px solid black;
+  padding: 5px 5px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 10px;
+  margin: 0 5px;
+  transition: background-color 0.3s ease;
+}
+
+.nav-btn.active {
+  background-color: #ef8f0a; /* Rouge pour le bouton actif */
+}
+
+.nav-btn:hover:not(.active) {
+  background-color: transparent; /* Couleur au survol */
+}
+
+/* Responsive styles */
+@media screen and (max-width: 900px) {
+  .images a,.images .card.img {
+    width: calc((100% / 3) - 10px); /* 3 images visibles */
+  }
+
+  .card-header p {
+    font-size: 1rem;
+    color: white;
+  }
+
+  .card-body {
+    max-height: 150px;}
+}
+
+@media screen and (max-width: 600px) {
+  .images a ,.images .card.img{
+    width: calc((100% / 2) - 10px); /* 2 images visibles */
+  }
+}
+
+.section-modal{
+  position: relative;
+}
+
+.section-modal:hover img{
+  filter: brightness(40%);
+}
+.section-modal div{
+  display: none;
+}
+
+.section-modal:hover div{
+  display: block;
+  position: absolute;
+  bottom: 5px;
+  left:5px
+}

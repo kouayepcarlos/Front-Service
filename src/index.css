@@ -1,0 +1,171 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body, html {
+    background-color: white !important; /* Assure que le fond est bien blanc */
+}
+
+.general{
+  background-color: #ef8f0a
+}
+.my-custom-div {
+  background-color: white;
+  margin-top: 30px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
+
+.popup-content h2 {
+  margin-top: 0;
+  color: #ef8f0a;
+  font-weight: bold;
+}
+
+.popup-content p {
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+
+@media (min-width: 992px) {
+  .my-custom-div {
+    margin-left: 100px;
+    margin-right: 100px;
+  }
+}
+
+.body-nav.body-back {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+  align-items: center;
+  background-image: url('./assets/images/img5.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.body-nav.body-back p {
+  font-size: 2.15vmax;
+  font-weight: 450;
+  text-align: center
+}
+
+.body-nav .butt1 {
+  width: fit-content;
+  border: none;
+  height: 52px;
+  font-size: 1.25rem;
+  border-radius: 20px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #ef8f0a
+}
+
+/* @media screen and (max-width:1000px){
+  .body-nav .butt1 i{
+    display: none;
+    
+  }
+  .body-nav .butt1{
+    width: fit-content;
+  }
+} */
+
+.creerCompte{
+  font-size: 17px;
+}
+
+.body-nav button a {
+  text-decoration: none;
+  color: #fff;
+}
+
+
+
+.body-nav button i {
+  background-color: #fff;
+  color: #000;
+  padding: 4px 8px;
+  border-radius: 5px;
+}
+
+.body-nav a {
+  text-decoration: none;
+  color: black
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.espace-home {
+  margin-bottom: 70px;
+}
+
+.publicite{
+    text-align: center;
+    font-size: 1.5vmax;
+    color: white;
+    margin: auto;
+    height: auto
+ 
+}
+
+@media screen and (max-width:1000px) {
+  .espace-home{
+    margin-bottom:40px}
+
+    .publicite{
+      font-size: 0.85rem;
+    }
+  } 

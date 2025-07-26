@@ -1,0 +1,243 @@
+
+body{
+  font-family: 'Roboto';
+}
+
+.annonce, .creerCompte{
+  font-size: 15px;
+}
+
+
+
+
+
+/* choisir un pro */
+
+.about-home {
+  min-height: 100%;
+  display: flex;
+
+  width: 94%;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+.about-text {
+  width: 100%;
+}
+
+.about-text span {
+  font-size: 1.7rem;
+  font-weight: 500;
+  color: #ef8f0a;
+  font-family: poppins, sans-serif;
+
+
+}
+
+
+
+.about-text h3 {
+  font-size: 1.2rem;
+
+  font-family: open sans regular;
+  margin: 20px 0;
+
+}
+
+
+
+.about-text ul {
+  list-style: square;
+  position: relative;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: cuprum, sans-serif;
+  
+}
+
+.about-text li {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.about-image {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  justify-content: start;
+  width: 70%;
+  flex-wrap: wrap;
+
+}
+
+.about-image img {
+  width: 100%;
+  object-fit: cover;
+  margin: auto;
+
+}
+
+.about-image .about-image-1 {
+  margin-top: 0%;
+  height: 100%;
+  width: 53%;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.about-image.prof-image{
+  background-image: url('../images/tech2.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+ margin-top: 10px;
+ margin-left : 10px
+}
+
+/* s'abonner */
+
+
+.abonnement p {
+  font-size: 1.7vmax;
+  color: white;
+  text-align: center;
+}
+
+.abonnement button {
+  width: auto;
+  border: none;
+  color: black;
+  height: auto;
+  border-radius: 15px;
+  padding: 0.5% 3%;
+  background-color: white,
+}
+
+.abonnement .espace-a{
+ 
+    color: #EF8F0A;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.7 + vmax
+  
+}
+
+
+/*FAQ*/
+
+.faq {
+  font-size: 1.5rem;
+  display: inline-block;
+  
+ margin-right: auto;
+ margin-left: auto;
+  flex-direction: row;
+  align-items: center;
+ padding:10px 20px;
+  
+  width: 100%;
+ 
+  background-color: #f1f1f1 ;
+}
+
+.accordion-content{
+  color: black;
+}
+
+.accordion-title{
+  color: white;
+}
+
+.faq-text {
+
+ align-items: center;
+
+}
+
+.faq-text h3{
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: black;
+  text-align: center;
+  
+}
+
+
+.faq .about-image1 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+
+.espace-abonnement{
+  width: 94%;
+  display: flex;
+  gap: 10px;
+  border-radius: 20px;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center
+}
+
+@media screen and (max-width:1000px) {
+  .abonnement p {
+    font-size: 1rem;}
+
+  .about-home,
+  .about-text {
+
+    justify-content: center;
+    margin: auto ;
+    width: 100%;
+    text-align: center;
+
+  }
+
+  .about-text ul li,
+  .about-text h3 {
+    text-align: start;
+  
+  }
+
+  .about-text ul {
+    margin:0 20px
+  }
+
+  .about-text h3 {
+    margin: 20px auto;
+    width: 90%;
+  }
+
+
+
+  .about-image,
+  .about-image1 {
+    display: none;
+  }
+
+  .faq{
+    padding:10px 3px;
+  gap: 0px;
+  }
+  .faq-text {
+    width: 100%;
+    margin: auto;
+  }
+  .faq-text h3{
+    text-align: center;
+  }
+
+  .about-text ul {
+    padding-left: 20px;
+  }
+
+  .abonnement button{
+    padding:10px 20px
+  }
+
+}

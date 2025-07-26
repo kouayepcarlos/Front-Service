@@ -1,0 +1,41 @@
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin: 20px 0 0 20px
+}
+
+.accordion-div {
+  background-color: #ef8f0a;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 5px;
+
+
+}
+
+.accordion-title {
+  font-size: 1.2vmax;
+  font-weight: bolder;
+}
+
+.accordion-content {
+  font-size: 1.1vmax;
+  padding-left: 20px;
+}
+
+@media screen and (max-width:1000px) {
+  .accordion {
+    margin: 20px 10px;
+    gap: 23px
+  }
+
+  .accordion-title {
+    font-size: 0.9rem;
+  }
+
+  .accordion-content {
+    font-size: 0.85rem;
+
+  }
+}

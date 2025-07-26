@@ -1,0 +1,140 @@
+.tab-contact{
+  margin: 50px auto 0 auto;
+  padding:0 5%;
+  
+}
+
+.tab-contact a {
+  font-size: 1.7rem;
+  color:black;
+  
+  font-weight: 400;
+  text-align: center;
+  margin: 20px 0;
+}
+
+
+.form-contact form div,.form-contact .form-group{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+.form-contact form div input,.form-contact .form-group input{
+  height: 50px;
+  border-radius: 10px;
+
+  border:2px solid rgba(184, 172, 172, 0.815);
+  padding: 0 5%
+}
+.form-contact .step{
+  display: flex;
+  flex-direction: row;
+  gap:10px
+}
+.form-contact form  button,.form-contact button,.form-contact a {
+  width:100%;
+  border: none;
+  height: 55px;
+  font-size: 1.25rem;
+  border-radius: 10px;
+  color:white;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #ef8f0a
+
+}
+
+.div-contact{
+  border:2px solid rgba(184, 172, 172, 0.815);
+  padding:20px 15px;
+ margin: auto;
+  border-radius: 10px
+}
+
+.img-register{
+ 
+    border-radius: 10px;
+    height: 100%;
+    object-fit: cover
+
+}
+
+.img-connexion{
+ 
+    border-radius: 10px;
+    height: 400px;
+    object-fit: cover
+
+}
+.form-contact{
+  padding:50px 15px
+}
+
+form div label,.register p{
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+.register p{
+  color:black;
+  margin-top: 20px;
+}
+.register p a {
+  background-color: transparent;
+  color: #ef8f0a;
+}
+.input-container {
+  position: relative;
+  margin-bottom: 0px;
+  width: 100%;
+}
+
+.input-container input {
+  width: 100%;
+  padding-right: 40px; /* Laisser de la place pour l'icône */
+}
+
+.input-container .icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+}
+
+.register ul li{
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+.register ul li span{
+  font-weight: bolder;
+  margin-right: 7px;
+}
+
+.form-group .register_select{
+  height:"50px";
+  padding-left:"10px";
+  border-radius:"10px";
+  border:"2px solid black"
+}
+
+.my-custom-div .p-admin{
+  
+    font-size: 2.15vmax;
+    font-weight: 450;
+    text-align: center
+
+}
+
+.register-div{
+  color: #ef8f0a;
+   font-size: 1vmax
+}
+
+.register-div p{
+  
+    font-size: 2.15vmax;
+    font-weight: 450;
+    text-align: center
+}

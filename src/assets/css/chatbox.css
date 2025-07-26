@@ -1,0 +1,132 @@
+.chat-boxx {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f9f9f9;
+  
+  margin-bottom: -50px;
+}
+
+img:hover{
+  cursor: pointer;
+}
+.messages-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.date-separator {
+  text-align: center;
+  font-size: 0.9rem;
+  color: gray;
+  margin: 10px 0;
+}
+
+/* // SendMessage.css */
+.send-message {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  background: white;
+}
+
+.send-message input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.send-message button {
+  margin-left: 10px;
+  padding: 10px;
+  border: none;
+  background: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* // Message.css */
+.message {
+  padding: 10px ;
+  border-radius: 10px;
+  margin: 5px 0;
+  max-width: 70%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width:1000px){
+  .message{
+    max-width: 40%;
+  }
+}
+
+.sent {
+  background: #007bff;
+  color: white;
+  align-self: flex-end ;
+  justify-content: end;
+  text-align: right;
+  border-top-right-radius: 0;
+  margin-left: auto;
+}
+
+.received {
+  background: #e5e5ea;
+  color: black;
+  align-self: flex-start;
+  text-align: left;
+  border-top-left-radius: 0;
+  margin-right: auto;
+}
+
+.message-time {
+  font-size: 0.8rem;
+  color: gray;
+  text-align: right;
+}
+
+
+
+.reply-preview {
+  background: #f1f1f1;
+  padding: 5px;
+  border-left: 3px solid #007bff;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+
+.message-name{
+  font-size: 0.8rem;
+  color:black
+}
+.message-reply {
+  background: rgba(0, 0, 0, 0.05);
+  padding: 3px;
+  font-size: 12px;
+  border-left: 3px solid gray;
+  margin-bottom: 5px;
+}
+
+.message-pdf-container {
+  width: 100%;
+  height: 400px; /* Ajuste la hauteur selon tes besoins */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.message-pdf-container .rpv-core__viewer {
+  width: 100%;
+  height: 100%;
+}
