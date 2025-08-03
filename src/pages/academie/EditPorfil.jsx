@@ -26,9 +26,9 @@ const EditPorfil = () => {
       
         try{
         await nouvelAbonnementUserMutation.mutateAsync({
-            redirect_url:"https://mailpit.axllent.org/docs/",
+            redirect_url:"https://nilservice.net/connexion/academie",
             //"localhost:5173/connexion/academy",
-            faillure_redirect_url:"https://mailpit.axllent.org/docs/"
+            faillure_redirect_url:"https://nilservice.net/page/echec"
             //"localhost:5173/page/echec"
         });
     } catch (error) {

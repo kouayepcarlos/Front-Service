@@ -8,7 +8,7 @@ import conn from "../assets/images/connexion.jpg";
 
 import { useNavigate } from "react-router-dom";
 import Redirection from "../components/Redirection";
-const Pagechoix= () => {
+const PageConnexion= () => {
   
     const navigate = useNavigate();
     
@@ -21,7 +21,7 @@ const Pagechoix= () => {
                 <NavBar/>
                 <section className="mb-5">
                 <Redirection
-                        texte="Vous n'avez pas de compte? Inscrivez vous et devenez notre partenaire"
+                        texte="Veuillez vous connecter à votre compte lié à votre type d'inscription."
                        
                     />
                     <section className="row tab-contact mx-md-3">
@@ -39,10 +39,10 @@ const Pagechoix= () => {
                                     />
                                 </div>
                                 <div className="form-contact col-md-6 col-12" >
-                                  <button className="btn btn-primary form-group" onClick={()=> navigate("/register/step1")}>Inscription academie</button>
-                                  <button className="btn btn-primary form-group" onClick={()=> navigate("/partenaire/step1")}>Inscription partenaire</button>
-                                  <button className="btn btn-primary form-group" onClick={()=> navigate("/vendeur/step1")}>Inscription vendeur pro </button>
-                                  <button className="btn btn-primary " onClick={()=> navigate("/prestataire/step1")}>Inscription prestataire pro</button>
+                                  <button className="btn btn-primary form-group" onClick={()=> navigate("https://nilservice.net/connexion/academie")}>Connexion academie</button>
+                                  <button className="btn btn-primary form-group" onClick={()=> navigate("https://nilservice.net/partenaire/connexion")}>Connexion partenaire</button>
+                                  <button className="btn btn-primary form-group" onClick={()=> navigate("https://nilservice.net/vendeur/connexion/")}>Connexion vendeur pro </button>
+                                  <button className="btn btn-primary " onClick={()=> navigate("https://nilservice.net/prestataire/connexion")}>Connexion prestataire pro</button>
                                   </div>
                                    
                             </div>
@@ -57,4 +57,4 @@ const Pagechoix= () => {
     );
 };
 
-export default Pagechoix;
+export default PageConnexion;

@@ -22,6 +22,23 @@ export function AdminProvider({ children }) {
         enabled: !!sessionStorage.getItem("token"),
     });
 
+
+    const { data: academy = [], refetch: refetchAcademy } = useQuery({
+    queryKey: ["academy"],
+    queryFn: authAPIadmin.allAcademy,
+    retry: false,
+    enabled: !!sessionStorage.getItem("token"),
+    });
+
+    const { data: vendeurs = [], refetch: refetchVendeurs } = useQuery({
+  queryKey: ["vendeurs"],
+  queryFn: authAPIadmin.allVendeurs,
+  retry: false,
+  enabled: !!sessionStorage.getItem("token"),
+});
+
+
+
     const { data: admin, refetch: refetchAdmin } = useQuery({
         queryKey: ["admin"],
         queryFn: authAPIadmin.allAdmin,
@@ -317,6 +334,10 @@ export function AdminProvider({ children }) {
                 logout,
                 sujets,
                 admin,
+                academy,
+                vendeurs,
+                refetchVendeurs,
+                refetchAcademy,
                 refetchAdmin,
                 refetchSujets,
                 data,

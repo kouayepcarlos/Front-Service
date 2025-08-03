@@ -1,5 +1,5 @@
 // Import des hooks React et composants réutilisables
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
 import Footer from "../../components/Footer";
 import Navbarvendeur from "../../components/navbar/Navbarvendeur";
 import Publicite from "../../components/Publicite";

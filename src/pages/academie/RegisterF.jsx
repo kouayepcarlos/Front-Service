@@ -21,7 +21,18 @@ const Register_final = () => {
             const res =await registerUserMutation.mutateAsync(data);
             console.log("voici le lien en dessous")
             console.log(res);
-            
+
+            if (res?.status === "payment_pending" && res?.link) {
+            // Ouvrir le lien dans un nouvel onglet
+            //window.open(res.link, "_blank");
+
+            window.location.href = res.link;
+
+
+            // (Optionnel) Feedback à l’utilisateur
+            alert("Vous allez être redirigé vers le paiement. Veuillez finaliser la transaction.");
+        }
+          
 
         } catch (error) {
             // Gestion des erreurs d'enregistrement

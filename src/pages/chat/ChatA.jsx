@@ -18,18 +18,43 @@ const ChatA = () => {
     const [replyMessage, setReplyMessage] = useState(null);
     const scroll = useRef();
 
-   useEffect(() => {
+useEffect(() => {
     const loadMessages = async () => {
-       const mess=await allMessages.mutateAsync()
-       setMessages(mess)
+        try {
+            const res = await allMessages.mutateAsync();
+
+            if (Array.isArray(res?.data?.messages)) {
+                const fetchedMessages = res.data.messages;
+
+                setMessages((currentMessages) => {
+                    // On récupère les ids actuels pour éviter doublons
+                    const currentIds = new Set(currentMessages.map((m) => m.id));
+
+                    // On filtre les messages déjà présents
+                    const newMessages = fetchedMessages.filter(
+                        (m) => !currentIds.has(m.id)
+                    );
+
+                    // On merge en gardant les anciens + les nouveaux venant de l'API
+                    return [...currentMessages, ...newMessages].sort(
+                        (a, b) => new Date(a.created_at) - new Date(b.created_at)
+                    );
+                });
+            } else {
+                console.error("Messages invalides ou absents :", res);
+                // Ne pas écraser le state si pas de messages reçus
+                // setMessages([]); // supprimé pour ne pas perdre messages locaux
+            }
+        } catch (error) {
+            console.error("Erreur lors du chargement des messages :", error);
+        }
     };
 
     loadMessages();
 
     const interval = setInterval(loadMessages, 10000); // refresh auto
     return () => clearInterval(interval);
-}, []
-);
+}, []);
 
     const addMessage = async (message, type = "text", replyTo = null) => {
         console.log(sendMessages);
@@ -115,12 +140,15 @@ const ChatA = () => {
     // useEffect(() => {
     //     enrichMessages();
     // }, [allMessages]);
-    const groupedMessages = messages.reduce((acc, message) => {
+   const groupedMessages = Array.isArray(messages)
+    ? messages.reduce((acc, message) => {
         const date = new Date(message.created_at).toLocaleDateString();
         if (!acc[date]) acc[date] = [];
         acc[date].push(message);
         return acc;
-    }, {});
+    }, {})
+    : {};
+
 
     return (
         <div className="general">

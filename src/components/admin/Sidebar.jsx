@@ -4,9 +4,9 @@ import { useAdminContext } from "../../Contexts/AdminProvider";
 import {
     MessageSquare,
     User,
-    // GraduationCap,
+     GraduationCap,
      Briefcase,
-    // ShoppingBag,
+     ShoppingBag,
      Handshake,
      LogOut,
 } from "lucide-react";
@@ -33,17 +33,23 @@ const Sidebar = () => {
             icon: <MessageSquare size={18} />,
         },
 
-        // { nom: "Academie", lien: "/admin/academy", icon: <GraduationCap size={18} /> },
-        // {
-        //     nom: "Prestataires",
-        //     lien: "/admin/prestataires",
-        //     icon: <Briefcase size={18} />,
-        // },
-        // { nom: "Vendeurs", lien: "/admin/vendeurs", icon: <ShoppingBag size={18} /> },
+        { nom: "Academie", lien: "/admin/academy", icon: <GraduationCap size={18} /> },
+        {
+            nom: "Prestataires",
+            lien: "/admin/prestataires",
+            icon: <Briefcase size={18} />,
+        },
+        { nom: "Vendeurs", lien: "/admin/vendeurs", icon: <ShoppingBag size={18} /> },
         {
             nom: "Partenaires",
             lien: "/admin/partenaires",
             icon: <Handshake size={18} />,
+        },
+
+        {
+            nom: "Contacts",
+            lien: "/admin/contacts",
+            icon: <MessageSquare size={18} />,
         },
        
     ];
@@ -55,17 +61,23 @@ const Sidebar = () => {
             icon: <MessageSquare size={18} />,
         },
         { nom: "Admins", lien: "/admin/admins", icon: <User size={18} /> },
-        // { nom: "Academie", lien: "/admin/academy", icon: <GraduationCap size={18} /> },
-        // {
-        //     nom: "Prestataires",
-        //     lien: "/admin/prestataires",
-        //     icon: <Briefcase size={18} />,
-        // },
-        // { nom: "Vendeurs", lien: "/admin/vendeurs", icon: <ShoppingBag size={18} /> },
+        { nom: "Academie", lien: "/admin/academy", icon: <GraduationCap size={18} /> },
+        {
+            nom: "Prestataires",
+            lien: "/admin/prestataires",
+            icon: <Briefcase size={18} />,
+        },
+        { nom: "Vendeurs", lien: "/admin/vendeurs", icon: <ShoppingBag size={18} /> },
         {
             nom: "Partenaires",
             lien: "/admin/partenaires",
             icon: <Handshake size={18} />,
+        },
+
+        {
+            nom: "Contacts",
+            lien: "/admin/contact",
+            icon: <MessageSquare size={18} />,
         },
         
     ];

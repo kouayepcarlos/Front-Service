@@ -26,9 +26,9 @@ const EditPorfil = () => {
        
         try{
         await nouvelAbonnementVendeurMutation.mutateAsync({
-            redirect_url:"https://mailpit.axllent.org/docs/",
+            redirect_url:"https://nilservice.net/connexion/vendeur",
             //"localhost:5173/connexion/vendeur",
-            faillure_redirect_url:"https://mailpit.axllent.org/docs/"
+            faillure_redirect_url:"https://nilservice.net/page/echec"
             //"localhost:5173/page/echec"
         });
     } catch (error) {
@@ -216,7 +216,7 @@ const EditPorfil = () => {
                             />
                         </div>
                         <div className="form-group mb-3">
-                            <label>Nom</label>
+                            <label>Nom de la boutique</label>
                             <input
                                 type="text"
                                 name="nom"

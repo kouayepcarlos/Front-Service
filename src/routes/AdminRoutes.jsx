@@ -7,6 +7,7 @@ import Vendeur from "../pages/admin/vendeur";
 import Partenaire from "../pages/admin/partenaire";
 import Academy from "../pages/admin/academy";
 import ListeAdmin from "../pages/admin/admin";
+import AdminMessages from "../pages/admin/contact";
 
 const AdminRoutes = () => {
     return (
@@ -19,6 +20,7 @@ const AdminRoutes = () => {
                 <Route path="prestataires" element={<Prestataire />} />
                 <Route path="vendeurs" element={<Vendeur />} />
                 <Route path="partenaires" element={<Partenaire />} />
+                <Route path="contacts" element={<AdminMessages />} />
             </Routes>
         </AdminProvider>
     );

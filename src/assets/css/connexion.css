@@ -72,7 +72,10 @@
 
 form div label,.register p{
   font-weight: 500;
-  font-size: 1.2rem;
+}
+
+.register p{
+  font-size: 10px;
 }
 
 .register p{

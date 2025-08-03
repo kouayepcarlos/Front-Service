@@ -50,7 +50,7 @@ const NavBar = () => {
                   }}
                 >
                   <a href="">
-                    <i className="fa-solid fa-plus" onClick={()=>{navigate("/maintenance")}}></i> <span className="annonce"> Déposer une annonce</span>
+                    <i className="fa-solid fa-plus"  onClick={()=>{navigate("/maintenance")}}></i> <span className="annonce"> Déposer une annonce</span>
                   </a>
                 </button>
                 <div

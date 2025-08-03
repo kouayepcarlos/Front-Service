@@ -154,10 +154,10 @@ const Connexion = () => {
                                                 {loginUserMutation.isLoading ? "Connexion..." : "Se Connecter"}
                                             </button>
                                             <div className="register">
-                                                <p>vous n'avez pas de compte ? <a href="/register/step1">cliquez ici</a></p>
+                                                <p><a href="/register/step1"> Pas encore de compte </a></p>
                                             </div>
                                             <div className="register " style={{marginBottom:"-30px"}}>
-                                                <p>mot de passe oublié ? <a href="/forgot-password">cliquez ici</a></p>
+                                                <p> <a href="/forgot-password"> Mot de passe oublié ?</a></p>
                                             </div>
 
                                         </div>

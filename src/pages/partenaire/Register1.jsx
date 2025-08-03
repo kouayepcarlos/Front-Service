@@ -108,9 +108,9 @@ console.log(data)
 
         setData((prevState) => ({
             ...prevState,
-            redirect_url:"https://mailpit.axllent.org/docs/",
+            redirect_url:"https://nilservice.net/connexion/partenaire",
     //"localhost:5173/connexion/prestataire",
-    faillure_redirect_url:"https://mailpit.axllent.org/docs/"
+    faillure_redirect_url:"https://nilservice.net/page/echec"
     //"localhost:5173/page/echec"
         }));
 

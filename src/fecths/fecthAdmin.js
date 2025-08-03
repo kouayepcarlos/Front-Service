@@ -523,4 +523,52 @@ export const authAPIadmin = {
             //  setLoading(false);
         }
     },
+    allAcademy: async () => {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+        toast.error("Utilisateur non authentifié !");
+        return [];
+    }
+
+    try {
+        const response = await API.get("/admins/listAcademy", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        // ✅ Assurez-vous que la réponse contient bien les données
+        // Exemple: response.data.data
+        return response.data.data;
+    } catch (error) {
+        console.error("Erreur lors de la récupération des academies :", error);
+        toast.error("Impossible de récupérer les données des académies.");
+        return [];
+    }
+},
+
+allVendeurs: async () => {
+  const token = sessionStorage.getItem("token");
+  if (!token) {
+    toast.error("Utilisateur non authentifié !");
+    return [];
+  }
+
+  try {
+    const response = await API.get("/admins/listVendeur", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data.data;
+  } catch (error) {
+    console.error("Erreur récupération vendeurs :", error);
+    toast.error("Impossible de récupérer les vendeurs.");
+    return [];
+  }
+},
+
+
+    
 };

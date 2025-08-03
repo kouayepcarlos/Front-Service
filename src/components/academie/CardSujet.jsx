@@ -23,7 +23,7 @@ const CardSujets = ({ListeSujets, isAccess, groupe=''}) => {
 
 
     const {user,downloadSubjetMutation,downloadSubjetUniversiteMutation}=useAppContext()
-
+    console.log("UTILISATEUR actuel:", user);
     const handleSujets = (id) => {
      
         downloadSubjetMutation.mutateAsync(id);
@@ -89,14 +89,35 @@ const CardSujets = ({ListeSujets, isAccess, groupe=''}) => {
                 <div className="card  sujet-card shadow-sm">
                     <img src={image(sujet.matiere)} className="card-img-top" alt={sujet.matiere} />
                     <div className="card-body d-flex flex-column">
-                        <h5 className="card-title">{`${sujet.matiere}`}</h5>
-                        <p className="card-text">{`${sujet.type} ${sujet.serie} ${sujet.annee}`}</p>
-                        <button className={isAccess(sujet, user)?"btn btn-custom1 mt-auto" : "bt disabled-button mt-auto"} onClick={()=>handleSujets(sujet.id)}>
+                       
+                        <h5 className="card-title" style={{ color: 'black' }}>{`${sujet.matiere}`}</h5>
+<p className="card-text" style={{ color: 'black' }}>{`${sujet.type} ${sujet.serie} ${sujet.annee}`}</p>
+
+            {/* <button className={isAccess(sujet, user)?"btn btn-custom1 mt-auto" : "bt disabled-button mt-auto"} onClick={()=>handleSujets(sujet.id)}>
                         voir
                     { isAccess(sujet, user) && <i className="fa-solid fa-lock-open pl-2"></i>}
                     { !isAccess(sujet, user) && <i className="fa-solid fa-lock pl-2"></i>}
 
-                        </button>
+            </button> */}
+
+            <p className="card-text">{`${sujet.type} ${sujet.serie} ${sujet.annee}`}</p>
+
+                    {console.log("SUJET actuel:", sujet.matiere, "ACCÈS actuel:", isAccess(sujet, user))}
+                    <p className="card-text">{`${sujet.type} ${sujet.serie} ${sujet.annee}`}</p>
+
+
+            <button
+                className={isAccess(sujet, user) ? "btn btn-custom1 mt-auto" : "bt disabled-button mt-auto"}
+                onClick={() => {
+                    if (isAccess(sujet, user)) {
+                    handleSujets(sujet.id);
+                    }
+                }}
+                >
+                voir
+                {isAccess(sujet, user) && <i className="fa-solid fa-lock-open pl-2"></i>}
+                {!isAccess(sujet, user) && <i className="fa-solid fa-lock pl-2"></i>}
+            </button>
                     </div>
                 </div>
             </SwiperSlide>
@@ -108,6 +129,9 @@ const CardSujets = ({ListeSujets, isAccess, groupe=''}) => {
                     <div className="card-body d-flex flex-column">
                         <h5 className="card-title">{`${sujet.matiere}`}</h5>
                         <p className="card-text">{`${sujet.type}  ${sujet.annee}`}</p>
+
+{console.log("SUJET actuel:", sujet.matiere, "ACCÈS actuel:", isAccess(sujet, user))}
+
                         <button className={isAccess(sujet, user)?"btn btn-custom1 mt-auto" : "bt disabled-button mt-auto"} onClick={()=>handleSujets(sujet.id)}>
                         voir
                     { isAccess(sujet, user) && <i className="fa-solid fa-lock-open pl-2"></i>}
@@ -124,8 +148,9 @@ const CardSujets = ({ListeSujets, isAccess, groupe=''}) => {
                 <div className="card sujet-card shadow-sm">
                 <img src={photo} className="card-img-top" alt={sujet.matiere} />
                 <div className="card-body d-flex flex-column">
-                    <h5 className="card-title">{`${sujet.matiere}`}</h5>
-                    <p className="card-text">{`${sujet.type} ${sujet.session}`}</p>
+                    <h5 className="card-title" style={{ color: 'black' }}>{`${sujet.matiere}`}</h5>
+<p className="card-text" style={{ color: 'black' }}>{`${sujet.type} ${sujet.session}`}</p>
+
                     <button className={isAccess(sujet, user)?"btn btn-custom1 mt-auto" : "bt disabled-button mt-auto"} onClick={()=>handleSujetsUniversite(sujet.id)} >
                     voir
                 { isAccess(sujet, user) && <i className="fa-solid fa-lock-open pl-2"></i>}
@@ -136,6 +161,39 @@ const CardSujets = ({ListeSujets, isAccess, groupe=''}) => {
                 </div>
             </SwiperSlide>
             ))}
+
+{/* 
+            {ListeSujets?.length > 0 &&
+  ListeSujets
+    .filter(
+      (sujet) =>
+        user.type === "étudiant" &&
+        sujet.status === "public" &&
+        sujet.niveau === user.niveau &&
+        sujet.filiere.toLowerCase() === user.filiere.toLowerCase()
+    )
+    .map((sujet) => (
+      <SwiperSlide key={sujet.id}>
+        <div className="card sujet-card shadow-sm">
+          <img src={photo} className="card-img-top" alt={sujet.matiere} />
+          <div className="card-body d-flex flex-column">
+            <h5 className="card-title">{sujet.matiere}</h5>
+            <p className="card-text">{sujet.type} - {sujet.session}</p>
+            <button
+              className={isAccess(sujet, user) ? "btn btn-custom1 mt-auto" : "bt disabled-button mt-auto"}
+              onClick={() => handleSujetsUniversite(sujet.id)}
+            >
+              Voir
+              {isAccess(sujet, user) && <i className="fa-solid fa-lock-open pl-2"></i>}
+              {!isAccess(sujet, user) && <i className="fa-solid fa-lock pl-2"></i>}
+            </button>
+          </div>
+        </div>
+      </SwiperSlide>
+    ))} */}
+
+
+
         </Swiper>
     </div>
   );

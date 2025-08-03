@@ -39,13 +39,22 @@ const API = axios.create({
  */
 const initializeCSRF = async () => {
     try {
-        return await sanctumAPI.get("/sanctum/csrf-cookie");
+        const response = await sanctumAPI.get("/sanctum/csrf-cookie");
+
+        // 🔍 Log les cookies pour vérifier la présence de XSRF-TOKEN
+        document.cookie.split(";").forEach(c =>
+            console.log("🍪 Cookie reçu:", c.trim())
+        );
+
+        return response;
     } catch (error) {
         // console.error("Erreur lors de l'initialisation du CSRF:", error);
         console.error("Erreur lors de l'initialisation du CSRF:", error);
         throw error; // Propager l'erreur pour une meilleure gestion
     }
 };
+document.cookie.split(";").forEach(c => console.log("Cookie:", c.trim()));
+
 
 /**
  * API d'authentification pour les utilisateurs de l'académie

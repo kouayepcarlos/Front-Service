@@ -19,9 +19,7 @@ const Pageechec = () => {
                     />
                     <section className="row tab-contact mx-md-3">
                         <p>
-                            Desole une erreur a eu lieu lors du paiement
-                            ,veuillez retournez sur la page d'inscription et
-                            reesayer
+                            Désolé, une erreur est survenue lors du paiement. Veuillez retourner à la page d’inscription et réessayer.
                         </p>
                     </section>
                 </section>

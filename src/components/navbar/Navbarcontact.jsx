@@ -288,13 +288,13 @@ const Navbarcontact = () => {
                                         title="Mon compte"
                                         id={`offcanvasNavbarDropdown-expand-${expand}`}
                                     >
-                                        <NavDropdown.Item href="/maintenance">
+                                        <NavDropdown.Item href="/vendeur/connexion">
                                             Connexion vendeur
                                         </NavDropdown.Item>
                                         <NavDropdown.Item href="/connexion/academie">
                                             Connexion academie
                                         </NavDropdown.Item>
-                                        <NavDropdown.Item href="/maintenance">
+                                        <NavDropdown.Item href="/prestataire/connexion">
                                             Connexion prestataire
                                         </NavDropdown.Item>
                                         <NavDropdown.Item href="/partenaire/connexion">
@@ -305,7 +305,7 @@ const Navbarcontact = () => {
                                         title="S'abonner"
                                         id={`offcanvasNavbarDropdown-expand-${expand}`}
                                     >
-                                        <NavDropdown.Item href="/maintenance">
+                                        <NavDropdown.Item href="/vendeur/step1">
                                             {" "}
                                             vendeur
                                         </NavDropdown.Item>
@@ -313,7 +313,7 @@ const Navbarcontact = () => {
                                             {" "}
                                             academie
                                         </NavDropdown.Item>
-                                        <NavDropdown.Item href="/maintenance">
+                                        <NavDropdown.Item href="/prestataire/step1">
                                             {" "}
                                             prestataire
                                         </NavDropdown.Item>

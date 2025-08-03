@@ -124,7 +124,7 @@ const Connexion = () => {
                                             value={credentials.email}
                                             onChange={handleChange}
                                             readOnly={
-                                                credentials.telephone != ""
+                                                credentials.email != ""
                                             }
                                         />
                                     </div>
@@ -140,7 +140,7 @@ const Connexion = () => {
                                             placeholder="Entrez votre numéro"
                                             value={credentials.telephone}
                                             onChange={handleChange}
-                                            readOnly={credentials.email != ""}
+                                            readOnly={credentials.telephone != ""}
                                         />
                                     </div>
                                     <div className="form-group">

@@ -300,7 +300,7 @@ export const authAPIVendeur = {
             }
 
             // Envoie de la réalisation
-            const response = await API.post(
+            const response = await API.put(
                 "/vendeur/updateBoutique",
                 formData,
                 {

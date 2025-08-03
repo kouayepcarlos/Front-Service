@@ -68,9 +68,9 @@ function Register_2() {
         }
         setData((prevState) => ({
             ...prevState,
-            redirect_url: "https://mailpit.axllent.org/docs/",
+            redirect_url: "https://nilservice.net/connexion/academie",
             //"localhost:5173/connexion/academie",
-            faillure_redirect_url: "https://mailpit.axllent.org/docs/",
+            faillure_redirect_url: "https://nilservice.net/page/echec",
             //"localhost:5173/page/echec"
         }));
         localStorage.setItem("dataUser", JSON.stringify(data));

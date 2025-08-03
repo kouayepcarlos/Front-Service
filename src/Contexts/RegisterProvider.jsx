@@ -27,9 +27,9 @@ export const RegisterProvider = ({ children }) => {
         code_parrain: null,
         telephone: "",
         abonnement: "",
-        redirect_url: "https://mailpit.axllent.org/docs/",
+        redirect_url: "https://nilservice.net/page-connexion",
         //"localhost:5173/connexion/academie",
-        faillure_redirect_url: "https://mailpit.axllent.org/docs/",
+        faillure_redirect_url: "https://nilservice.net/page/echec",
         //"localhost:5173/page/echec"
     });
 
@@ -69,8 +69,9 @@ export const RegisterProvider = ({ children }) => {
                 
                 console.log("carlos test")
                 console.log(link);
-                window.open(link, "_blank");
-                return link;
+                //window.open(link, "_blank");
+                return { status: "payment_pending", link };
+              
             }
         },
         onError: (error) => {

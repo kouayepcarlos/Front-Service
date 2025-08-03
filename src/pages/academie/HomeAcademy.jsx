@@ -115,6 +115,9 @@ const HomeAcademy = () => {
 
     // Mise à jour des sujets filtrés lorsqu'un filtre change
     useEffect(() => {
+         console.log("USER", user);
+  console.log("SUJETS UNIVERSITES", listeSujetsUniversites);
+  console.log("SUJETS FILTRÉS", filteredSujetsUniversites);
         if (user.type === "élève") {
             setLoader(true);
             setTimeout(() => {
@@ -126,6 +129,9 @@ const HomeAcademy = () => {
 
     useEffect(() => {
                 // setSujetsUniversites(filteredSujetsUniversites);
+                 console.log("USER", user);
+  console.log("SUJETS UNIVERSITES", listeSujetsUniversites);
+  console.log("SUJETS FILTRÉS", filteredSujetsUniversites);
 
         if (user.type === "étudiant") {
             setLoader(true);
@@ -154,19 +160,34 @@ const HomeAcademy = () => {
      * @param {object} user - L'utilisateur actuel
      * @returns {boolean} - Indique si l'utilisateur a accès ou non
      */
-    function isAccess(sujet, user)
-    {
-        if (user.status === 'inactif') {
-            return false; // Utilisateur inactif n'a pas accès
-        }
-        if(user.type==="étudiant" && user.filiere=== sujet.filiere && user.niveau===sujet.niveau){
-            return true
-        }
-        if (user.serie === sujet.serie && user.type==="élève") {
-            return true; // L'utilisateur doit appartenir à la même série que le sujet
-        }
-        return false
-     }
+    
+    function isAccess(sujet, user) {
+  if (!user || user.status == "inscrit") return false;
+
+  if (user.type === "étudiant") {
+    const access =
+      user.filiere?.toLowerCase() === sujet.filiere?.toLowerCase() &&
+      parseInt(user.niveau) === parseInt(sujet.niveau);
+
+    console.log("Access check =>", {
+      sujet: sujet.id,
+      userFiliere: user.filiere,
+      sujetFiliere: sujet.filiere,
+      userNiveau: user.niveau,
+      sujetNiveau: sujet.niveau,
+      result: access,
+    });
+
+    return access;
+  }
+
+  if (user.type === "élève") {
+    return user.serie?.toLowerCase() === sujet.serie?.toLowerCase();
+  }
+
+  return false;
+}
+
 
 
     const navigate=useNavigate();
@@ -187,14 +208,14 @@ const HomeAcademy = () => {
 
                 <section className="">
                     {/* Messages de redirection selon le statut de l'utilisateur */}
-                    {user.status == "inactif" && (
+                    {user.status == "inscrit" && (
                         <Redirection
                             texte={"Payez votre abonnement et accedez aux sujets offert par Nilservice !!"}
                             nomBoutton={"Payez"}
                             handlClick={handleShowPaiement}
                         />
                     )}
-                    {user.status == "actif" && (!user.filiere && !user.serie) && (
+                    {user.status == "en_attente" && (!user.filiere && !user.serie) && (
                         <Redirection
                             texte={"Complétez votre profil pour accéder aux sujets !!"}
                             nomBoutton={"Profil"}
@@ -244,7 +265,11 @@ const HomeAcademy = () => {
                         {/* Affichage des sujets filtrés */}
                         { loader===false &&  [...new Set(sujets.map((s) => s.matiere))].map((matiere, index) => (
                             <div className="pt-0 " key={index}>
-                                <CardSujets ListeSujets={sujets} isAccess={isAccess} groupe={matiere} />
+                                <CardSujets
+                                    ListeSujets={sujets.filter((s) => isAccess(s, user))}
+                                    isAccess={isAccess}
+                                    groupe={matiere}
+                                />
                             </div>
                         ))}
                         {
@@ -298,8 +323,13 @@ const HomeAcademy = () => {
 
                         {  loader === false && [...new Set(sujetsUniversites.map((s) => s.type))].map((type, index) => (
                             <div className="pt-0" key={index}>
-                                <CardSujets ListeSujets={sujetsUniversites} isAccess={isAccess} groupe={type} />
-                            </div>
+
+                                <CardSujets
+                                    ListeSujets={sujetsUniversites.filter((s) => isAccess(s, user))}
+                                    isAccess={isAccess}
+                                    groupe={type}
+                                />
+               </div>
                         ))}
                         {/* Message si aucun sujet n'est disponible */}
                         {sujetsUniversites.length === 0 && (

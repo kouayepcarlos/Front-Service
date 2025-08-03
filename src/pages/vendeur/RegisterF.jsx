@@ -17,7 +17,22 @@ const Register_final = () => {
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            await registerVendeurMutation.mutateAsync(data);
+            const res = await registerVendeurMutation.mutateAsync(data);
+             
+            console.log("voici le lien en dessous")
+            console.log(res);
+
+            if (res?.status === "payment_pending" && res?.link) {
+            // Ouvrir le lien dans un nouvel onglet
+            //window.open(res.link, "_blank");
+
+            window.location.href = res.link;
+
+
+            // (Optionnel) Feedback à l’utilisateur
+            alert("Vous allez être redirigé vers le paiement. Veuillez finaliser la transaction.");
+        }
+          
         } catch (error) {
             // Gestion des erreurs d'enregistrement
             console.error("Erreur lors de l'enregistrement :", error);
