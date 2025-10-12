@@ -57,9 +57,10 @@ const Vendeur = () => {
             selectionMode="single"
           >
             <Column field="id" header="N°" style={{ width: "10%" }} />
-            <Column field="nom" header="Nom" />
-            <Column field="telephone" header="Téléphone" />
-            <Column field="email" header="Email" />
+            <Column   body={(rowData) => rowData.vendeur?.nom || '—'}  header="Nom" />
+            <Column body={(rowData) => rowData.vendeur?.telephone || '—'} header="Téléphone" />
+            <Column body={(rowData) => rowData.vendeur?.email || '—'} header="Email" />
+             <Column field="nom" header="Nom boutique" />
             <Column field="ville" header="Ville" />
             <Column field="pays" header="Pays" />
            

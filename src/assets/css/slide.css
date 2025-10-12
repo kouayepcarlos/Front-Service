@@ -31,10 +31,6 @@ ul {
   
 }
 
-
-
-
-
 .card-body {
   height: 150px;
   
@@ -105,27 +101,58 @@ ul li:nth-child(4) a .card-header p {
   width: 100%;
 }
 
-.images {
+.imagess {
   display: flex;
   justify-content: center;
+  
   gap: 10px;
 }
 
-.images div{
-   border: none;
-   margin: 0 5px
+div.lien-produit{
+   display: flex;
+ justify-content: center;
+ color: white;
 }
-.images a ,.images .card.img{
+div.lien-produit a{
+  background-color: #ef8f0a;
+padding:10px ;
+  color:white;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+}
+
+div.lien-produit:hover{
+color: #000;
+}
+div.titre-produit p{
+margin-top: 10px;
+font-size: 1.3rem;
+   text-align: center;
+}
+div.texte-produit p{
+  font-weight: 300;
+   font-size: 1.1rem;
+}
+
+.imagess div{
+   border: none;
+   width: 100%;
+   margin: 0 5px;
+   
+}
+.imagess a ,.imagess .card.img{
   display: block;  /* Force l'élément à occuper tout l'espace de la grille */
   width: 100%;
   height: 100%;
+  background-color: #000;
   
 }
 
 
-.images a ,.images .card.img ,.post-recent{
+.imagess a ,.imagess .card.img ,.post-recent{
   flex-shrink: 0;
-  width: calc(25% - 10px); /* Par défaut, 4 images visibles */
+  width: calc(50% - 10px); /* Par défaut, 4 images visibles */
   margin: 0 5px;
   border: 2px solid #ddd;
   border-radius: 5px;
@@ -162,10 +189,16 @@ ul li:nth-child(4) a .card-header p {
   background-color: transparent; /* Couleur au survol */
 }
 
+.card-recent{
+  border-radius: 20px;
+  background-color:rgb(250, 234, 236);
+  padding-bottom: 20px;
+}
+
 /* Responsive styles */
 @media screen and (max-width: 900px) {
-  .images a,.images .card.img {
-    width: calc((100% / 3) - 10px); /* 3 images visibles */
+  .imagess a,.imagess .card.img {
+    width: calc((100% / 2) - 10px); /* 3 images visibles */
   }
 
   .card-header p {
@@ -177,19 +210,18 @@ ul li:nth-child(4) a .card-header p {
     max-height: 150px;}
 }
 
-@media screen and (max-width: 600px) {
-  .images a ,.images .card.img{
-    width: calc((100% / 2) - 10px); /* 2 images visibles */
+@media screen and (max-width: 800px) {
+  .imagess a ,.imagess .card.img{
+    width: calc(100%  - 10px); /* 2 images visibles */
   }
 }
 
 .section-modal{
   position: relative;
+  
 }
 
-.section-modal:hover img{
-  filter: brightness(40%);
-}
+
 .section-modal div{
   display: none;
 }

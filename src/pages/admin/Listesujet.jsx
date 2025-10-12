@@ -8,6 +8,7 @@ import Chargersujet from "../../components/admin/Chargersujet";
 import ModificationUniversite from "../../components/admin/ModificationUniversite";
 import ModificationExamen from "../../components/admin/ModificationExamen";
 import { useAdminContext } from "../../Contexts/AdminProvider";
+import Addcorrection from "../../components/admin/Addcorrection";
 
 /**
  * c'est la page de gestion des sujets 
@@ -19,12 +20,13 @@ import { useAdminContext } from "../../Contexts/AdminProvider";
  * @returns 
  */
 const Listesujet = () => {
-    const { sujets, setData, deletesubjetMutation, downloadSubjetMutation } =
+    const { sujets, setData, deletesubjetMutation, downloadSubjetMutation,downloadSubjetcorrectionMutation } =
         useAdminContext();
 
     const [modifie, setModifie] = useState(false);
     const [categorie, setCategorie] = useState("");
     const [globalFilter, setGlobalFilter] = useState("");
+    const [sujet,setSujet]=useState(null)
 
     const modifsujet = async (data) => {//permet de recuperer les informations du sujet a modifier et d'ouvrir le form de modification
       //  console.log(data);
@@ -90,7 +92,7 @@ const Listesujet = () => {
                     <DataTable 
                         value={sujets}
                         paginator
-                        rows={4}
+                        rows={10}
                         tableStyle={{ minWidth: "50rem", height: "100%" }}
                         header={header}
                         globalFilter={globalFilter}
@@ -102,13 +104,14 @@ const Listesujet = () => {
                             style={{ width: "10%" }}
                         />
                         <Column field="matiere" header="Matiere" />
+                         <Column  field="titre" header="Titre" />
                         <Column
                             field="updated_at"
                             header="Annee"
                             body={(rowData) =>
-                                new Date(
-                                    rowData.updated_at
-                                ).toLocaleDateString()
+                               
+                                    rowData.annee? rowData.annee: rowData.session
+                              
                             }
                         />
                         <Column
@@ -116,8 +119,22 @@ const Listesujet = () => {
                             header="Serie/Filiere"
                             body={(rowData) =>
                                 ( rowData.serie === 'null' || !rowData.serie)
-                                ? rowData.filiere
+                                ?  ( rowData.concours === 'null' || !rowData.concours)? rowData.filiere:rowData.concours
                                 : rowData.serie
+                        }
+                        />
+                         <Column
+                            field="correction"
+                            header="Correction"
+                            body={(rowData) =>
+                                ( rowData.correction === 'null' || !rowData.correction)
+                                ?  <button onClick={()=>{setSujet(rowData)}}>Ajouter la correction</button>
+                                :  <button  onClick={() => {
+                        downloadSubjetcorrectionMutation.mutateAsync({
+                            id: rowData.id,
+                            categorie: rowData.categorie,
+                        });
+                    }}>Voir l'epreuve</button>
                         }
                         />
                         <Column
@@ -132,6 +149,8 @@ const Listesujet = () => {
                 <ModificationUniversite />
             )}
             {modifie == true && categorie == "examen" && <ModificationExamen />}
+
+            {sujet && <Addcorrection epreuve={sujet}/>}
             
             <Chargersujet />
             <br />

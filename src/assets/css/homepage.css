@@ -8,11 +8,79 @@ body{
 }
 
 
+.nilservice-presentation{
+  text-align: justify !important;
 
+  padding-right: 20px;
 
+}
+.abonnementannuel strong{
+   color: #EF8F0A;
+}
 
+.debuttesxte{
+  text-align: start !important;
+}
+.abonnementinscription{
+  font-style: italic;
+}
+.nilservice-presentation2{
+  font-style: italic;
+  color: #EF8F0A;
+}
+
+.nilservice-presentation3 ul li{
+  text-decoration: none;
+  list-style: none;
+
+}
+.nilservice-presentation3 ul{
+  width: 60%;
+  
+}
+
+@media screen and (max-width:732px) {
+  .nilservice-presentation3 ul{
+    width: 90%;
+    margin-left: 5px !important
+  }
+  
+}
+.nilservice-presentation3 ul li span{
+   background-color: #f1f1f1;
+   display: flex;
+   flex-direction: column;
+   border-radius: 10px;
+   row-gap: 5px;
+   padding: 10px 20px;
+   color:black;
+   font-size: 1rem;
+  cursor: pointer;
+}
+.nilservice-presentation3 ul li span small{
+  color:#4f46e5 ;
+}
+.nilservice-presentation3 ul li:nth-child(1) span small{
+  color:white ;
+}
+.nilservice-presentation3 ul li span:hover,.nilservice-presentation3 ul li:nth-child(1) span{
+  background-color:#EF8F0A;
+  color: white;
+}
+
+.nilservice-presentation3 ul li span:hover small{
+     color: white;
+}
+.li-speciale{
+    color: #EF8F0A;
+}
 /* choisir un pro */
-
+.tire-prestation{
+ font-weight: 600 !important;
+    font-size: 1.7rem !important;
+ color:#ef8f0a
+  
+}
 .about-home {
   min-height: 100%;
   display: flex;
@@ -31,7 +99,7 @@ body{
   font-size: 1.7rem;
   font-weight: 500;
   color: #ef8f0a;
-  font-family: poppins, sans-serif;
+  /* font-family: poppins, sans-serif; */
 
 
 }
@@ -41,7 +109,7 @@ body{
 .about-text h3 {
   font-size: 1.2rem;
 
-  font-family: open sans regular;
+  /* font-family: open sans regular; */
   margin: 20px 0;
 
 }
@@ -51,9 +119,10 @@ body{
 .about-text ul {
   list-style: square;
   position: relative;
+  margin-left: 20px;
   font-size: 20px;
   font-weight: 500;
-  font-family: cuprum, sans-serif;
+  /* font-family: cuprum, sans-serif; */
   
 }
 
@@ -96,6 +165,10 @@ body{
  margin-left : 10px
 }
 
+.img-visiteur{
+  margin-left: -180px;
+ 
+}
 /* s'abonner */
 
 
@@ -183,8 +256,18 @@ body{
   margin-right: auto;
   align-items: center
 }
-
+.long-text{
+  font-size:1.2rem;
+  font-family:'robotto'
+}
 @media screen and (max-width:1000px) {
+  .long-text{
+  font-size:1.1rem;
+  
+}
+  .debuttesxte{
+  text-align: start !important;
+}
   .abonnement p {
     font-size: 1rem;}
 

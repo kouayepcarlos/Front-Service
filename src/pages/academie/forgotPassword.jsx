@@ -7,8 +7,8 @@ import Chat from "../../components/Chat";
 import conn from "../../assets/images/connexion.jpg";
 import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 import { authAPI } from "../../fecths/fecthAcademyUser";
-
-
+import { toast } from "react-toastify";
+import axios from "axios";
 /**
  * Composant de page de connexion
  * Gère le formulaire de connexion et l'authentification
@@ -17,6 +17,13 @@ const ForgotPassword = () => {
     const [email, setEmail]=useState({
         email:""
     })
+      const API = axios.create({
+            baseURL: "https://api.nilservice.net/api", // URL de base de l'API Laravel
+            headers: {
+                "Content-Type": "application/json", // On envoie les données au format JSON par défaut
+            },
+            // withCredentials: true, // Optionnel si on utilise les cookies pour l'auth (non utilisé ici)
+        });
     const [message, setMessage]=useState("")
     const [loading, setLoading]=useState(false)
     const handleChange =(e)=>{
@@ -25,22 +32,31 @@ const ForgotPassword = () => {
     const handleSend = async()=>{
         setLoading(true)
         if(email.email.trim()===""){
-            setMessage("Veuillez renseigné votre email.");
+           toast.error("Veuillez renseigné votre email.");
             setLoading(false)
             return;
         }
-        const res = await authAPI.forgotPassword(email)
-        if(res.status==400 || res.status=== "error"){
-            // console.log(res);
+      
+    try {
+        const res = await API.post("/auth/password/email", {
+            email: email.email, // 👈 tu envoyais tout l'objet {email}, corrige ici
+            broker: "academys",
+        });
 
-            setMessage("email incorrect")
+        console.log(res)
+        if (res.status === 400 || res.data?.status === "error") {
+            toast.error("Email incorrect");
+        } else if (res.status === 200) {
+            toast.success("Email envoyé, vérifiez votre boîte mail");
+        }
 
-        }
-        if(res.status==200){
-            setMessage("email envoyé vérifier votre boite mail")
-        }
-        setEmail({email:""})
-        setLoading(false)
+        setEmail({ email: "" });
+    } catch (error) {
+        toast.error("Une erreur est survenue, réessayez.");
+        console.error(error);
+    } finally {
+        setLoading(false); // 👈 le loader s’arrête TOUJOURS ici
+    }
 
     }
     useEffect(()=>{
@@ -69,14 +85,12 @@ const ForgotPassword = () => {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="telephone">Email</label>
-                                                <input type="text" className="form-control" id="telephone" name="telephone" placeholder="Entrez votre email"value={email.email} onChange={handleChange}/>
+                                                <input type="text" className="form-control" id="telephone" name="telephone" placeholder="Entrez votre email"value={email.email} onChange={handleChange} required/>
                                             </div>
                                             <button className="btn btn-primary"onClick={handleSend} >
                                                 Envoyer le lien
                                             </button>
-                                            <div>
-                                                <p>{message}</p>
-                                            </div>
+                                           
 
                                         </div>
                                     </div>

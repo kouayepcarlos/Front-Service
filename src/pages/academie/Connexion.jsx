@@ -15,8 +15,22 @@ import { toast } from "react-toastify";
  * Composant de page de connexion
  * Gère le formulaire de connexion et l'authentification
  */
+
 const Connexion = () => {
     const { loginUserMutation, messageConnexion, setMessageConnexion , user} = useAppContext();
+       const [nom,setNom]=useState(null)
+  const location = useLocation();
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+
+    // Vérifier si le paramètre existe
+    if (params.has("nom")) {
+      setNom(params.get("nom"));
+      
+    } else {
+      console.log("Pas de paramètre 'nom' dans l'URL");
+    }
+  }, [location]);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [type, setType] = useState('password');
@@ -78,7 +92,7 @@ const Connexion = () => {
     };
 
     const navigate=useNavigate()
-    const location = useLocation();
+  
     const from = location.state?.from || "/homeAcademy";
 
     
@@ -125,7 +139,12 @@ const Connexion = () => {
                 <div className="my-custom-div">
                      <Navbar />
                         <section className="mb-5">
-                            <Redirection texte="Vous n'avez pas de compte? Inscrivez vous  et consultez les sujets" nomBoutton="Créer votre compte" lien="/register/step1" />
+                            {!nom && <Redirection texte="Vous n'avez pas de compte? Inscrivez vous  et consultez les sujets" nomBoutton="Créer votre compte" lien="/register/step1" />}
+                              {nom &&<Redirection
+                                                    texte={`Bienvenue ${nom},
+                                                    Merci de vous connecter pour commencer `}
+                                                   
+                                                /> }
                             <section className="row tab-contact mx-3">
                                 <div className="col-12 col-md-10 div-contact" style={{ margin: "auto", borderRadius: "10px" }}>
                                     <div className="row">
@@ -134,13 +153,13 @@ const Connexion = () => {
                                         </div>
                                         <div className="form-contact col-md-6 col-12">
                                             <div className="form-group">
-                                                <label htmlFor="telephone">Numéro du parent</label>
-                                                <input type="text" className="form-control" id="telephone" name="telephone_parent" placeholder="Entrez votre numéro" value={credentials.telephone_parent} onChange={handleChange} />
+                                                <label htmlFor="telephone">Numéro de transaction</label>
+                                                <input type="text" required className="form-control" id="telephone" name="telephone_parent" placeholder="Entrez votre numéro" value={credentials.telephone_parent} onChange={handleChange} />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="password">Mot de passe</label>
                                                 <session className="input-container">
-                                                <input  type={type} className="form-control" id="password" name="password" placeholder="Entrez votre mot de passe" value={credentials.password} onChange={handleChange} />
+                                                <input  type={type} required className="form-control" id="password" name="password" placeholder="Entrez votre mot de passe" value={credentials.password} onChange={handleChange} />
                                                 <span
                                                 className="icon"
                                                 onClick={handleToggle}

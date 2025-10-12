@@ -50,10 +50,10 @@ const Register_final = () => {
                 <section className="mb-5  ">
                     <Redirection
                         texte={
-                            "  Vous avez deja un compte ? Connectez vous et consultez les sujets"
+                            "  Vous avez deja un compte ? Connectez vous "
                         }
                         nomBoutton={"Connectez vous"}
-                        lien={"/connexion/prestataire"}
+                        lien={"/vendeur/connexion"}
                     />
                     <div
                         className="flex-column gap-3   register-div "
@@ -81,9 +81,9 @@ const Register_final = () => {
                                      
                                         <li>
                                         <span> Code du parrain:</span>
-                                            {data.code_parain
-                                                ? data.code_parain
-                                                : "null"}
+                                            {data.code_parrain
+                                                ? data.code_parrain
+                                                : "Aucun"}
                                         </li>
                                       
                                     </ul>

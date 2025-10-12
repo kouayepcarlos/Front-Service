@@ -10,23 +10,38 @@ import Footer from "../../components/Footer";
 import Chat from "../../components/Chat";
 import Publicite from "../../components/Publicite";
 import Navbarvendeur from "../../components/navbar/Navbarvendeur";
-
+import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 import "../../assets/css/homepage.css";
 
 const EditPorfil = () => {
     const navigate = useNavigate();
-    const { user, Maboutique, creerBoutique,nouvelAbonnementVendeurMutation, updateBoutique } = useRegister();
-
-    const [data, setData] = useState({});
+    const { user,lastabonnement, Maboutique, creerBoutique,nouvelAbonnementVendeurMutation, updateBoutique } = useRegister();
+const [loading,setLoading]=useState(true)
+    const [data, setData] = useState({
+        logo:null
+    });
     const [pays, setPays] = useState(null);
     const [ville, setVille] = useState(null);
     const [copied, setCopied] = useState(false);
     const [boutique, setmaBoutique] = useState(null);
+  const [date, setDate] = useState(null);
+    const difference = () => {
+    if (!lastabonnement) return;
+    const dateFin = new Date(lastabonnement?.date_fin);
+    const dateAujourdhui = new Date();
+
+    // Calcul de la différence en millisecondes
+    const diffMs = dateFin - dateAujourdhui;
+
+    // Conversion en jours (1 jour = 86400000 ms)
+    const diffJours = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    setDate(diffJours);
+  };
     const nouvelAbonnement =async () =>{
-       
+       setLoading(true)
         try{
         await nouvelAbonnementVendeurMutation.mutateAsync({
-            redirect_url:"https://nilservice.net/connexion/vendeur",
+            redirect_url:"https://nilservice.net/vendeur/connexion",
             //"localhost:5173/connexion/vendeur",
             faillure_redirect_url:"https://nilservice.net/page/echec"
             //"localhost:5173/page/echec"
@@ -35,6 +50,7 @@ const EditPorfil = () => {
         console.error("Erreur :", error);
     } finally {
         // Désactive le loader
+        setLoading(false)
     }
     }
     const countryOptions = Country.getAllCountries().map((country) => ({
@@ -74,6 +90,7 @@ const EditPorfil = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true)
         try {
             if (boutique) {
                 await updateBoutique.mutateAsync(data);
@@ -85,6 +102,9 @@ const EditPorfil = () => {
         } catch (error) {
             toast.error("Erreur lors de la soumission.");
             console.error(error);
+        }
+        finally{
+            setLoading(false)
         }
     };
 
@@ -99,9 +119,11 @@ const EditPorfil = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true)
             try {
                 const result = await Maboutique.mutateAsync();
-                if (result) {
+                if (Object.keys(result).length>0) {
+                    
                     const { image, logo, ...rest } = result;
                     setData(rest);
                     setmaBoutique(rest);
@@ -120,14 +142,20 @@ const EditPorfil = () => {
                 }
             } catch (error) {
                 console.error("Erreur lors de la récupération :", error);
+            }finally{
+                setLoading(false)
             }
         };
 
         fetchData();
     }, []);
+     useEffect(() => {
+    difference();
+  }, [lastabonnement]);
 
     return (
         <div className="general">
+            {loading && <LoaderTransparent/>}
             <Publicite />
             <div className="my-custom-div">
                 <Navbarvendeur />
@@ -169,9 +197,36 @@ const EditPorfil = () => {
                             )}
                         </div>
                     </div>
-                    <div>
-                        <button className="btn btn-primary" onClick={()=>{nouvelAbonnement()}}>Renouveller l'abonnement</button>
-                    </div>
+                      <br />
+ {user?.statut != "inscrit" && (
+            <div>
+              {" "}
+              {date > 0 && <p>votre abonnement expire dans {date} jours </p>}
+              {date <= 0 && (
+                <p>Votre abonnement est expiré , veuillez renouveller</p>
+              )}
+            </div>
+          )}
+          <div>
+            {user?.statut != "inscrit" ? (
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  nouvelAbonnement();
+                }}
+              >
+                Renouveller l'abonnement'
+              </button>
+            ) : (
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  nouvelAbonnement();
+                }}
+              >
+                payer votre abonnement
+              </button>
+            )}</div>
                     <button
                         onClick={() => navigate("/vendeur/souscrit")}
                         className="btn btn-outline-primary w-100 mt-3"
@@ -179,9 +234,9 @@ const EditPorfil = () => {
                         Vos statistiques de parrainage ici
                     </button>
 
-
+{user?.statut == "inscrit" &&  <p>Payez votre abonnement pour modifier votre boutique</p>}
                     {/* Formulaire boutique */}
-                    <form className="mt-4" onSubmit={handleSubmit}>
+                { user?.statut !== "inscrit" &&    <form className="mt-4" onSubmit={handleSubmit}>
                         <p className="text-center text-danger">
                             {boutique ? "Modifier votre boutique" : "Créer votre boutique"}
                         </p>
@@ -245,6 +300,7 @@ const EditPorfil = () => {
                                 accept=".jpeg,.png,.jpg"
                                 className="form-control"
                                 name="logo"
+                                required
                                 onChange={handleFileChange}
                             />
                         </div>
@@ -264,7 +320,7 @@ const EditPorfil = () => {
                         <button className="btn btn-primary w-100" type="submit">
                             {boutique ? "Mettre à jour" : "Créer"}
                         </button>
-                    </form>
+                    </form>}
                 </div>
                 <Chat />
                 <Footer />

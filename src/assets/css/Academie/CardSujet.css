@@ -38,7 +38,7 @@
   }
 
   /* Texte bien espacé */
-  .card-body {
+  .card-bodyy {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -84,3 +84,26 @@
   .card-error p{
     font-size: 25px;
   }
+.sujets-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(1, 1fr); /* Par défaut 1 colonne */
+}
+
+@media (min-width: 576px) {
+  .sujets-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+  }
+}
+
+@media (min-width: 768px) {
+  .sujets-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
+  }
+}
+
+@media (min-width: 992px) {
+  .sujets-grid {
+    grid-template-columns: repeat(4, 1fr); /* 4 colonnes */
+  }
+}

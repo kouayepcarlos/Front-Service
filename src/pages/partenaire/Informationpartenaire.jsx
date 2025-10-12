@@ -14,17 +14,29 @@ import { useRegister } from "../../Contexts/PartenaireProvider";
 import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 
 const EditPorfil = () => {
-  const {me,nouvelAbonnementPartenaireMutation}= useRegister()
+  const {me,lastabonnement,nouvelAbonnementPartenaireMutation}= useRegister()
     const [copied, setCopied] = useState(false);
    
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [user, setUser] = useState();
+  const [date, setDate] = useState(null);
+  const difference = () => {
+    if (!lastabonnement) return;
+    const dateFin = new Date(lastabonnement?.date_fin);
+    const dateAujourdhui = new Date();
 
+    // Calcul de la différence en millisecondes
+    const diffMs = dateFin - dateAujourdhui;
+
+    // Conversion en jours (1 jour = 86400000 ms)
+    const diffJours = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    setDate(diffJours);
+  };
     const nouvelAbonnement =async () =>{
         setLoading(true)
         try{
         await nouvelAbonnementPartenaireMutation.mutateAsync({
-            redirect_url:"https://nilservice.net/connexion/partenaire",
+            redirect_url:"https://nilservice.net/partenaire/connexion",
             //"localhost:5173/connexion/partenaire",
             faillure_redirect_url:"https://nilservice.net/page/echec"
             //"localhost:5173/page/echec"
@@ -62,6 +74,10 @@ const EditPorfil = () => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+    difference();
+  }, [lastabonnement]);
+
     const navigate = useNavigate();
 
    
@@ -91,9 +107,36 @@ const EditPorfil = () => {
                        
                       
                     </ul>
-                    <div>
-                        <button className="btn btn-primary" onClick={()=>{nouvelAbonnement()}}>Renouveller l'abonnement</button>
-                    </div>
+                     <br />
+           {user?.statut != "inscrit" && (
+            <div>
+              {" "}
+              {date > 0 && <p>votre abonnement expire dans {date} jours </p>}
+              {date <= 0 && (
+                <p>Votre abonnement est expiré , veuillez renouveller</p>
+              )}
+            </div>
+          )}
+          <div>
+            {user?.statut != "inscrit" ? (
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  nouvelAbonnement();
+                }}
+              >
+                Renouveller l'abonnement'
+              </button>
+            ) : (
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  nouvelAbonnement();
+                }}
+              >
+                payer votre abonnement
+              </button>
+            )}</div>
                     <div className="text-center d-flex flex-column align-items-start gap-2 mt-3">
                         <p className="fw-bold text-success">
                             n'oubliez pas que vous pouvez gagner de l'argent en

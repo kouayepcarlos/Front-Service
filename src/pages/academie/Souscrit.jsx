@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
@@ -6,44 +6,40 @@ import Chat from "../../components/Chat";
 import Publicite from "../../components/Publicite";
 import Redirection from "../../components/Redirection";
 import Footer from "../../components/Footer";
-import Navbaracademie from '../../components/navbar/Navbaracademie';
+import { FaRegCopy, FaCheck } from "react-icons/fa"; // Icône pour copier le code de parrainage
+import Navbaracademie from "../../components/navbar/Navbaracademie";
 import { useAppContext } from "../../Contexts/AppProvider";
 import "../../assets/css/souscrit.css";
-
+import { Modal, Button } from "react-bootstrap"; // Composants Bootstrap pour la modale
+import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
+import { toast } from "react-toastify";
 const Souscrit = () => {
   const token = sessionStorage.getItem("token");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [bilan, setBilan] = useState([]);
+  const handleClose = () => setShowModal(false);
+  const [showModal, setShowModal] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(user.code);
+    setCopied(true); // Changer l'icône en icône de validation
+  };
 
+  const handleShow = () => setShowModal(true);
 
-  const [getFilleuls, setGetFilleuls]=useState({
-    'premiereGen':[],
-    'deuxiemeGen':[],
-    'retraitTotal':0
-  })
-  const {user, refetchFilleuls, filleuls, withdrawal}=useAppContext();
+  const [getFilleuls, setGetFilleuls] = useState({
+    premiereGen: [],
+    // 'deuxiemeGen':[],
+    retraitTotal: 0,
+  });
+  const { user, refetchFilleuls, filleuls, withdrawal, solde } =
+    useAppContext();
   const [globalFilter, setGlobalFilter] = useState("");
 
   const header = (
     <div className="d-flex justify-content-between ">
       <h2 className="font-semibold" style={{ color: "#ef8f0a" }}>
-        Premiere generation
-      </h2>
-      <span className="p-input-icon-left ">
-        <InputText
-          type="search"
-          placeholder="Rechercher..."
-          onInput={(e) => setGlobalFilter(e.target.value)}
-          className="p-inputtext-sm"
-        />
-      </span>
-    </div>
-  );
-
-  const header1 = (
-    <div className="d-flex justify-content-between ">
-      <h2 className="font-semibold" style={{ color: "#ef8f0a" }}>
-        Deuxieme genration
+        Gains
       </h2>
       <span className="p-input-icon-left ">
         <InputText
@@ -81,59 +77,62 @@ const Souscrit = () => {
   //   );
   // };
 
+  useEffect(() => {
+    refetchFilleuls();
+  }, []);
+  console.log(filleuls);
+ 
+  useEffect(() => {
+   
+    if (filleuls) {
+      setGetFilleuls({
+        premiereGen: filleuls.premiere_generation,
 
-  useEffect(()=>{
-    refetchFilleuls()
-  },[])
-    console.log(filleuls);
-
-  useEffect(()=>{
-    if(filleuls){
-        setGetFilleuls({
-            'premiereGen':filleuls.premiere_generation,
-            'deuxiemeGen':filleuls.deuxieme_generation,
-            'retraitTotal':filleuls.total_retrait,
-        })
+        retraitTotal: filleuls.total_retrait,
+      });
     }
-  }, [filleuls])
+  }, [filleuls]);
 
-  const GainPremiereGen=(filleuls)=>{
-    let gains=0
-    filleuls.map((filleul)=>{
-        if(filleul.status=== 'actif') gains+=400
-    })
-    return gains
-  }
-
-  const GainDeuxiemeGen=(filleuls)=>{
-    let gains=0
-    filleuls.map((filleul)=>{
-        if(filleul.status=== 'actif') gains+=100
-    })
-    return gains
-  }
-
+  const GainPremiereGen = (filleuls) => {
+    let gains = 0;
+    filleuls.map((filleul) => {
+      if (filleul.status === "actif") gains += 500;
+    });
+    return gains;
+  };
 
   const indexTemplate = (rowData, options) => {
     return options.rowIndex + 1; // +1 pour commencer à 1 au lieu de 0
   };
 
-  const handleWithdraw= async ()=>{
-        await withdrawal.mutate(10)
-  }
+  const handleWithdraw = async () => {
+    setLoading(true)
+     if(solde?.data[0]?.net <=0){
+      toast.error("le montant est insuffisant pour effectuer le retrait")
+      return;
+    }
+    try{
+    await withdrawal.mutateAsync(solde?.data[0]?.net);
+    refetchFilleuls()
+    }catch(error){
 
+    }finally{
+      setLoading(false)
+    }
+  };
 
   return (
     <>
       <div className="general">
+        {loading && <LoaderTransparent/>}
         <Publicite />
         <div className="my-custom-div">
           <Navbaracademie />
           <section className="mb-5  ">
             <Redirection
               texte={`Hello ${user.nom} ,ceci est votre espace memre,consulter toutes personnes qui ont sosucrit avec votre code parain`}
-              nomBoutton={"Parrainer un ami"}
-              lien={""}
+              nomBoutton={"Parrainez un ami"}
+              handlClick={handleShow}
             />
             <div className="ml-3 mr-3">
               <div className="">
@@ -146,7 +145,7 @@ const Souscrit = () => {
                   globalFilter={globalFilter}
                   selectionMode="single"
                 >
-                    {/* {getFilleuls.premiereGen.map((filleul, index)=>{
+                  {/* {getFilleuls.premiereGen.map((filleul, index)=>{
 
                     })} */}
                   <Column header="Numero" body={indexTemplate} />
@@ -157,44 +156,18 @@ const Souscrit = () => {
                 </DataTable>
 
                 <div className="resultat">
-                  TOTAL PREMIERE GENERATION :{GainPremiereGen(getFilleuls.premiereGen)}
+                  TOTAL GAINS:
+                  {GainPremiereGen(getFilleuls.premiereGen)}
                 </div>
               </div>
 
               <br />
 
-              <div className="">
-                <DataTable
-                  value={getFilleuls.deuxiemeGen}
-                  paginator
-                  rows={4}
-                  tableStyle={{ minWidth: "50rem", height: "100%" }}
-                  header={header1}
-                  globalFilter={globalFilter}
-                  selectionMode="single"
-                >
-                    <Column header="Numero" body={indexTemplate} />
-                  <Column field="nom" header="Noms" />
-                  <Column field="created_at" header="Date" />
-                  <Column field="100" header="Gains" />
-
-                  {/* <Column
-      header="Action"
-      body={actionBodyTemplate}
-      style={{ width: "15%", textAlign: "center" }}
-    /> */}
-                </DataTable>
-
-                <div className="resultat">
-                  TOTAL DEUXIEME GENERATION : {GainDeuxiemeGen(getFilleuls.deuxiemeGen)}
-                </div>
-              </div>
-
               <br />
 
-              <div className="">
+         {solde && <div className="">
                 <DataTable
-                  value={bilan}
+                  value={solde?.data}
                   paginator
                   rows={4}
                   tableStyle={{ minWidth: "50rem", height: "100%" }}
@@ -202,19 +175,59 @@ const Souscrit = () => {
                   globalFilter={globalFilter}
                   selectionMode="single"
                 >
-                  <Column field="total" header="Total gagne"  />
-                  <Column field="total_retrait" header="Total retrait" />
+                  <Column field="solde" header="Gain total" />
+                  <Column field="retrait" header="Total retrait" />
                   {/* <Column field="password" header="Mot de passe" /> */}
-                  <Column field="reste" header="Reste a retirer" />
+                  <Column field="net" header="Reste à retirer" />
                 </DataTable>
 
-                <button className="resultat" onClick= {handleWithdraw}>FAIRE UN RETRAIT</button>
+                <button className="resultat" onClick={handleWithdraw}>
+                  FAIRE UN RETRAIT
+                </button>
               </div>
+}
             </div>
+         
           </section>
+
           <Chat />
           <Footer />
         </div>
+        {/* Modal Parrainage */}
+        <Modal show={showModal} onHide={handleClose} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Code de Parrainage</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="text-center">
+            <p>
+              Voici votre code de parrainage. Partagez-le pour inviter d'autres
+              personnes !
+            </p>
+            <div className="d-flex align-items-center border rounded p-2">
+              <input
+                type="text"
+                className="form-control text-center"
+                value={user.code}
+                readOnly
+              />
+              {!copied && (
+                <FaRegCopy
+                  className="ms-2 text-primary"
+                  style={{ cursor: "pointer" }}
+                  onClick={handleCopy}
+                >
+                  {/* {copied ? <FaCheck className="text-success" /> : <FaRegCopy className="text-primary" />} */}
+                </FaRegCopy>
+              )}
+              {copied && <FaCheck className="text-success" />}
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Fermer
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </>
   );

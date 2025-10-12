@@ -99,7 +99,7 @@ function Register_1() {
 
             setData((prevState) => ({
                 ...prevState,
-                redirect_url:"https://nilservice.net/connexion/partenaire",
+                redirect_url:`https://nilservice.net/prestataire/connexion?nom=${data?.nom}`,
         //"localhost:5173/connexion/prestataire",
         faillure_redirect_url:"https://nilservice.net/page/echec"
         //"localhost:5173/page/echec"
@@ -135,10 +135,10 @@ function Register_1() {
                     <section className="mb-5  ">
                         <Redirection
                             texte={
-                                "  Vous avez deja un compte ? Connectez vous et consultez les sujets"
+                                "  Vous avez deja un compte ? Connectez vous "
                             }
                             nomBoutton={"Connectez vous"}
-                            lien={"/connexion/prestataire"}
+                            lien={"/prestataire/connexion"}
                         />
                         <div className="flex-column gap-3  register-div  ">
                             <p>Premiere etape</p>
@@ -157,7 +157,7 @@ function Register_1() {
                                         <form>
                                             <div className="form-group">
                                                 <label htmlFor="name">
-                                                    Nom et Prenom
+                                                    Nom et Prenom <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <input
                                                     value={data.nom}
@@ -172,7 +172,7 @@ function Register_1() {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="email">
-                                                    Email
+                                                    Email <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <input
                                                     value={data.email}
@@ -188,7 +188,7 @@ function Register_1() {
 
                                             <div className="form-group">
                                                 <label htmlFor="password">
-                                                    Mot de passe
+                                                    Mot de passe <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <session className="input-container">
                                                     <input
@@ -196,6 +196,7 @@ function Register_1() {
                                                             data.mot_de_passe
                                                         }
                                                         onChange={handleChange}
+                                                        required
                                                         name="mot_de_passe"
                                                         type={
                                                             typePassword.password
@@ -235,6 +236,7 @@ function Register_1() {
                                                         type={
                                                             typePassword.password_confirmation
                                                         }
+                                                        required
                                                         className="form-control"
                                                         id="mot_de_passe_confirmation"
                                                         placeholder="Entrez de nouveau votre mot de passe"

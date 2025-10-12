@@ -9,7 +9,9 @@
   import menuiserie from "../../assets/images/menuiserie.png";
   import teacher from "../../assets/images/teacher.png";
   import elec from "../../assets/images/elec.png";
+  import { useNavigate } from "react-router-dom";
   const Topproduit = () => {
+    const navigate = useNavigate()
       const [currentSection, setCurrentSection] = useState(0); // Section actuelle
       const [imagesPerSection, setImagesPerSection] = useState(4); // Nombre d'images par section
       const images = [//le tableau dimage
@@ -17,22 +19,26 @@
               
               label: "Electriciens",//le nom de l/image
               lien: elec,//le lien de l'image
+              href:"/prestataire/liste?profession=electricien"
 
           },
           {
              
-              label: "Plombiers",
+              label: "Frigoriste",
               lien: plombier,
+              href:"/prestataire/liste?profession=frigoriste"
           },
           {
              
               label: "Menuisiers",
-              lien: menuiserie
+              lien: menuiserie,
+              href:"/prestataire/liste?profession=menusier"
           },
           {
               
               label: "Répétiteurs",
               lien: teacher,
+              href:"/prestataire/liste?profession=répétiteur"
 
           },
           
@@ -79,7 +85,7 @@
                   <div className="images">
                       {visibleImages.map((entry, index) => (
                           <div
-                              href=""
+                              onClick={() => (navigate(entry.href))}
                               
                               className={`card-recent`}
                               data-toggle="modal"

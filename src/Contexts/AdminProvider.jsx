@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { authAPIadmin } from "../fecths/fecthAdmin";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const AdminContext = createContext();
 
@@ -14,12 +15,13 @@ export function AdminProvider({ children }) {
     const navigate = useNavigate();
     const [messageConnexion, setMessageConnexion] = useState("");
     const publicRoutes = ["/admin/connexion"];
+     const location = useLocation();
 
     const { data: sujets, refetch: refetchSujets } = useQuery({
         queryKey: ["sujets"],
         queryFn: authAPIadmin.allSubject,
         retry: false,
-        enabled: !!sessionStorage.getItem("token"),
+        enabled: !!sessionStorage.getItem("token")&&  location.pathname !="/admin/connexion",
     });
 
 
@@ -27,15 +29,44 @@ export function AdminProvider({ children }) {
     queryKey: ["academy"],
     queryFn: authAPIadmin.allAcademy,
     retry: false,
-    enabled: !!sessionStorage.getItem("token"),
+    enabled: !!sessionStorage.getItem("token")&&  location.pathname !="/admin/connexion",
+    });
+     const { data: academyemail = [], refetch: refetchAcademyemail } = useQuery({
+    queryKey: ["academyemail"],
+    queryFn: authAPIadmin.allAcademyemail,
+    retry: false,
+  
     });
 
     const { data: vendeurs = [], refetch: refetchVendeurs } = useQuery({
   queryKey: ["vendeurs"],
   queryFn: authAPIadmin.allVendeurs,
   retry: false,
-  enabled: !!sessionStorage.getItem("token"),
+  enabled: !!sessionStorage.getItem("token") &&  location.pathname !="/admin/connexion",
 });
+
+ const { data: prestataires, refetch: refetchPrestataire } = useQuery({
+  queryKey: ["prestataires"],
+  queryFn: authAPIadmin.allPrestaires,
+  retry: false,
+  enabled: !!sessionStorage.getItem("token") &&  location.pathname !="/admin/connexion",
+});
+
+ const { data: newsletter, refetch: refetchNewsletter } = useQuery({
+    queryKey: ["newsletter"],
+    queryFn: authAPIadmin.allnewsletter,
+    retry: false,
+    enabled:
+     !!sessionStorage.getItem("token") &&  location.pathname !="/admin/connexion",
+  });
+
+  const { data: totale, refetch: refetchTotale } = useQuery({
+    queryKey: ["totale"],
+    queryFn: authAPIadmin.sommeTotale,
+    retry: false,
+    enabled:
+     !!sessionStorage.getItem("token") &&  location.pathname !="/admin/connexion",
+  });
 
 
 
@@ -43,14 +74,21 @@ export function AdminProvider({ children }) {
         queryKey: ["admin"],
         queryFn: authAPIadmin.allAdmin,
         retry: false,
-        enabled: !!sessionStorage.getItem("token"),
+        enabled: !!sessionStorage.getItem("token") &&  location.pathname !="/admin/connexion",
     });
 
     const { data: partenaire, refetch: refetchPartenaire } = useQuery({
         queryKey: ["partenaire"],
         queryFn: authAPIadmin.allPartenaires,
         retry: false,
-        enabled: !!sessionStorage.getItem("token"),
+        enabled: !!sessionStorage.getItem("token") &&  location.pathname !="/admin/connexion",
+    });
+
+     const { data: partenaireemail, refetch: refetchPartenaireemail } = useQuery({
+        queryKey: ["partenaireemail"],
+        queryFn: authAPIadmin.allPartenairesemail,
+        retry: false,
+      
     });
 
     useEffect(() => {
@@ -70,6 +108,8 @@ export function AdminProvider({ children }) {
 
     useEffect(() => {
         const checkAuth = async () => {
+            if(location.pathname =="/admin/connexion")
+                return;
             const check = await authAPIadmin.checkout();
             if (check) {
                 if (check.response?.status === 401) {
@@ -126,6 +166,29 @@ export function AdminProvider({ children }) {
         },
     });
 
+     const deleteMessage = useMutation({
+        mutationFn: async (credentials) =>
+            await authAPIadmin.deleteremessage(credentials),
+        onSuccess: (data) => {
+            if (data.status === "success") {
+                toast.success(data.message || "message supprimé avec succès !");
+                refetchSujets();
+            } else {
+                toast.error(data.message);
+                //console.log(response)
+            }
+            // console.log("delete reuissi");
+        },
+        onError: (error) => {
+            const errors = error.response?.data;
+            if (errors?.message === "fichier introuvable") {
+                toast.error("fichier introuvable");
+            } else {
+                toast.error("Erreur du serveur. Veuillez réessayer plus tard.");
+            }
+        },
+    });
+
     const addsubjetMutation = useMutation({
         mutationFn: async (credentials) =>
             await authAPIadmin.addSubject(credentials),
@@ -134,7 +197,25 @@ export function AdminProvider({ children }) {
             refetchSujets();
             // setSujets(data);
             // console.log("ajout reuissi");
+toast.success("Ajout reussi")
+            // setMessageConnexion("SUCCESS");
+        },
+        onError: (error) => {
+            //   console.log(error);
+            const errors = error.response?.data;
+            toast.error(errors?.message);
+        },
+    });
 
+      const updatecorrection = useMutation({
+        mutationFn: async (credentials) =>
+            await authAPIadmin.Updatecorrection(credentials),
+
+        onSuccess: () => {
+            refetchSujets();
+            // setSujets(data);
+            // console.log("ajout reuissi");
+toast.success("Ajout reussi")
             // setMessageConnexion("SUCCESS");
         },
         onError: (error) => {
@@ -147,13 +228,12 @@ export function AdminProvider({ children }) {
     const updateExamenMutation = useMutation({
         mutationFn: async (credentials) =>
             await authAPIadmin.updateExamen(credentials),
-        // <<<<<<< HEAD
-        //         onSuccess: (data) => {
-        //             if (data.status === "ok") toast.success("sujet modifie");
-        // =======
+       
         onSuccess: () => {
             // console.log("modifreuissi");
+             toast.success("Modification effectuee")
             refetchSujets();
+           
             // setMessageConnexion("SUCCESS");
         },
         onError: (error) => {
@@ -170,13 +250,12 @@ export function AdminProvider({ children }) {
     const updateUniversiteMutation = useMutation({
         mutationFn: async (credentials) =>
             await authAPIadmin.updateUniversite(credentials),
-        // <<<<<<< HEAD
-        //         onSuccess: (data) => {
-        //             if (data.status === "ok") toast.success("sujet modifie");
-        // =======
+       
         onSuccess: () => {
             // console.log("modifreuissi");
+            toast.success("Modification effectuee")
             refetchSujets();
+             
             // setMessageConnexion("SUCCESS");
         },
         onError: (error) => {
@@ -195,14 +274,16 @@ export function AdminProvider({ children }) {
         onSuccess: () => {},
         onError: () => {},
     });
+     const downloadSubjetcorrectionMutation = useMutation({
+        mutationFn: async (credentials) =>
+            await authAPIadmin.downloadSubjetcorrection(credentials),
+        onSuccess: () => {},
+        onError: () => {},
+    });
     const addAdminMutation = useMutation({
         mutationFn: async (credentials) =>
             await authAPIadmin.addAdmin(credentials),
-        // <<<<<<< HEAD
-        //         onSuccess: (data) => {
-        //          //  console.log(data)
-        //             if (data?.status === "success") toast.success(data.message);
-        // =======
+       
         onSuccess: () => {
             // console.log("ajout reuissi");
             refetchAdmin();
@@ -217,11 +298,7 @@ export function AdminProvider({ children }) {
     const definirObjectif = useMutation({
         mutationFn: async (credentials) =>
             await authAPIadmin.definirObjectif(credentials),
-        // <<<<<<< HEAD
-        //         onSuccess: (data) => {
-        //          //  console.log(data)
-        //             if (data?.status === "success") toast.success(data.message);
-        // =======
+       
         onSuccess: (data) => {
             toast.success(data.message);
         },
@@ -235,15 +312,9 @@ export function AdminProvider({ children }) {
     const updateAdminMutation = useMutation({
         mutationFn: async (credentials) =>
             await authAPIadmin.updateAdmin(credentials),
-        // <<<<<<< HEAD
-        //         onSuccess: (data) => {
-        //             if (data.status === "success") toast.success(data.message);
-        //             console.log(data)
-
-        // =======
+       
         onSuccess: () => {
-            // setSujets(data);
-            //  console.log("modifreuissi");
+           toast.success("Ajout effectuee")
             refetchAdmin();
         },
         onError: (error) => {
@@ -251,6 +322,7 @@ export function AdminProvider({ children }) {
             toast.error(errors?.message);
         },
     });
+
 
     const deleteAdminMutation = useMutation({
         mutationFn: async (credentials) =>
@@ -276,13 +348,27 @@ export function AdminProvider({ children }) {
                 toast.success(data.message);
             }
             console.log(data);
-            refetchAdmin();
+            refetchPartenaire();
         },
         onError: (error) => {
             const errors = error.response?.data;
             toast.error(errors?.message);
         },
     });
+
+      const updateprestataire = useMutation({
+    mutationFn: async (credentials) =>
+      await authAPIadmin.updatePrestataire(credentials),
+
+    onSuccess: (data) => {
+      // //console.log("modifreuissi");
+      toast.success(data?.message);
+      // setMessageConnexion("SUCCESS");
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
     const loginMutationadmin = useMutation({
         mutationFn: async (credentials) =>
             await authAPIadmin.login(credentials),
@@ -312,10 +398,23 @@ export function AdminProvider({ children }) {
             }
         },
     });
+     const allobjectifsid = useMutation({
+        mutationFn: async (id) =>
+            await authAPIadmin.allobjectifsid(id),
+       
+        onSuccess: (data) => {
+          return data
+        },
+        onError: (error) => {
+            const errors = error.response?.data;
+            toast.error(errors?.message);
+        },
+    });
 
     const logout = useMutation({
         mutationFn: async () => await authAPIadmin.logout(),
         onSuccess: () => {
+            toast.success("Deconnecte")
             navigate("/admin/connexion");
         },
         onError: (error) => {
@@ -330,6 +429,7 @@ export function AdminProvider({ children }) {
                 setTheme,
                 // allsubjetMutation,
                 deletePartenaire,
+                deleteMessage,
                 loginMutationadmin,
                 logout,
                 sujets,
@@ -357,6 +457,20 @@ export function AdminProvider({ children }) {
                 partenaire,
                 refetchPartenaire,
                 definirObjectif,
+                prestataires,
+                refetchPrestataire,
+                refetchNewsletter,
+                newsletter,
+                allobjectifsid,
+                updateprestataire,
+                updatecorrection,
+                downloadSubjetcorrectionMutation,
+                totale,
+                refetchTotale,
+                academyemail,
+                refetchAcademyemail,
+                partenaireemail,
+                refetchPartenaireemail
             }}
         >
             {children}

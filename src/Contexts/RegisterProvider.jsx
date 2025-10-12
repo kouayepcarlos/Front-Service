@@ -57,9 +57,9 @@ export const RegisterProvider = ({ children }) => {
                     );
 
                     navigate("/register/step1");
-                } else if (errors.telephone) {
+                } else if (errors.telephone_parent) {
                     toast.error(
-                        "un compte avec ce numéro de téléphone existe deja veuillez le changer ou vous connecter"
+                        "un compte avec le numero de transaction existe deja veuillez le changer ou vous connecter"
                     );
                     navigate("/register/step2");
                 }

@@ -80,7 +80,7 @@ const Voirplus = () => {
         <section className="mb-5  ">
           <Redirection
             texte={`Hello Marie ,consultons les anciens sujets de ta filiere`}
-            nomBoutton={"Parrainer un ami"}
+            nomBoutton={"Parrainez un ami"}
             lien={""}
           />
              <h2 className="ml-5  mb-4">CC</h2>

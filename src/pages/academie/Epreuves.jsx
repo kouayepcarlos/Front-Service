@@ -20,7 +20,7 @@ const Epreuves = () => {
           <Redirection
             texte={`Bonjour ${name}, ici tu peux consulter tes anciens sujets de ta
               filière`}
-            nomBoutton={"Parrainer un ami"}
+            nomBoutton={"Parrainez un ami"}
             lien={""}
           />
           {/* <Sujet /> */}

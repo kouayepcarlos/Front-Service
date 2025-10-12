@@ -9,9 +9,10 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import "../../assets/css/partenaire/objectif.css";
 import { useNavigate } from "react-router-dom";
 import { useRegister } from "../../Contexts/PartenaireProvider";
+import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 const Objectif = () => {
     const { monobjectif } = useRegister();
-
+const [loading,setLoading]=useState(false)
     
     const [nombre, setNombre] = useState(0);
     const [now, setNow] = useState(0);
@@ -19,6 +20,7 @@ const Objectif = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true)
             try {
                 const result = await monobjectif.mutateAsync();
                 console.log(result);
@@ -35,6 +37,8 @@ const Objectif = () => {
                 }
             } catch (error) {
                 console.error("Erreur lors de la récupération :", error);
+            }finally{
+                setLoading(false)
             }
         };
 
@@ -51,6 +55,7 @@ const Objectif = () => {
     return (
         <div className="general">
             {/* {loading && <LoaderTransparent />} */}
+            {loading && <LoaderTransparent/>}
             <Publicite />
             <div className="my-custom-div">
                 <Navbarpartenaire />

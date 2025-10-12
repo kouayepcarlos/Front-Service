@@ -22,7 +22,8 @@ import Contactacademie from "../pages/academie/Contact";
 import Pagemaintenance from "../pages/Pagemaitenance";
 import Pagemaintenanceacademie from "../pages/academie/Pagemaitenance";
 import ForgotPassword from "../pages/academie/forgotPassword.jsx"
-
+import Bibliotheque from "../pages/academie/Bibliotheque.jsx";
+import AllFichier from "../pages/academie/AllFichier.jsx";
 
 const AcademieRoutes = () => {
     return (
@@ -46,6 +47,8 @@ const AcademieRoutes = () => {
                     <Route path="souscrit" element={<Souscrit />} />
                     <Route path="configuration" element={<EditProfil />} />
                     <Route path="chat" element={<ChatA />} />
+                     <Route path="bibliotheque" element={<Bibliotheque />} />
+                      <Route path="allfichier" element={<AllFichier/>} />
                    
                     <Route path="register/*" element={
                         <RegisterProvider>

@@ -116,24 +116,24 @@ const Homeprestataire = () => {
                     {/* Filtres de recherche */}
                     <div className="mx-5 mb-4">
                         <p className="fw-bold text-muted fs-5">
-                            Filtrez les boutiques pour affiner votre recherche :
+                            Filtrez les prestatairess pour affiner votre recherche :
                         </p>
 
                         {/* Barre de filtres en flex-wrap */}
                         <div className="d-flex flex-wrap gap-3 flex-md-nowrap">
                             {/* Filtre par pays */}
-                            <select name="pays" className="form-select" onChange={handleFilterChange}   >
+                            {/* <select name="pays" className="form-select" onChange={handleFilterChange}   >
                                 <option value="">Filtrer par pays</option>
                                 {[...new Set(prestationliste.map((prestation) => prestation.pays))].map((pays) => (
                                         <option key={pays} value={pays}>{pays}</option>
                                     ))}
                                
-                            </select>
+                            </select> */}
 
                             {/* Filtre par ville */}
                             <select name="ville" className="form-select" onChange={handleFilterChange}>
                                 <option value="">Filtrer par ville</option>
-                                {[...new Set(prestationliste.map((prestation) => prestation.ville))].map((ville) => (
+                                {[...new Set((prestation?prestation:[]).map((prestation) => prestation.ville))].map((ville) => (
                                         <option key={ville} value={ville}>{ville}</option>
                                     ))}
                                
@@ -142,7 +142,7 @@ const Homeprestataire = () => {
                             {/* Filtre par quartier */}
                             <select name="quartier" className="form-select" onChange={handleFilterChange}>
                                 <option value="">Filtrer par quartier</option>
-                                {[...new Set(prestationliste.map((prestation) => prestation.quartier))].map((quartier) => (
+                                {[...new Set((prestation?prestation:[]).map((prestation) => prestation.quartier))].map((quartier) => (
                                         <option key={quartier} value={quartier}>{quartier}</option>
                                     ))}
                             </select>
@@ -151,7 +151,7 @@ const Homeprestataire = () => {
                             <select name="professi" className="form-select" onChange={handleFilterChange} value={filters.profession}>
                                 <option value="">Filtrer par profession</option>
                                 
-                                {[...new Set(prestationliste.map((prestation) => prestation.profession))].map((profession) => (
+                                {[...new Set((prestation?prestation:[]).map((prestation) => prestation.profession))].map((profession) => (
                                         <option key={profession} value={profession}>{profession}</option>
                                     ))}
                             </select>

@@ -1,0 +1,49 @@
+
+
+ul.avantage-div li {
+   /* cercle plein (•) */
+  margin-left: 40px;
+   list-style-type:disc;
+}
+ul.asterix li {
+  list-style-type:square !important; /* cercle plein (•) */
+  margin-left: 40px !important;
+}
+
+h3.avantage-h3{
+ text-align: center;
+ color:#ef8f0a;
+ font-weight: bolder;
+ margin-bottom: 20px;
+}
+
+.avantage-div p{
+  color: black;
+  font-size: 1.1rem !important;
+}
+
+.activestep-des{
+  font-size: 0.9rem;
+}
+
+.accordion-body ul li {
+
+    
+    padding: 0 1.5rem;
+    color: #555;
+    font-size: 1.05rem;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+  }
+
+  @media screen and (max-width:732px){
+  ul.avantage-div li {
+
+  margin-left: 10px;
+  
+}
+
+ul.asterix li {
+  margin-left: 0px !important;
+}
+
+}

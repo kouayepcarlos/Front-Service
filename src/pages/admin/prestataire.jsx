@@ -1,22 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import Sidebar from "../../components/admin/Sidebar";
 import Navbaradmin from "../../components/admin/Navbaradmin";
-
+import { useAdminContext } from "../../Contexts/AdminProvider";
+import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 
 const Prestataire = () => {
-  const [data, setData] = useState([
-    { id: 1, client: "Client A", document: "Document1", telephone: "123-456-7890" },
-    { id: 2, client: "Client B", document: "Document1", telephone: "987-654-3210" },
-    { id: 3, client: "Client C", document: "Document1", telephone: "456-789-1230" },
-    { id: 4, client: "Client C", document: "Document1", telephone: "456-789-1230" },
-    { id: 5, client: "Client C", document: "Document1", telephone: "456-789-1230" },
-    { id: 6, client: "Client C", document: "Document1", telephone: "456-789-1230" },
-    { id: 7, client: "Client C", document: "Document1", telephone: "456-789-1230" },
-  ]);
+ 
+   const {prestataires = [] ,updateprestataire ,refetchPrestataire} = useAdminContext();
+
+  const [loading,setLoading]=useState(false)
+
+    // Archiver un message
+  const archiveMessage = async (id) => {
+    setLoading(true);
+    try {
+      await updateprestataire.mutateAsync({
+        id: id,
+        statut: "inactif",
+      });
+      refetchPrestataire()
+     
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Désarchiver un message
+   const unarchiveMessage = async (id) => {
+    setLoading(true);
+    try {
+      await updateprestataire.mutateAsync({
+        id: id,
+        statut: "actif",
+      });
+      refetchPrestataire()
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+ 
 
   const [globalFilter, setGlobalFilter] = useState("");
 
@@ -37,8 +65,30 @@ const Prestataire = () => {
   const actionBodyTemplate = (rowData) => {
     return (
       <div className="d-flex justify-content-start no-hover-icons">
-       <i className="fa-solid fa-toggle-on" style={{ width: "30px", cursor: "pointer", color: "green" }}></i>
-       <i className="fa-solid fa-toggle-off" style={{ width: "40px", cursor: "pointer", color: "red" }}></i>
+       
+
+         {rowData.checked == "actif" && (
+          <i
+            className="fa-solid fa-toggle-on"
+            onClick={() => archiveMessage(rowData.id)}
+            style={{
+              width: "30px",
+              cursor: "pointer",
+              color:"red"
+            }}
+          ></i>
+        )}
+        {rowData.checked == "inactif" && (
+          <i
+            className="fa-solid fa-toggle-off"
+             onClick={() => unarchiveMessage(rowData.id)}
+            style={{
+              width: "40px",
+              cursor: "pointer",
+              color: "green",
+            }}
+          ></i>
+        )}
       </div>
     );
   };
@@ -47,32 +97,71 @@ const Prestataire = () => {
     <>
       <Navbaradmin />
       <Sidebar />
+      {loading && <LoaderTransparent/>}
       <div className="content">
-
         <div className="card">
           <DataTable
-            value={data}
+            value={prestataires}
             paginator
             rows={4}
-            tableStyle={{ minWidth: "50rem", height: "100%"}}
+            tableStyle={{ minWidth: "50rem", height: "100%" }}
             header={header}
             globalFilter={globalFilter}
             selectionMode="single"
           >
             <Column field="id" header="N°" style={{ width: "10%" }} />
-            <Column field="client" header="Noms" />
-          
-            <Column field="telephone" header="Numero" />
-            <Column field="document" header="Document" />
+            <Column field="nom" header="Noms" />
+            <Column field="email" header="Email" />
+            <Column field="ville" header="Ville" />
+            <Column field="pays" header="Pays" />
             <Column
-              header="Action"
-              body={actionBodyTemplate}
-              style={{ width: "15%", textAlign: "center" }}
-            />
+ 
+  header="CNI"
+  body={(rowData) => (
+    <a
+      href={`${rowData.file_urlcni}`}
+      target="_blank"
+      
+    >
+      Visualiser la CNI
+    </a>
+  )}
+/>
+  <Column
+ 
+  header="Photo"
+  body={(rowData) => (
+    <a
+      href={`${rowData.file_url}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Visualiser la photo
+    </a>
+  )}
+/>
+  <Column
+ 
+  header="CV"
+  body={(rowData) => (
+    <a
+      href={`${rowData.file_urlcv}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Visualiser le cv
+    </a>
+  )}
+/>
+
+              <Column
+                          header="Action"
+                          body={actionBodyTemplate}
+                          style={{ width: "15%", textAlign: "center" }}
+                        />
           </DataTable>
         </div>
       </div>
-
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -6,23 +6,41 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import "../../assets/css/navbar.css";
 import { useNavigate } from "react-router-dom";
-
+import { useRegister } from "../../Contexts/PartenaireProvider";
+import LoaderTransparent from "../LoadersCompoments/LoaderTransparent";
+import logo from "../../assets/images/logoatlas.png"
 const Navbarpartenaire = () => {
     const navigate = useNavigate();
+    const { logout } = useRegister();
+    const [loading,setLoading]=useState(false)
+     const deconnexion = async () => {
+        setLoading(true)
+        try {
+            await logout.mutateAsync();
+            sessionStorage.removeItem("token");
+            sessionStorage.removeItem("user");
+        } catch (error) {
+            console.log(error);
+        }
+        finally{
+            setLoading(false)
+        }
+    };
     return (
         <section className="nav">
+            {loading && <LoaderTransparent/>}
             {["md"].map((expand) => (
                 <Navbar
                     key={expand}
                     expand={expand}
-                    className="mt-3 d-flex px-3 px-md-0 flex-sm-column w-100 "
+                    className="mt-3 d-flex px-3 px-md-4 flex-sm-column w-100 "
                 >
                     <Container
                         fluid
                         className="d-none d-md-flex flex-md-row gap-4 justify-content-between mb-sm-3 px-5"
                     >
                         <Navbar.Brand style={{ fontSize: 34 + "px" }} href="/">
-                            Nilservice
+                           <img className="image-logo" src={logo}/>
                         </Navbar.Brand>
 
                         <Navbar.Toggle
@@ -57,12 +75,12 @@ const Navbarpartenaire = () => {
                                         <i
                                             className="fa-solid fa-plus"
                                             onClick={() => {
-                                                navigate("/maintenance");
+                                                navigate("/avantage");
                                             }}
                                         ></i>{" "}
                                         <span className="annonce">
                                             {" "}
-                                            Déposer une annonce
+                                            Avantages de la plateforme
                                         </span>
                                     </a>
                                 </button>
@@ -135,16 +153,33 @@ const Navbarpartenaire = () => {
                                     ></i>
                                     <span>Message</span>
                                 </a>
+                                  <a
+                                    onClick={async () => {
+                                        await deconnexion();
+                                    }}
+                                    className="d-flex flex-column justify-content-center align-items-center"
+                                    style={{
+                                        fontSize: 1.3 + "vmax",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    {" "}
+                                    <i
+                                        className="fa-regular fa-user"
+                                        style={{ fontSize: 1.55 + "vmax" }}
+                                    ></i>
+                                    <span>deconnexion</span>
+                                </a>
                             </Offcanvas.Body>
                         </Navbar.Offcanvas>
                     </Container>
 
                     <Container fluid>
                         <Navbar.Brand
-                            href="/maintenance"
+                            href="/"
                             className="d-block d-md-none"
                         >
-                            Nilservice
+                            <img className="image-logo" src={logo}/>
                         </Navbar.Brand>
                         <Navbar.Toggle
                             aria-controls={`offcanvasNavbar-expand-${expand}`}
@@ -205,7 +240,7 @@ const Navbarpartenaire = () => {
                                         fontWeight: 500,
                                     }}
                                 >
-                                    <Nav.Link
+                                    {/* <Nav.Link
                                         style={{
                                             color: "#ef8f0a",
                                             fontWeight: "bolder",
@@ -214,7 +249,7 @@ const Navbarpartenaire = () => {
                                         href="/partenaire/objectif"
                                     >
                                         Mon objectif
-                                    </Nav.Link>
+                                    </Nav.Link> */}
                                     <Nav.Link
                                         style={{
                                             color: "#ef8f0a",
@@ -240,18 +275,31 @@ const Navbarpartenaire = () => {
                                         Mes informations
                                     </Nav.Link>
 
-                                    <Nav.Link href="/contact">Contact</Nav.Link>
+                                    {/* <Nav.Link href="/contact">Contact</Nav.Link> */}
                                 </Nav>
                                 <div className="d-md-none">
                                     <a
-                                        href=""
+                                        href="/avantage"
                                         style={{
                                             textDecoration: "none",
                                             color: "black",
                                         }}
                                     >
                                         {" "}
-                                        déposer une annonce
+                                        Avantages de la plateforme
+                                    </a>
+                                    <br /><br />
+                                     <a
+                                        onClick={async () => {
+                                            await deconnexion();
+                                        }}
+                                        style={{
+                                            textDecoration: "none",
+                                            color: "black",
+                                        }}
+                                    >
+                                        {" "}
+                                        <span>Deconnexion</span>
                                     </a>
                                 </div>
                             </Offcanvas.Body>

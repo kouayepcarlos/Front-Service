@@ -138,6 +138,7 @@ const ResetPassword = () => {
                                                 setPassword(e.target.value)
                                             }
                                             placeholder="Entrez votre mot de passe"
+                                            required
                                         />
                                     </div>
                                     <div className="form-group">
@@ -155,6 +156,7 @@ const ResetPassword = () => {
                                                 )
                                             }
                                             placeholder="Entrez à nouveau votre mot de passe"
+                                            required
                                         />
                                     </div>
                                     <button

@@ -8,7 +8,9 @@
   import img4 from "../../assets/images/img4.jpg";
   import img3 from "../../assets/images/img3.jpg";
   import meuble from "../../assets/images/meuble.jpg";
+  import { useNavigate } from "react-router-dom";
   const Topcategorie = () => {
+    const navigate = useNavigate()
       const [currentSection, setCurrentSection] = useState(0); // Section actuelle
       const [imagesPerSection, setImagesPerSection] = useState(4); // Nombre d'images par section
       const images = [//le tableau dimage
@@ -17,24 +19,29 @@
               label: "Vêtement",//le nom de l/image
               lien: img3,//le lien de l'image
               prix: 1000,// le prix
+              href:"/vendeur/liste"
+              
           },
           {
              
               label: "Electroménager",
               lien: img1,
               prix: 1000,
+              href:"/vendeur/liste"
           },
           {
              
               label: "Appareils",
               lien: img4,
               prix: 1000,
+              href:"/vendeur/liste"
           },
           {
               
               label: "Meuble",
               lien: meuble,
               prix: 100000,
+              href:"/vendeur/liste"
           },
           
           
@@ -80,7 +87,7 @@
                   <div className="images">
                       {visibleImages.map((entry, index) => (
                           <div
-                              href=""
+                               onClick={() => (navigate(entry.href))}
                               
                               className={`card-recent`}
                               data-toggle="modal"

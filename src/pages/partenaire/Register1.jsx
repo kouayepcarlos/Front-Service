@@ -108,7 +108,7 @@ console.log(data)
 
         setData((prevState) => ({
             ...prevState,
-            redirect_url:"https://nilservice.net/connexion/partenaire",
+            redirect_url:`https://nilservice.net/partenaire/connexion?nom=${data?.nom}`,
     //"localhost:5173/connexion/prestataire",
     faillure_redirect_url:"https://nilservice.net/page/echec"
     //"localhost:5173/page/echec"
@@ -167,7 +167,7 @@ console.log(data)
                                         <form>
                                             <div className="form-group">
                                                 <label htmlFor="name">
-                                                    Nom
+                                                    Nom <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <input
                                                     value={data.nom}
@@ -182,7 +182,7 @@ console.log(data)
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="name">
-                                                    Prenom
+                                                    Prenom <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <input
                                                     value={data.prenom}
@@ -191,13 +191,13 @@ console.log(data)
                                                     type="texte"
                                                     required
                                                     className="form-control"
-                                                    id="name"
+                                                    id="prename"
                                                     placeholder="Entrez votre nom et prenom"
                                                 />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="email">
-                                                    Email
+                                                    Email <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <input
                                                     value={data.email}
@@ -212,7 +212,7 @@ console.log(data)
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="phone">
-                                                    Téléphone
+                                                    Téléphone <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <input
                                                     name="telephone"
@@ -221,26 +221,35 @@ console.log(data)
                                                     type="text"
                                                     required
                                                     className="form-control"
-                                                    id="name"
+                                                    id="tel"
                                                     placeholder="Entrez votre numéro de téléphone"
                                                 />
-                                                {errorMessageRegister.status ===
-                                                    "telephone" && (
-                                                    <ErroTag
-                                                        text={
-                                                            errorMessageRegister.message
-                                                        }
-                                                    />
-                                                )}
+                                               
                                             </div>
+                                             <div className="form-group">
+                                            <label htmlFor="code">
+                                                Code de parrainage
+                                            </label>
+                                            <input
+                                                name="code_parrain"
+                                                value={data.code_parrain}
+                                                onChange={handleChange}
+                                                type="text"
+                                                className="form-control"
+                                                id="code"
+                                                placeholder="Entrez le code de parrainage"
+                                            />
+                                        </div>
+
                                             <div className="form-group">
                                                 <label htmlFor="password">
-                                                    Mot de passe
+                                                    Mot de passe <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <session className="input-container">
                                                     <input
                                                         value={data.password}
                                                         onChange={handleChange}
+                                                        required
                                                         name="password"
                                                         type={
                                                             typePassword.password
@@ -267,7 +276,7 @@ console.log(data)
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="password">
-                                                   Confirmation  Mot de passe
+                                                   Confirmation  Mot de passe <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <session className="input-container">
                                                     <input
@@ -280,6 +289,7 @@ console.log(data)
                                                         className="form-control"
                                                         id="password_confirmation"
                                                         placeholder="Entrez votre mot de passe"
+                                                        required
                                                     />
                                                     <span
                                                         className="icon"

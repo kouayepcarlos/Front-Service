@@ -8,6 +8,8 @@ const Connexion = lazy(() => import("../pages/partenaire/Connexionpartenaire"));
 const Objectif = lazy(() => import("../pages/partenaire/Objectif"));
 const Parrainage = lazy(() => import("../pages/partenaire/Souscrit"));
 const Mesobjectifs = lazy(() => import("../pages/partenaire/Mesobjectifs.jsx"));
+import ForgotPassword from "../pages/partenaire/forgotPassword.jsx";
+
 
 const PartenaireRoutes = () => {
     return (
@@ -18,6 +20,7 @@ const PartenaireRoutes = () => {
                 <Route path="/parrainage" element={<Parrainage />} />
                 <Route path="/informations" element={<Informations />} />
                 <Route path="/mesobjectifs" element={<Mesobjectifs />} />
+                  <Route path='/forgot-password' element={<ForgotPassword/>}/>
                 <Route path="/*"  element={
                 <PartenaireProvider>
                     <Routes>

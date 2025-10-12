@@ -11,19 +11,23 @@ import { useNavigate } from "react-router-dom";
 import { useRegister } from "../../Contexts/PrestataireProvider";
 import LoaderTransparent from "../LoadersCompoments/LoaderTransparent";
 import { useState } from "react";
-
+import logo from "../../assets/images/logoatlas.png"
 const Navbarprestataire = () => {
     const { user, logout } = useRegister();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
     const deconnexion = async () => {
+        setLoading(true)
         try {
             await logout.mutateAsync();
             sessionStorage.removeItem("token");
             sessionStorage.removeItem("user");
         } catch (error) {
             console.log(error);
+        }
+        finally{
+            setLoading(false)
         }
     };
     const handleNavigation = () => {
@@ -37,14 +41,14 @@ const Navbarprestataire = () => {
                 <Navbar
                     key={expand}
                     expand={expand}
-                    className="mt-3 d-flex px-3 px-md-0 flex-sm-column w-100 "
+                    className="mt-3 d-flex px-3 px-md-4 flex-sm-column w-100 "
                 >
                     <Container
                         fluid
                         className="d-none d-md-flex flex-md-row gap-4 justify-content-between mb-sm-3 px-5"
                     >
                         <Navbar.Brand style={{ fontSize: 34 + "px" }} href="/">
-                            Nilservice
+                           <img className="image-logo" src={logo}/>
                         </Navbar.Brand>
 
                         <Navbar.Toggle
@@ -170,10 +174,10 @@ const Navbarprestataire = () => {
 
                     <Container fluid>
                         <Navbar.Brand
-                            href="/maintenance"
+                            href="/"
                             className="d-block d-md-none"
                         >
-                            Nilservice
+                             <img className="image-logo" src={logo}/>
                         </Navbar.Brand>
                         <Navbar.Toggle
                             aria-controls={`offcanvasNavbar-expand-${expand}`}
@@ -251,14 +255,14 @@ const Navbarprestataire = () => {
                                 </Nav>
                                 <div className="d-md-none">
                                     <a
-                                        href=""
+                                        href="/avantage"
                                         style={{
                                             textDecoration: "none",
                                             color: "black",
                                         }}
                                     >
                                         {" "}
-                                        déposer une annonce
+                                        Avantages de la plateforme
                                     </a>
                                     <br />
                                     <br />

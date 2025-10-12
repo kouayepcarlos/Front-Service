@@ -38,11 +38,11 @@ const PageConnexion= () => {
                                         alt="Connexion"
                                     />
                                 </div>
-                                <div className="form-contact col-md-6 col-12" >
-                                  <button className="btn btn-primary form-group" onClick={()=> navigate("https://nilservice.net/connexion/academie")}>Connexion academie</button>
-                                  <button className="btn btn-primary form-group" onClick={()=> navigate("https://nilservice.net/partenaire/connexion")}>Connexion partenaire</button>
-                                  <button className="btn btn-primary form-group" onClick={()=> navigate("https://nilservice.net/vendeur/connexion/")}>Connexion vendeur pro </button>
-                                  <button className="btn btn-primary " onClick={()=> navigate("https://nilservice.net/prestataire/connexion")}>Connexion prestataire pro</button>
+                                <div className="form-contact col-md-6 col-12 " >
+                                  <button className="btn btn-primary form-group text-center " onClick={()=> navigate("https://nilservice.net/connexion/academie")}>Connexion academie</button>
+                                  <button className="btn btn-primary form-group text-center" onClick={()=> navigate("https://nilservice.net/partenaire/connexion")}>Connexion partenaire</button>
+                                  <button className="btn btn-primary form-group text-center" onClick={()=> navigate("https://nilservice.net/vendeur/connexion/")}>Connexion vendeur pro </button>
+                                  <button className="btn btn-primary form-group text-center" onClick={()=> navigate("https://nilservice.net/prestataire/connexion")}>Connexion prestataire pro</button>
                                   </div>
                                    
                             </div>

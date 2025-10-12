@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useAdminContext } from "../../Contexts/AdminProvider";
 import {
@@ -11,11 +11,14 @@ import {
      LogOut,
 } from "lucide-react";
 import "../../assets/css/admin/sidebar.css";
+import LoaderTransparent from "../LoadersCompoments/LoaderTransparent";
 
 const Sidebar = () => {
     const {logout} = useAdminContext()
+    const [loading,setLoading]=useState(false)
 
     const deconnexion = async () =>{
+        setLoading(true)
         try{
         await logout.mutateAsync()
         sessionStorage.removeItem("token")
@@ -24,6 +27,9 @@ const Sidebar = () => {
     }
         catch(error){
             console.log(error)
+        }
+        finally{
+            setLoading(false)
         }
     }
     const lien = [
@@ -49,6 +55,11 @@ const Sidebar = () => {
         {
             nom: "Contacts",
             lien: "/admin/contacts",
+            icon: <MessageSquare size={18} />,
+        },
+          {
+            nom: "Newsletter",
+            lien: "/admin/newsletter",
             icon: <MessageSquare size={18} />,
         },
        
@@ -79,6 +90,17 @@ const Sidebar = () => {
             lien: "/admin/contact",
             icon: <MessageSquare size={18} />,
         },
+         {
+            nom: "Newsletter",
+            lien: "/admin/newsletter",
+            icon: <MessageSquare size={18} />,
+        },
+
+         {
+            nom: "Statistiques",
+            lien: "/admin/totale",
+            icon: <MessageSquare size={18} />,
+        },
         
     ];
 
@@ -91,6 +113,7 @@ const Sidebar = () => {
 
     return (
         <div className="sidebar">
+            {loading && <LoaderTransparent/>}
             <div className="menu">
                 {menuItems.map((item) => (
                     <a

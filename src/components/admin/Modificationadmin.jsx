@@ -2,7 +2,7 @@ import React, { useState} from "react";
 import Form from "react-bootstrap/Form";
 import { Button } from "primereact/button";
 import "../../assets/css/admin/sujet.css";
-
+import LoaderTransparent from "../LoadersCompoments/LoaderTransparent";
 import { useAdminContext } from "../../Contexts/AdminProvider";
 
 const Modificationadmin = () => {
@@ -10,10 +10,10 @@ const Modificationadmin = () => {
     const [nom, setNom] = useState(dataadmin.username);
     const [email, setEmail] = useState(dataadmin.email);
     const [passe, setPasse] = useState(null);
-
+const [loading,setLoading]=useState(false)
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+setLoading(true)
         try {
             await updateAdminMutation.mutateAsync({
                 id: dataadmin.id,
@@ -26,7 +26,7 @@ const Modificationadmin = () => {
         } catch (error) {
           //  console.log(error)
         } finally {
-            // setLoading(false);
+             setLoading(false);
         }
     };
 
@@ -36,6 +36,7 @@ const Modificationadmin = () => {
         
             <div className=" p-4 shadow-md rounded-md content">
                 <h3>Modification admin</h3>
+                {loading && <LoaderTransparent/>}
                 <div className="card flex px-sm-4 pt-5 justify-content-center">
                     <Form onSubmit={handleSubmit} className="px-2 pb-2">
                         <div className="flex flex-column h-12rem pr-3 mb-3 gap-5">

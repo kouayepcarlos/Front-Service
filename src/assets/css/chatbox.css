@@ -35,6 +35,8 @@ img:hover{
   padding: 10px;
   border-top: 1px solid #ccc;
   background: white;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
 }
 
 .send-message input {
@@ -48,7 +50,7 @@ img:hover{
   margin-left: 10px;
   padding: 10px;
   border: none;
-  background: #007bff;
+  background: #c76f00;
   color: white;
   border-radius: 5px;
   cursor: pointer;
@@ -64,6 +66,27 @@ img:hover{
   flex-direction: column;
 }
 
+.message {
+  
+  
+  position: relative;
+  padding-right: 40px; /* espace pour le cercle */
+}
+
+.message.connected::before {
+  content: "";
+  position: absolute;
+  right: 10px; /* distance depuis le bord gauche */
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color:#4CAF50; /* rouge par défaut */
+}
+
+/* Cercle vert si connecté */
+.message.no_connected::before {
+  content: none;
+}
 @media screen and (min-width:1000px){
   .message{
     max-width: 40%;
@@ -71,7 +94,7 @@ img:hover{
 }
 
 .sent {
-  background: #007bff;
+  background-color: #ef8f0a;
   color: white;
   align-self: flex-end ;
   justify-content: end;
@@ -89,12 +112,18 @@ img:hover{
   margin-right: auto;
 }
 
-.message-time {
+
+.sent .message-time {
   font-size: 0.8rem;
   color: gray;
   text-align: right;
 }
 
+.received .message-time {
+  font-size: 0.8rem;
+  color: gray;
+  text-align: left;
+}
 
 
 .reply-preview {
@@ -106,9 +135,18 @@ img:hover{
 }
 
 
-.message-name{
+.sent .message-name{
   font-size: 0.8rem;
-  color:black
+ color:white;
+ font-weight: 800;
+ margin-bottom: 10px;
+}
+
+.received .message-name{
+  font-size: 0.8rem;
+  font-weight: 800;
+   color:#1a1a1a;
+   margin-bottom: 10px;
 }
 .message-reply {
   background: rgba(0, 0, 0, 0.05);

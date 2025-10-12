@@ -150,10 +150,7 @@ export const authAPIVendeur = {
         const token = sessionStorage.getItem("token");
         console.log(credentials); // Debug
 
-        if (!credentials.image) {
-            toast.error("Veuillez ajouter tous les fichiers !");
-            return;
-        }
+      
 
         const formData = new FormData();
         formData.append("nom", credentials.nom);
@@ -161,7 +158,10 @@ export const authAPIVendeur = {
         formData.append("description", credentials.description);
         formData.append("categorie", credentials.categorie);
         formData.append("statut", credentials.statut);
-        formData.append("image", credentials.image);
+      // Champs image (nullable)
+  if (credentials.image1) formData.append("image", credentials.image1);
+  if (credentials.image2) formData.append("image2", credentials.image2);
+  if (credentials.image3) formData.append("image3", credentials.image3);
         try {
             if (!token) {
                 toast.error("Utilisateur non authentifié !");
@@ -287,12 +287,15 @@ export const authAPIVendeur = {
 
         const formData = new FormData();
         formData.append("nom", credentials.nom);
+      if (credentials.logo instanceof File) {
+    formData.append("logo", credentials.logo);
+}
         formData.append("pays", credentials.pays);
         formData.append("ville", credentials.ville);
         formData.append("quartier", credentials.quartier);
         formData.append("description", credentials.description);
-        formData.append("_method", "PUT");
-        credentials.logo && formData.append("logo", credentials.logo);
+       
+       
         try {
             if (!token) {
                 toast.error("Utilisateur non authentifié !");
@@ -300,7 +303,7 @@ export const authAPIVendeur = {
             }
 
             // Envoie de la réalisation
-            const response = await API.put(
+            const response = await API.post(
                 "/vendeur/updateBoutique",
                 formData,
                 {
@@ -342,6 +345,7 @@ export const authAPIVendeur = {
             return;
         }
 
+        // eslint-disable-next-line no-useless-catch
         try {
             const response = await API.delete(
                 `vendeur/boutique/supprimerProduit/${credentials.id}`,
@@ -359,6 +363,7 @@ export const authAPIVendeur = {
     updateproduit: async (credentials) => {
         // console.log(credentials);
         const token = sessionStorage.getItem("token");
+        // eslint-disable-next-line no-useless-catch
         try {
             const response = await API.put(
                 `/vendeur/boutique/updateProduit/${credentials.id}`,
@@ -422,12 +427,44 @@ export const authAPIVendeur = {
             // Vérifier les réponses et fusionner les données
             console.log("Sujets fusionnés et triés :", Boutique.data);
             return Boutique.data.filter(
-                (item) => item.vendeur.statut === 'valide' || item.vendeur.statut === 'complete'
+                (item) => item.vendeur.statut === 'valide'
               );
         } catch (error) {
             console.error("Erreur lors de la requête :", error);
         } finally {
             //  setLoading(false);
+        }
+    },
+   getSolde: async () => {
+     const token = sessionStorage.getItem("token");
+        try {
+            const res = await API.get("/vendeur/soldeCourant", {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                console.log("solde v",res)
+            return res.data;
+        } catch (error) {
+            console.error("Erreur lors de la récupération des soldes :", error);
+            return {
+                status: "error",
+                message: error.response?.data?.message || error.message,
+            };
+        }
+    },
+     LastAbonnement: async () => {
+         const token = sessionStorage.getItem("token");
+        try {
+            const res = await API.get("/vendeur/lastAbonnement", {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                console.log(res)
+            return res.data.data
+        } catch (error) {
+            console.error("Erreur lors de la récupération des messages :", error);
+            return {
+                status: "error",
+                message: error.response?.data?.message || error.message,
+            };
         }
     },
 
@@ -444,7 +481,11 @@ export const authAPIVendeur = {
             );
             return res.data;
         } catch (error) {
-            console.log(error);
+            
+           if(error?.response?.data?.data?.data)
+            toast.error(error?.response?.data?.data?.data?.message)
+        else
+            toast.error(error?.message);
             throw error;
         }
     },

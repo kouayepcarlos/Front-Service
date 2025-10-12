@@ -39,8 +39,13 @@ function Register_2() {
 
     const controlData = () => {
         // Validation des champs
-        if (!data.telephone.trim()) {
+        if (!data.telephone || !data.telephone.trim()) {
             toast.error("Veuillez entrer le téléphone");
+            return;
+        }
+
+        if( !data.profession || !data.profession.trim()){
+            toast.error('veuillez choisir la profession')
             return;
         }
 
@@ -66,10 +71,10 @@ function Register_2() {
                 <section className="mb-5">
                     <Redirection
                         texte={
-                            "Vous avez déjà un compte ? Connectez-vous et consultez les sujets"
+                            "Vous avez déjà un compte ? Connectez-vous "
                         }
                         nomBoutton={"Connectez vous"}
-                        lien={"/connexion/prestataire"}
+                        lien={"/prestataire/connexion"}
                     />
                     <div className="flex-column gap-3 register-div   ">
                         <p>Deuxieme etape</p>
@@ -87,7 +92,7 @@ function Register_2() {
                                     <form>
                                         
                                          <div className="form-group">
-                                            <label htmlFor="phone">Téléphone</label>
+                                            <label htmlFor="phone">Téléphone <span className="text-danger fw-bold fs-1">*</span></label>
                                             <input
                                                 name="telephone"
                                                 value={data.telephone}
@@ -102,7 +107,7 @@ function Register_2() {
 
                                         </div>
                                         <div className="form-group">
-                                        <label htmlFor="phone">Profession</label>
+                                        <label htmlFor="phone">Profession <span className="text-danger fw-bold fs-1">*</span></label>
                                         <select name="profession" id="profession"  className="form-control"  onChange={handleChange}>
                                         <option value="">Profession</option>
                                           <option value="menusier">Menusier</option>

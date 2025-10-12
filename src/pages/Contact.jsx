@@ -9,6 +9,7 @@ import Redirection from "../components/Redirection";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import LoaderTransparent from "../components/LoadersCompoments/LoaderTransparent";
 
 const Contact = () => {
     const [data, setData] = useState({
@@ -16,6 +17,7 @@ const Contact = () => {
         telephone: "",
         message: "",
     });
+    const [loading,setLoading]=useState(false)
 
     const handleChange = (e) => {
         setData((prevState) => ({
@@ -37,6 +39,7 @@ const Contact = () => {
             return;
         }
 
+        setLoading(true)
         try {
             // Envoi des données à l'API
           
@@ -61,10 +64,14 @@ const Contact = () => {
     }
     toast.error("Erreur lors de l'envoi. Veuillez réessayer.");
 }
+finally{
+    setLoading(false)
+}
     };
 
     return (
         <div className="general">
+            {loading && <LoaderTransparent/>}
             <Publicite />
             <div className="my-custom-div">
                 {localStorage.getItem("isAuthenticated") === "true" ? (
@@ -88,10 +95,14 @@ const Contact = () => {
                                     Adresse
                                 </li>
                                 <li>Ange Raphael, Douala Cameroun</li>
-                                <li>
+                                {/* <li>
                                     <i className="fa-solid fa-phone"></i> Phone
                                 </li>
                                 <li>+237 6 97 72 30 63 / 6 79 80 76 75</li>
+                                  <li>
+                                    <i className="fab fa-whatsapp fw-bold"></i> Whatsapp
+                                </li>
+                                <li>+237 696 65 86 90</li> */}
                                 <li>
                                     <i className="fa-solid fa-envelope"></i>{" "}
                                     Email

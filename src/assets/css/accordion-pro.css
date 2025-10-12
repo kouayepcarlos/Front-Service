@@ -51,6 +51,10 @@
     cursor: pointer;
     color: #2d2d2d;
   }
+
+  .accordion-header span{
+    text-align: left;
+  }
   
   .accordion-icon {
     font-size: 1.5rem;
@@ -72,7 +76,8 @@
   }
   
   .accordion-item.active .accordion-body {
-    max-height: 300px;
+    max-height: 600px;
+    
     padding: 1rem 1.5rem 1.5rem;
   }
   
@@ -87,5 +92,10 @@
     .accordion-right {
       margin-top: 1rem;
     }
+
+    
+  .accordion-item.active .accordion-body {
+    max-height: 700px !important;
+  }
   }
   

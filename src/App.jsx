@@ -8,6 +8,7 @@ import Pagechoix from "./pages/Pagechoix";
 import Pageechec from "./pages/Pageechec";
 import ResetPassword from "./pages/ResetPassword";
 import PageConnexion from "./pages/PageConnexion";
+import Avantage from "./pages/Avantages.jsx";
 
 const App = () => {
     return (
@@ -21,6 +22,7 @@ const App = () => {
                 <Route path="/page/echec" element={<Pageechec />} />
                 <Route path="/password-reset" element={<ResetPassword />} />
                 <Route path="/page-connexion" element={<PageConnexion />} />
+                 <Route path="/avantage" element={<Avantage />} />
                 <Route path="/*" element={<AcademieRoutes />} />
             </Routes>
         </BrowserRouter>

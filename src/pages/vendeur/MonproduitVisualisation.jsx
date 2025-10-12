@@ -3,7 +3,7 @@
 // Importation des bibliothèques et fichiers nécessaires
 import "bootstrap/dist/css/bootstrap.min.css"; // CSS Bootstrap pour les composants
 import "../../assets/css/prestataire/prestataire.css"; // Styles personnalisés du prestataire
-
+import ProduitImages from "../../components/vendeur/Produitimage";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -69,21 +69,24 @@ const MonproduitVisualisation = () => {
                     <div className="mx-5 pb-5 row">
                         <div className="col-lg-6 photo">
                             {/* Photo du prestataire */}
-                            <img src={produit?.file_url} alt="" className="w-100" />
+                           <ProduitImages
+                              image1={produit?.file_url}
+                              image2={produit?.file_url2}
+                              image3={produit?.file_ur3}
+                            />
                         </div>
 
                         <div className="col-lg-6 contact-info text-dark">
                             
                             <ul className="text-dark">
-                                <li>Nom produit</li>
+                                <li>Nom de l'article </li>
                                 <li >{produit?.nom}</li>
-                                <li>Description produit</li>
+                                <li>Description de l'article </li>
                                 <li>{produit?.description}</li>
-                                <li>Prix</li>
-                                <li>{produit?.prix}</li>
-                                <li>Categorie</li>
+                                <li>Prix de l'article </li>
+                               
                                 <li>{produit?.categorie}</li>
-                                <li>Statut</li>
+                                <li>Statut de l'article </li>
                                 <li> {produit?.statut}</li>
                                 <li><button className="btn btn-primary" onClick={()=>navigate(`/vendeur/modification/produit/${produit?.id}`)}>Modifier</button>
                               &nbsp; &nbsp;  <button className="btn btn-primary"  onClick={() => {

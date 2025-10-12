@@ -35,7 +35,42 @@ export const authAPIPartenaire = {
             throw error; // Permet de gérer l’erreur dans le composant React
         }
     },
-
+      forgotPassword: async (email) => {
+        try {
+            const res = await API.post("/auth/password/email", {
+                email: email,
+                broker: "partenaires",
+            });
+            console.log(res);
+            return res;
+        } catch (error) {
+            console.log("Erreur :", error);
+            return {
+                status: "error",
+                message: error.response?.data?.message || error.message,
+            };
+        }
+    },
+       withdrawal: async (montant) => {
+        console.log(montant);
+        const token = sessionStorage.getItem("token");
+        try {
+            const res = await API.post(
+                "/partenaire/retrait",
+                { montant: montant },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            return res.data;
+        } catch (error) {
+            if(error?.response?.data?.data?.data)
+            toast.error(error?.response?.data?.data?.data?.message)
+        else
+            toast.error(error?.message);
+            throw error;
+        }
+    },
     // 📝 Fonction d’inscription d’un nouveau partenaire
     register: async (credentials) => {
         try {
@@ -50,6 +85,37 @@ export const authAPIPartenaire = {
                     message: error.message,
                 }
             );
+        }
+    },
+       getSolde: async () => {
+         const token = sessionStorage.getItem("token");
+        try {
+            const res = await API.get("/partenaire/soldeCourant", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            return res.data;
+        } catch (error) {
+            console.error("Erreur lors de la récupération des soldes :", error);
+            return {
+                status: "error",
+                message: error.response?.data?.message || error.message,
+            };
+        }
+    },
+     LastAbonnement: async () => {
+         const token = sessionStorage.getItem("token");
+        try {
+            const res = await API.get("/partenaire/lastAbonnement", {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                console.log(res)
+            return res.data.data
+        } catch (error) {
+            console.error("Erreur lors de la récupération des messages :", error);
+            return {
+                status: "error",
+                message: error.response?.data?.message || error.message,
+            };
         }
     },
 
@@ -264,7 +330,7 @@ export const authAPIPartenaire = {
                 headers: { Authorization: `Bearer ${token}` },
             });
             console.log(res.data);
-            return res.data.data;
+            return res;
         } catch (error) {
             console.error("Erreur lors de la récupération des sujets :", error);
             return {

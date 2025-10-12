@@ -39,7 +39,7 @@ const Pagechoix= () => {
                                     />
                                 </div>
                                 <div className="form-contact col-md-6 col-12" >
-                                  <button className="btn btn-primary form-group" onClick={()=> navigate("/register/step1")}>Inscription academie</button>
+                                  <button className="btn btn-primary form-group" onClick={()=> navigate("/register/step1")}>Inscription academy</button>
                                   <button className="btn btn-primary form-group" onClick={()=> navigate("/partenaire/step1")}>Inscription partenaire</button>
                                   <button className="btn btn-primary form-group" onClick={()=> navigate("/vendeur/step1")}>Inscription vendeur pro </button>
                                   <button className="btn btn-primary " onClick={()=> navigate("/prestataire/step1")}>Inscription prestataire pro</button>

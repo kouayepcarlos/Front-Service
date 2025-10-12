@@ -9,10 +9,11 @@ import Footer from "../../components/Footer";
 import Navbarvendeur from "../../components/navbar/Navbarvendeur";
 import { useRegister } from "../../Contexts/VendeurProvider";
 import "../../assets/css/souscrit.css";
-
+import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
+import { toast } from "react-toastify";
 const Souscrit = () => {
     const token = sessionStorage.getItem("token");
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [bilan, setBilan] = useState([]);
 
     const [getFilleuls, setGetFilleuls] = useState({
@@ -20,13 +21,13 @@ const Souscrit = () => {
         deuxiemeGen: [],
         retraitTotal: 0,
     });
-    const { user, refetchFilleuls, filleuls, withdrawal } = useRegister();
+    const { user, solde,refetchFilleuls, filleuls, withdrawal } = useRegister();
     const [globalFilter, setGlobalFilter] = useState("");
 
     const header = (
         <div className="d-flex justify-content-between ">
             <h2 className="font-semibold" style={{ color: "#ef8f0a" }}>
-                Premiere generation
+               Gains
             </h2>
             <span className="p-input-icon-left ">
                 <InputText
@@ -39,21 +40,7 @@ const Souscrit = () => {
         </div>
     );
 
-    const header1 = (
-        <div className="d-flex justify-content-between ">
-            <h2 className="font-semibold" style={{ color: "#ef8f0a" }}>
-                Deuxieme genration
-            </h2>
-            <span className="p-input-icon-left ">
-                <InputText
-                    type="search"
-                    placeholder="Rechercher..."
-                    onInput={(e) => setGlobalFilter(e.target.value)}
-                    className="p-inputtext-sm"
-                />
-            </span>
-        </div>
-    );
+   
 
     const header2 = (
         <div className="d-flex justify-content-between ">
@@ -84,8 +71,9 @@ const Souscrit = () => {
         refetchFilleuls();
     }, []);
     console.log(filleuls);
-
+ console.log("solde",solde)
     useEffect(() => {
+       
         if (filleuls) {
             setGetFilleuls({
                 premiereGen: filleuls?.premiere_generation?.filleuls,
@@ -102,19 +90,33 @@ const Souscrit = () => {
     };
 
     const handleWithdraw = async () => {
-        await withdrawal.mutateAsync(10);
+        setLoading(true)
+         if(solde?.data[0]?.net <=0){
+      toast.error("le montant est insuffisant pour effectuer le retrait")
+      return;
+    }
+        try{
+            console.log(solde?.data[0]?.net)
+    await withdrawal.mutateAsync(400);
+    refetchFilleuls()
+    }catch(error){
+
+    }finally{
+      setLoading(false)
+    }
     };
 
     return (
         <>
             <div className="general">
+                {loading && <LoaderTransparent/>}
                 <Publicite />
                 <div className="my-custom-div">
                     <Navbarvendeur />
                     <section className="mb-5  ">
                         <Redirection
                             texte={`Hello ${user?.nom} ,ceci est votre espace memre,consulter toutes personnes qui ont sosucrit avec votre code parain`}
-                            nomBoutton={"Parrainer un ami"}
+                            nomBoutton={"Parrainez un ami"}
                             lien={""}
                         />
                         <div className="ml-3 mr-3">
@@ -148,86 +150,36 @@ const Souscrit = () => {
                                 </DataTable>
 
                                 <div className="resultat">
-                                    TOTAL PREMIERE GENERATION :
+                                    TOTAL GAINS :
                                     {filleuls?.premiere_generation?.montant}
                                 </div>
                             </div>
 
                             <br />
 
-                            <div className="">
-                                <DataTable
-                                    value={getFilleuls.deuxiemeGen}
-                                    paginator
-                                    rows={4}
-                                    tableStyle={{
-                                        minWidth: "50rem",
-                                        height: "100%",
-                                    }}
-                                    header={header1}
-                                    globalFilter={globalFilter}
-                                    selectionMode="single"
-                                >
-                                    <Column
-                                        header="Numero"
-                                        body={indexTemplate}
-                                    />
-                                    <Column field="nom" header="Noms" />
-                                    <Column
-                                        field="date_inscription"
-                                        header="Date"
-                                    />
-
-                                    {/* <Column
-      header="Action"
-      body={actionBodyTemplate}
-      style={{ width: "15%", textAlign: "center" }}
-    /> */}
-                                </DataTable>
-
-                                <div className="resultat">
-                                    TOTAL DEUXIEME GENERATION :{" "}
-                                    {filleuls?.deuxieme_generation?.montant}
-                                </div>
-                            </div>
-
                             <br />
 
-                            <div className="">
-                                <DataTable
-                                    value={bilan}
-                                    paginator
-                                    rows={4}
-                                    tableStyle={{
-                                        minWidth: "50rem",
-                                        height: "100%",
-                                    }}
-                                    header={header2}
-                                    globalFilter={globalFilter}
-                                    selectionMode="single"
-                                >
-                                    <Column
-                                        field="total"
-                                        header="Total gagne"
-                                    />
-                                    <Column
-                                        field="total_retrait"
-                                        header="Total retrait"
-                                    />
-                                    {/* <Column field="password" header="Mot de passe" /> */}
-                                    <Column
-                                        field="reste"
-                                        header="Reste a retirer"
-                                    />
-                                </DataTable>
+                               {solde && <div className="">
+                <DataTable
+                  value={solde?.data}
+                  paginator
+                  rows={4}
+                  tableStyle={{ minWidth: "50rem", height: "100%" }}
+                  header={header2}
+                  globalFilter={globalFilter}
+                  selectionMode="single"
+                >
+                  <Column field="solde" header="Gain total" />
+                  <Column field="retrait" header="Total retrait" />
+                  {/* <Column field="password" header="Mot de passe" /> */}
+                  <Column field="net" header="Reste à retirer" />
+                </DataTable>
 
-                                <button
-                                    className="resultat"
-                                    onClick={handleWithdraw}
-                                >
-                                    FAIRE UN RETRAIT
-                                </button>
-                            </div>
+                <button className="resultat" onClick={handleWithdraw}>
+                  FAIRE UN RETRAIT
+                </button>
+              </div>
+}
                         </div>
                     </section>
                     <Chat />

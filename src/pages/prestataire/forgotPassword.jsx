@@ -7,7 +7,7 @@ import Chat from "../../components/Chat";
 import conn from "../../assets/images/connexion.jpg";
 import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 import { authAPIPrestataire } from "../../fecths/fetchPrestataire";
-
+import { toast } from "react-toastify";
 
 /**
  * Composant de page de connexion
@@ -25,18 +25,18 @@ const ForgotPassword = () => {
     const handleSend = async()=>{
         setLoading(true)
         if(email.email.trim()===""){
-            setMessage("Veuillez renseigné votre email.");
+            toast.error("Veuillez renseigné votre email.");
             setLoading(false)
             return;
         } 
         console.log(email)
         const res = await authAPIPrestataire.forgotPassword(email.email)
         if(res.status==400 || res.status=== "error"){
-            setMessage("email incorrect")
+            toast.error("email incorrect")
             
         }
         if(res.status==200){
-            setMessage("email envoyé vérifier votre boite mail")
+            toast.error("email envoyé vérifier votre boite mail")
         }
         setEmail({email:""})
         setLoading(false)
@@ -73,9 +73,7 @@ const ForgotPassword = () => {
                                             <button className="btn btn-primary"onClick={handleSend} >
                                                 Envoyer le lien
                                             </button>
-                                            <div>
-                                                <p>{message}</p>
-                                            </div>
+                                
 
                                         </div>
                                     </div>

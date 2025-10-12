@@ -5,6 +5,7 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import "../../assets/css/navbar.css";
+import logo from "../../assets/images/logo-removebg-preview.png"
 import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
@@ -13,16 +14,18 @@ const NavBar = () => {
     <section className="nav">
       {["md"].map((expand) => (
         <Navbar
+        collapseOnSelect
           key={expand}
           expand={expand}
-          className="mt-3 d-flex px-3 px-md-0 flex-sm-column w-100 "
+          className=" d-flex px-5 px-md-4 flex-sm-column w-100 "
+          
         >
           <Container
             fluid
             className="d-none d-md-flex flex-md-row gap-4 justify-content-between mb-sm-3 px-5"
           >
-            <Navbar.Brand style={{ fontSize: 34 + "px" }} href="/">
-              Nilservice
+            <Navbar.Brand style={{ fontSize: 30 + "px" }} href="/" >
+             <img className="image-logo" src={logo}/>
             </Navbar.Brand>
 
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
@@ -49,8 +52,8 @@ const NavBar = () => {
                     backgroundColor: "#ef8f0a",
                   }}
                 >
-                  <a href="">
-                    <i className="fa-solid fa-plus"  onClick={()=>{navigate("/maintenance")}}></i> <span className="annonce"> Déposer une annonce</span>
+                  <a href="/avantage">
+                    <i className="fa-solid fa-plus"  onClick={()=>{navigate("/avantage")}}></i> <span className="annonce"> Avantages de la plateforme</span>
                   </a>
                 </button>
                 <div
@@ -133,8 +136,8 @@ const NavBar = () => {
           </Container>
 
           <Container fluid>
-            <Navbar.Brand href="/maintenance" className="d-block d-md-none">
-              Nilservice
+            <Navbar.Brand  className="d-block d-md-none" href="/">
+            <img className="image-logo" src={logo}/>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
@@ -194,8 +197,9 @@ const NavBar = () => {
                   </Nav.Link>
 
                   <NavDropdown
-                    title="MarketPlace Services"
+                    title="NilPro"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
+                    
                   >
                     <NavDropdown.Item href="/prestataire/liste?profession=plombier">Plombier</NavDropdown.Item>
                     <NavDropdown.Item href="/prestataire/liste?profession=menusier">
@@ -227,47 +231,27 @@ const NavBar = () => {
                     Autres
                     </NavDropdown.Item>
                   </NavDropdown>
-                  <NavDropdown
-                    title="MarketPlace Produits"
-                    id={`offcanvasNavbarDropdown-expand-${expand}`}
-                  >
-                   
-                    <NavDropdown.Item href="/vendeur/liste?categorie=vetement">
-                      Vetement
-                    </NavDropdown.Item>
-                  
-                    <NavDropdown.Item href="/vendeur/liste?categorie=meuble">
-                     Meuble
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/vendeur/liste?categorie=electromenager">
-                     Electromenager
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/vendeur/liste?categorie=appareil">
-                     Appareil
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="/vendeur/liste">Autres</NavDropdown.Item>
-                  </NavDropdown>
-
+                
+ <Nav.Link href="/vendeur/liste">NilMarket</Nav.Link>
                   <Nav.Link href="/connexion/academie">
-                    MarketPlace Academie
+                    NilAcademy
                   </Nav.Link>
 
                   <NavDropdown
-                    title="Mon compte"
+                    title="NilEspace"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
                     <NavDropdown.Item href="/vendeur/connexion/">
-                      Connexion vendeur
+                      Connexion Vendeur Pro
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/connexion/academie">
-                      Connexion academie
+                      Connexion Academy
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/prestataire/connexion">
-                      Connexion prestataire
+                      Connexion Prestataire Pro
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/partenaire/connexion">
-                      Connexion partenaire
+                      Connexion Partenaire
                     </NavDropdown.Item>
                   </NavDropdown>
                   <NavDropdown
@@ -280,7 +264,7 @@ const NavBar = () => {
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/register/step1">
                       {" "}
-                      Academie
+                      Academy
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/prestataire/step1">
                       {" "}
@@ -288,15 +272,15 @@ const NavBar = () => {
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/partenaire/step1">
                       {" "}
-                      Partenaire
+                      NilTeam
                     </NavDropdown.Item>
                   </NavDropdown>
                   <Nav.Link href="/contact">Contact</Nav.Link>
                 </Nav>
                 <div className="d-md-none">
-                  <a href="" style={{ textDecoration: "none", color: "black" }}>
+                  <a href="/avantage" style={{ textDecoration: "none", color: "black" }}>
                     {" "}
-                    déposer une annonce
+                    Avantages de la plateforme
                   </a>
                 </div>
               </Offcanvas.Body>

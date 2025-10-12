@@ -69,6 +69,9 @@ const Connexion = () => {
             await loginMutationadmin.mutateAsync(credentials);
 
             navigate("/admin/listesujet");
+             setTimeout(() => {
+    window.location.reload();
+}, 100); 
         } catch (error) {
             //  console.error("Erreur lors de la connexion :", error);
             //   setError("Une erreur est survenue. Veuillez réessayer.");
@@ -121,6 +124,7 @@ const Connexion = () => {
                                             placeholder="Entrez votre nom"
                                             value={credentials.username}
                                             onChange={handleChange}
+                                            required
                                         />
                                     </div>
                                     <div className="form-group">
@@ -136,6 +140,7 @@ const Connexion = () => {
                                                 placeholder="Entrez votre mot de passe"
                                                 value={credentials.password}
                                                 onChange={handleChange}
+                                                required
                                             />
                                             <span
                                                 className="icon"

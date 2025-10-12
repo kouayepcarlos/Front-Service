@@ -3,11 +3,11 @@
 const Publicite = () => {
   return (
     <span
-      className="d-flex justify-content-center align-items-center pt-5 publicite"
+      className="d-flex justify-content-center align-items-center pt-4 pt-md-5 publicite"
      
     >
-      TOUTE TRANSACTION OU ÉCHANGE EFFECTUÉ EN DEHORS DE LA PLATEFORME NE NOUS
-      ENGAGE EN AUCUN CAS
+       Bienvenue sur Nilservice
+Votre plateforme tout-en-un pour tous vos besoins, partout au Cameroun.
     </span>
   );
 };

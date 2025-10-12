@@ -1,22 +1,55 @@
-.nv{
+.nav {
   position: sticky;
   bottom: 0px;
-  top:0px;
+  top: 0px;
   z-index: 900;
   background-color: white;
   box-shadow: 0px 5px 2px rgba(0, 0, 0, 0.1);
+  padding: 40px 0 0 20px !important
+}
+
+.image-logo {
+  position: absolute;
+  width: 140px;
+  margin: -80px 15px -0px -85px;
+
+
 
 }
 
-
-
-.actuel{
-  color:#ef8f0a;
+.navbar-light .navbar-nav .nav-link {
+  color: black;
 }
 
-@media (min-width: 992px) {.respons-nav{
-  font-size:1.25vmax
-}}
+.navbar-light .navbar-nav .nav-link:hover {
+  color: #ef8f0a;
+}
+
+.actuel {
+  color: #ef8f0a;
+}
+
+@media (max-width:768px) {
+  .nav {
+
+    padding: 10px 0 10px 0px !important
+  }
+
+  .image-logo {
+    position: relative;
+    width: 100px;
+    margin: -65px 0px -60px -50px;
+
+
+
+  }
+}
+
+@media (min-width: 992px) {
+  .respons-nav {
+    font-size: 1.25vmax
+  }
+}
 
 /* Appliquer à tous les menus dropdown */
 .navbar-nav .dropdown:hover .dropdown-menu {

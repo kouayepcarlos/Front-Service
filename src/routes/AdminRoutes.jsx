@@ -8,6 +8,8 @@ import Partenaire from "../pages/admin/partenaire";
 import Academy from "../pages/admin/academy";
 import ListeAdmin from "../pages/admin/admin";
 import AdminMessages from "../pages/admin/contact";
+import Newsletter from "../pages/admin/newsletter";
+import Totale from "../pages/admin/Totale";
 
 const AdminRoutes = () => {
     return (
@@ -20,7 +22,9 @@ const AdminRoutes = () => {
                 <Route path="prestataires" element={<Prestataire />} />
                 <Route path="vendeurs" element={<Vendeur />} />
                 <Route path="partenaires" element={<Partenaire />} />
-                <Route path="contacts" element={<AdminMessages />} />
+                <Route path="contact" element={<AdminMessages />} />
+                 <Route path="newsletter" element={<Newsletter />} />
+                 <Route path="totale" element={<Totale />} />
             </Routes>
         </AdminProvider>
     );

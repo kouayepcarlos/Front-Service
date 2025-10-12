@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Footer from "../../components/Footer";
 import NavBar from "../../components/navbar/NavBar";
 import Publicite from "../../components/Publicite";
@@ -10,7 +10,21 @@ import LoaderTransparent from "../../components/LoadersCompoments/LoaderTranspar
 import { useNavigate } from "react-router-dom";
 import Redirection from "../../components/Redirection";
 import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
 const Connexion = () => {
+       const [nom,setNom]=useState(null)
+      const location = useLocation();
+      useEffect(() => {
+        const params = new URLSearchParams(location.search);
+    
+        // Vérifier si le paramètre existe
+        if (params.has("nom")) {
+          setNom(params.get("nom"));
+         
+        } else {
+          console.log("Pas de paramètre 'nom' dans l'URL");
+        }
+      }, [location]);
    const { loginMutationpartenaire, messageConnexion, setMessageConnexion } =
         useRegister(); 
 
@@ -81,6 +95,9 @@ const Connexion = () => {
             await loginMutationpartenaire.mutateAsync(finalCredentials);
 
             navigate("/partenaire/informations");
+             setTimeout(() => {
+    window.location.reload();
+}, 100); 
         } catch (error) {
             //  console.error("Erreur lors de la connexion :", error);
             //   setError("Une erreur est survenue. Veuillez réessayer.");
@@ -96,11 +113,16 @@ const Connexion = () => {
             <div className="my-custom-div">
                 <NavBar/>
                 <section className="mb-5">
-                <Redirection
+               {!nom && <Redirection
                         texte="Vous avez déjà un compte ? Connectez-vous et devenez notre partenaire"
                         nomBoutton="Créer votre compte"
                         lien="/partenaire/step1"
-                    />
+                    />}
+                      {nom &&<Redirection
+                        texte={`Bienvenue ${nom},
+                        Merci de vous connecter pour commencer `}
+                       
+                    /> }
                     <section className="row tab-contact mx-md-3">
                         <div
                             className="col-12 col-md-10 div-contact"
@@ -116,7 +138,7 @@ const Connexion = () => {
                                     />
                                 </div>
                                 <div className="form-contact col-md-6 col-12">
-                                <div className="form-group">
+                                {/* <div className="form-group">
                                         <label htmlFor="email">Email</label>
                                         <input
                                             type="text"
@@ -130,7 +152,7 @@ const Connexion = () => {
                                                 credentials.telephone != ""
                                             }
                                         />
-                                    </div>
+                                    </div> */}
                                     <div className="form-group">
                                         <label htmlFor="telephone">
                                             Telephone
@@ -143,7 +165,8 @@ const Connexion = () => {
                                             placeholder="Entrez votre numéro"
                                             value={credentials.telephone}
                                             onChange={handleChange}
-                                            readOnly={credentials.email != ""}
+                                            required
+                                            // readOnly={credentials.email != ""}
                                         />
                                     </div>
                                     <div className="form-group">
@@ -159,6 +182,7 @@ const Connexion = () => {
                                                 placeholder="Entrez votre mot de passe"
                                                 value={credentials.password}
                                                 onChange={handleChange}
+                                                required
                                             />
                                             <span
                                                 className="icon"
@@ -187,7 +211,7 @@ const Connexion = () => {
                                 </div>
                             </div>
                         </div>
-                        <a href="/connexion/passe_oublie">
+                        <a href="/partenaire/forgot-password">
                             Mot de passe oublié
                         </a>
                     </section>

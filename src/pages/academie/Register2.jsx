@@ -9,6 +9,7 @@ import Redirection from "../../components/Redirection";
 import { useRegister } from "../../Contexts/RegisterProvider";
 // import { useState } from "react";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 /**
  * cette page est dédié à la création de compte utilisateur coté academie qui se fait en trois étape et celle ci
@@ -36,6 +37,10 @@ function Register_2() {
         );
     };
 
+    useEffect(()=>{
+        alert("Le numero utilisé pour la transaction sera le même pour toutes vos operations dans l'application !!")
+    },[])
+
     const handleChange = (e) => {
         setData((prevState) => ({
             ...prevState,
@@ -45,6 +50,7 @@ function Register_2() {
 
     const controlData = () => {
         // Validation des champs
+        
         if (!data.telephone_parent.trim() || !data.type.trim()) {
             toast.error(
                 "Veuillez entrer le téléphone et sélectionner votre catégorie"
@@ -62,17 +68,16 @@ function Register_2() {
             return;
         }
 
-        if (data.type === "élève" && !data.abonnement) {
-            toast.error("Veuillez sélectionner un type d'abonnement");
-            return;
-        }
+      
         setData((prevState) => ({
             ...prevState,
-            redirect_url: "https://nilservice.net/connexion/academie",
+            redirect_url: `https://nilservice.net/connexion/academie?nom=${data?.nom}`,
             //"localhost:5173/connexion/academie",
             faillure_redirect_url: "https://nilservice.net/page/echec",
+            abonnement:"bibliothèque"
             //"localhost:5173/page/echec"
         }));
+        
         localStorage.setItem("dataUser", JSON.stringify(data));
         nextStep(3); // Passe à l'étape suivante
     };
@@ -95,7 +100,7 @@ function Register_2() {
                         lien={"/connexion/academie"}
                     />
                     <div className="flex-column gap-3 register-div   ">
-                        <p>Deuxieme etape</p>
+                        <p>Affiliation</p>
                     </div>
                     <section className="row tab-contact mx-md-3">
                         <div
@@ -113,7 +118,7 @@ function Register_2() {
                                     <form>
                                         <div className="form-group">
                                             <label htmlFor="phone">
-                                                Téléphone parent
+                                               Numero de transaction <span className="text-danger fw-bold fs-1">*</span>
                                             </label>
                                             <input
                                                 name="telephone_parent"
@@ -138,7 +143,7 @@ function Register_2() {
                                         </div>
                                         <div className="form-group">
                                             <label htmlFor="phone">
-                                                Téléphone (Non obligatoire)
+                                                Téléphone 
                                             </label>
                                             <input
                                                 name="telephone"
@@ -179,7 +184,7 @@ function Register_2() {
 
                                         <div className="form-group">
                                             <label htmlFor="type">
-                                                Vous êtes ?
+                                                Vous êtes ? <span className="text-danger fw-bold fs-1">*</span>
                                             </label>
 
                                             <select
@@ -207,39 +212,7 @@ function Register_2() {
                                             </select>
                                         </div>
 
-                                        {data.type === "élève" && (
-                                            <div className="form-group">
-                                                <label htmlFor="abonnement">
-                                                    Quel type d abonnement
-                                                    choisissez-vous ?
-                                                </label>
-
-                                                <select
-                                                    name="abonnement"
-                                                    id="abonnement"
-                                                    onChange={handleChange}
-                                                    value={data.abonnement}
-                                                    style={{
-                                                        height: "50px",
-                                                        paddingLeft: "10px",
-                                                        borderRadius: "10px",
-                                                        border: "2px solid black",
-                                                    }}
-                                                >
-                                                    <option value="">
-                                                        Veuillez Sélectionner
-                                                    </option>
-
-                                                    <option value="examen">
-                                                        Examen
-                                                    </option>
-                                                    <option value="bibliothèque">
-                                                        Bibliothèque
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        )}
-
+                                       
                                         <div className="step">
                                             {" "}
                                             <a

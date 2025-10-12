@@ -76,6 +76,27 @@ export function AppProvider({ children }) {
     enabled: !!user,
   });
 
+  // Récupération des filleuls
+  const { data: fichier, refetch:refetchFichier } = useQuery({
+    queryKey: ["fichier"],
+    queryFn: authAPI.allfichier,
+    retry: false,
+    enabled: !!user,
+  });
+
+   const { data: lastabonnement, refetch:refetchLastabonnement } = useQuery({
+    queryKey: ["lastabonnement"],
+    queryFn: authAPI.LastAbonnement,
+    retry: false,
+    enabled: !!user,
+  });
+  const { data: solde, refetch:refetchSolde } = useQuery({
+    queryKey: ["solde"],
+    queryFn: authAPI.getSolde,
+    retry: false,
+    enabled: !!user,
+  });
+
   // Récupération des sujets d'examen
   const { data: listeSujets, refetch: refetchSujets } = useQuery({
     queryKey: ["listeSujets"],
@@ -253,6 +274,7 @@ export function AppProvider({ children }) {
     mutationFn: authAPI.completedAccount,
     onSuccess:(data)=>{
         if(data.status=="success"){
+          toast.success("Informations ajoutees")
             navigate('/homeAcademy')
         }
         console.log(data);
@@ -272,6 +294,10 @@ export function AppProvider({ children }) {
     mutationFn: async (amount)=>
         await authAPI.withdrawal(amount),
     onSuccess:(data)=>{
+      if(data?.statut=="success")
+      toast.success(data?.message)
+    else
+      toast.error("Une erreur est survenue")
         console.log(data);
     }
   })
@@ -304,9 +330,20 @@ export function AppProvider({ children }) {
   })
   //fonction pour envoyer un message du chat
   const sendMessages = useMutation({
-    mutationFn:async (message)=> await authAPI.sendMessage(message),
+    mutationFn:async (message,replyMessage)=> await authAPI.sendMessage(message,replyMessage),
     onSuccess:(data)=>{
+return data;
+    },
+    onError:(error)=>{
+        console.log(error);
+    }
+  })
 
+   const addFichier = useMutation({
+    mutationFn:async (credentials)=> await authAPI.Ajoutfichier(credentials),
+    onSuccess:(data)=>{
+      toast.success(data?.message)
+console.log(data)
     },
     onError:(error)=>{
         console.log(error);
@@ -327,7 +364,7 @@ export function AppProvider({ children }) {
   })
   //fonction pour envoyer une image du chat
   const sendImage = useMutation({
-    mutationFn:async (fichier)=> await authAPI.sendImage(fichier),
+    mutationFn:async ({fichier,replyMessage})=> await authAPI.sendImage(fichier,replyMessage),
     onSuccess:(data)=>{
        return data
     },
@@ -338,7 +375,7 @@ export function AppProvider({ children }) {
 
   //fonction pour envoyer un pdf du chat
   const sendPdf = useMutation({
-    mutationFn:async (fichier)=> await authAPI.sendPdf(fichier),
+    mutationFn:async ({fichier,replyMessage})=> await authAPI.sendPdf(fichier,replyMessage),
     onSuccess:(data)=>{
        return data
     },
@@ -356,7 +393,11 @@ export function AppProvider({ children }) {
                   localStorage.clear("dataUser");
                   let link = data.data.link;
                   console.log(link);
-                  window.open(link, "_blank");
+                    window.location.href = link;
+
+
+            // (Optionnel) Feedback à l’utilisateur
+            alert("Vous allez être redirigé vers le paiement. Veuillez finaliser la transaction.");
               }
           },
           onError: (error) => {
@@ -366,6 +407,7 @@ export function AppProvider({ children }) {
               }
           },
       });
+
   //fonction pour telecharger un fichier du chat
   const downloadDoc = useMutation({
     mutationFn: async (id) =>
@@ -407,6 +449,21 @@ const downloadSubjetMutation = useMutation({
 
   },
 });
+const downloadSubjetcorrectionMutation = useMutation({
+  mutationFn: async (id) =>
+      await authAPI.downloadSubjetcorrection(id),
+
+  onSuccess: (file) => {
+    console.log(file)
+    if(file)
+      navigate(`/visualiser/${encodeURIComponent(file)}`)
+  },
+  onError: (error) => {
+    console.log(error)
+
+  },
+});
+
 
 const downloadSubjetUniversiteMutation = useMutation({
   mutationFn: async (id) =>
@@ -423,29 +480,22 @@ const downloadSubjetUniversiteMutation = useMutation({
   },
 });
 
-  /**
-   * Mutation pour la connexion admin
-   */
-    //   const loginUserMutationadmin = useMutation({
-    //     mutationFn: async (credentials) => await authAPIadmin.login(credentials),
-    //     onSuccess: (data) => {
-    //       if (data?.user) {
-    //         setMessageConnexion("SUCCESS");
-    //         setUser(data.user);
-    //         navigate("/admin"); // Redirection vers l'espace admin
-    //       } else {
-    //         setMessageConnexion("Connexion réussie, mais aucune information utilisateur reçue.");
-    //       }
-    //     },
-    //     onError: (error) => {
-    //       const errors = error.response?.data;
-    //       setMessageConnexion(
-    //         errors?.message === "Identifiants incorrects"
-    //           ? "Identifiants incorrects"
-    //           : "Erreur du serveur. Veuillez réessayer plus tard."
-    //       );
-    //     },
-    //   });
+const downloadSubjetUniversitecorrectionMutation = useMutation({
+  mutationFn: async (id) =>
+      await authAPI.downloadSubjetUniversitecorrection(id),
+
+  onSuccess: (file) => {
+    console.log(file)
+    if(file)
+      navigate(`/visualiser/${encodeURIComponent(file)}`)
+  },
+  onError: (error) => {
+    console.log(error)
+
+  },
+});
+
+
     const loginMutationadmin = useMutation({
         mutationFn: async (credentials) =>
             await authAPIadmin.login(credentials),
@@ -518,7 +568,16 @@ const downloadSubjetUniversiteMutation = useMutation({
       setMessagesChat,
       // refetchMessages,
       downloadDoc,
-      getUser
+      getUser,
+      solde,
+      refetchSolde,
+      lastabonnement,
+      fichier,
+      refetchFichier,
+      refetchLastabonnement,
+      addFichier,
+      downloadSubjetUniversitecorrectionMutation,
+      downloadSubjetcorrectionMutation
 
     }}>
       {children}

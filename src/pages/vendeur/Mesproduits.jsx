@@ -23,13 +23,24 @@ import { useRegister } from "../../Contexts/VendeurProvider";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useState } from "react";
 
 // Composant principal
 const Realisations = () => {
-    const {produit} = useRegister()
+    const {produit=[]} = useRegister()
+     const [searchTerm, setSearchTerm] = useState("");
 const navigate = useNavigate()
-    
- 
+    useEffect(()=>{
+console.log(produit)
+    },[produit])
+  // Filtrage par recherche
+  const filteredProduits = produit.filter((produit) => {
+    const search = searchTerm.toLowerCase().replace(/\s+/g, "");
+    return (
+      produit?.nom.toLowerCase().replace(/\s+/g, "").includes(search) 
+     
+    );
+  });
     return (
         <div className="general">
             <Publicite /> {/* Bannière ou publicité en haut */}
@@ -38,8 +49,24 @@ const navigate = useNavigate()
 
                 <section className="mb-5">
                     {/* Bandeau de redirection / message d'en-tête */}
-                    <Redirection texte="Touts vos produits " />
-
+                    <Redirection texte="Tous vos produits " />
+ <div className="mx-5 mb-4">
+            <p className="fw-bold text-muted fs-5">
+              Filtrez les produits pour affiner votre recherche :
+            </p>
+            <div className="input-group input-group-sm search-box w-100">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Rechercher..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <span className="input-group-text">
+                <i className="fa fa-search"></i>
+              </span>
+            </div>
+          </div>
                     <section className="row tab-contact ">
                         <div className=" pb-5">
                             {/* Swiper pour afficher les réalisations sous forme de carrousel */}
@@ -51,7 +78,7 @@ const navigate = useNavigate()
                                     delay: 4000, // 4 secondes entre chaque slide
                                     disableOnInteraction: false, // L’autoplay continue après interaction
                                 }}
-                                loop={produit?.length > 3} // Le carrousel boucle seulement si plus de 3 éléments
+                                loop={filteredProduits?.length > 3} // Le carrousel boucle seulement si plus de 3 éléments
                                 navigation // Affiche les flèches de navigation
                                 // pagination={{ clickable: true }} // Option pour activer les points de pagination
                                 breakpoints={{
@@ -78,12 +105,13 @@ const navigate = useNavigate()
                                 }}
                             >
                                 {/* Génère une slide par réalisation */}
-                                {produit?.length !== 0 &&
-                                    produit?.map((produit) => (
+                                {filteredProduits?.length !== 0 &&
+                                    filteredProduits?.map((produit) => (
                                         <SwiperSlide key={produit?.id}>
                                             <div className="card sujet-card">
                                             <img
-                                                src={produit.file_url}
+                                                src={produit.file_url
+}
                                                 className="card-img-top"
                                                 alt={produit.title}
                                             />

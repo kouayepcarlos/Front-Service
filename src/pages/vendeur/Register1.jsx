@@ -66,7 +66,8 @@ function Register_1() {
         if (
             !data.nom.trim() ||
             !data.email.trim() ||
-            !data.mot_de_passe.trim()
+            !data.mot_de_passe.trim()||
+            !data.mot_de_passe_confirmation
         ) {
             toast.error("Tous les champs doivent être remplis.");
         }
@@ -96,10 +97,21 @@ function Register_1() {
             );
             return;
         }
+         if (!passwordRegex.test(data.mot_de_passe_confirmation.trim())) {
+            toast.error(
+                "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule et un chiffre."
+            );
+            return;
+        }
+
+        if(data.mot_de_passe.trim()!== data.mot_de_passe_confirmation.trim()){
+            toast("les deux mots de passes doivent etre identiques")
+            return;
+        }
 
             setData((prevState) => ({
                 ...prevState,
-                redirect_url:"https://nilservice.net/connexion/academie",
+                redirect_url:`https://nilservice.net/vendeur/connexion?nom=${data?.nom}`,
         //"localhost:5173/connexion/academie",
         faillure_redirect_url:"https://nilservice.net/page/echec"
         //"localhost:5173/page/echec"
@@ -135,10 +147,10 @@ function Register_1() {
                     <section className="mb-5  ">
                         <Redirection
                             texte={
-                                "  Vous avez deja un compte ? Connectez vous et consultez les sujets"
+                                "  Vous avez deja un compte ? Connectez vous "
                             }
                             nomBoutton={"Connectez vous"}
-                            lien={"/connexion/prestataire"}
+                            lien={"/vendeur/connexion"}
                         />
                         <div className="flex-column gap-3  register-div  ">
                             <p>Premiere etape</p>
@@ -157,7 +169,7 @@ function Register_1() {
                                         <form>
                                             <div className="form-group">
                                                 <label htmlFor="name">
-                                                    Nom et Prenom
+                                                    Nom et Prenom <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <input
                                                     value={data.nom}
@@ -172,7 +184,7 @@ function Register_1() {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="email">
-                                                    Email
+                                                    Email <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <input
                                                     value={data.email}
@@ -188,7 +200,7 @@ function Register_1() {
 
                                             <div className="form-group">
                                                 <label htmlFor="password">
-                                                    Mot de passe
+                                                    Mot de passe <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <session className="input-container">
                                                     <input
@@ -200,6 +212,7 @@ function Register_1() {
                                                         type={
                                                             typePassword.password
                                                         }
+                                                        required
                                                         className="form-control"
                                                         id="passe"
                                                         placeholder="Entrez votre mot de passe"
@@ -223,7 +236,7 @@ function Register_1() {
 
                                             <div className="form-group">
                                                 <label htmlFor="password_confirmation">
-                                                    Confirmation mot de passe
+                                                    Confirmation mot de passe <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <session className="input-container">
                                                     <input
@@ -235,6 +248,7 @@ function Register_1() {
                                                         type={
                                                             typePassword.password_confirmation
                                                         }
+                                                        required
                                                         className="form-control"
                                                         id="mot_de_passe_confirmation"
                                                         placeholder="Entrez de nouveau votre mot de passe"

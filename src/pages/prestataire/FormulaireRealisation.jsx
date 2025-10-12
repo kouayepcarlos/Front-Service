@@ -111,6 +111,7 @@ const FormulaireRealisation = () => {
                                             placeholder="Entrez le titre"
                                             value={credentials.title}
                                             onChange={handleChange}
+                                            required
                                         />
                                     </div>
 
@@ -123,6 +124,7 @@ const FormulaireRealisation = () => {
                                                 accept="image/*"
                                                 className="form-control"
                                                 onChange={handleFileChange}
+                                                required
                                             />
                                         </session>
                                     </div>

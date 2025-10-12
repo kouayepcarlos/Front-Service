@@ -1,5 +1,5 @@
 // Import des hooks React et composants réutilisables
-import { useState } from "react";
+import { useState,useEffect} from "react";
 import Footer from "../../components/Footer";
 import Navbarvendeur from "../../components/navbar/Navbarvendeur";
 import Publicite from "../../components/Publicite";
@@ -12,32 +12,72 @@ import Redirection from "../../components/Redirection";
 import { toast } from "react-toastify"; // Pour les notifications
 
 const FormulaireRealisation = () => {
-    const { ajoutProduit } = useRegister();
+    const { ajoutProduit,Maboutique } = useRegister();
 
     // State local pour stocker les valeurs du formulaire
-    const [credentials, setCredentials] = useState({});
+   
+    const [boutique,setBoutique]=useState(false)
+   const [images, setImages] = useState({
+  image1: null,
+  image2: null,
+  image3: null,
+});
 
-    // Gère les fichiers envoyés par l'utilisateur
-    const handleFileChange = (e) => {
-        const selectedFile = e.target.files[0]; // Récupère le fichier
-        console.log(e.target.name);
 
-        if (!selectedFile) {
-            toast.error("Aucun fichier sélectionné !");
-            return;
-        }
+     useEffect(() => {
+            const fetchData = async () => {
+                setLoading(true)
+                try {
+                    const result = await Maboutique.mutateAsync();
+                    if (Object.keys(result).length>0) {
+                        
+                       
+                        setBoutique(true);
+    
+                
+                    }
+                } catch (error) {
+                    console.error("Erreur lors de la récupération :", error);
+                }finally{
+                    setLoading(false)
+                }
+            };
+    
+            fetchData();
+        }, []);
 
-        if (selectedFile.size > 1024 * 1024) {
-            toast.error("Le fichier doit être inférieur à 1024ko.");
-            return;
-        }
+   // State pour stocker les fichiers
+const [credentials, setCredentials] = useState({
+   nom: "",
+  prix: "",
+  description: "",
+  statut: "",
+  categorie: "autres",
+});
 
-        // Si tout est bon, on met à jour le fichier dans le state
-        setCredentials((prev) => ({
-            ...prev,
-            [e.target.name]: selectedFile,
-        }));
-    };
+const handleFileChange = (e) => {
+  const selectedFiles = Array.from(e.target.files); // Tous les fichiers sélectionnés
+
+  if (selectedFiles.length > 3) {
+    toast.error("Vous ne pouvez sélectionner que 3 images maximum !");
+    return;
+  }
+
+  const newCredentials = { image1: null, image2: null, image3: null };
+
+  for (let i = 0; i < selectedFiles.length; i++) {
+    if (selectedFiles[i].size > 1024 * 1024) {
+      toast.error(`Le fichier ${selectedFiles[i].name} dépasse 1 Mo !`);
+      return;
+    }
+    if (i === 0) newCredentials.image1 = selectedFiles[i];
+    if (i === 1) newCredentials.image2 = selectedFiles[i];
+    if (i === 2) newCredentials.image3 = selectedFiles[i];
+  }
+
+  setImages(newCredentials);
+};
+
 
     // Gestion d'erreur et de chargement
     const [error, setError] = useState(false);
@@ -55,7 +95,7 @@ const FormulaireRealisation = () => {
     // Fonction appelée lors de l'envoi du formulaire
     const handleSubmit = async () => {
         // Vérifie que le champ titre est rempli
-        if (credentials.nom.trim() === "") {
+        if (credentials.nom.trim() === "" ||credentials.statut.trim() === "" ) {
             toast.error("Veuillez remplir tous les champs.");
             return;
         }
@@ -64,9 +104,10 @@ const FormulaireRealisation = () => {
         setLoading(true); // Active le loader
 
         try {
-            console.log(credentials);
-            // Envoie des données au backend via mutation React Query
-            await ajoutProduit.mutateAsync(credentials);
+           
+             const dataToSend = { ...credentials, ...images };
+    console.log(dataToSend);
+    await ajoutProduit.mutateAsync(dataToSend);
         } catch (error) {
             console.error("Erreur lors de la connexion :", error);
         } finally {
@@ -77,6 +118,7 @@ const FormulaireRealisation = () => {
     // Affichage JSX de la page
     return (
         <div className="general">
+           
             {loading && <LoaderTransparent />}{" "}
             {/* Loader transparent si en cours */}
             <Publicite />
@@ -88,8 +130,10 @@ const FormulaireRealisation = () => {
                         <div className="">
                             {/* Colonne image pour grands écrans */}
 
+                             {boutique==false && <p>Creer une boutique pour ajouter des produits</p>}
+
                             {/* Colonne du formulaire */}
-                            <div className="form-contact ">
+                          {boutique &&  <div className="form-contact ">
                                 <h5 className="produit"> AJOUTER UN PRODUIT</h5>
                                 <div className="form-group">
                                     <label htmlFor="email">Nom produit</label>
@@ -130,7 +174,7 @@ const FormulaireRealisation = () => {
                                         required
                                     ></textarea>
                                 </div>
-                                <div className="form-group">
+                                {/* <div className="form-group">
                                     <label htmlFor="email">Categorie</label>
                                     <select
                                         name="categorie"
@@ -148,7 +192,7 @@ const FormulaireRealisation = () => {
                                         </option>
                                         <option value="table">table</option>
                                     </select>
-                                </div>
+                                </div> */}
                                 <div className="form-group">
                                     <label htmlFor="email">Disponibilite</label>
                                     <select
@@ -168,7 +212,7 @@ const FormulaireRealisation = () => {
                                     </select>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="password">Image</label>
+                                    <label htmlFor="password">Images (Maximum 3) </label>
                                     <session className="input-container">
                                         <input
                                             type="file"
@@ -177,6 +221,7 @@ const FormulaireRealisation = () => {
                                             className="form-control"
                                             onChange={handleFileChange}
                                             required
+                                            multiple
                                         />
                                     </session>
                                 </div>
@@ -189,7 +234,7 @@ const FormulaireRealisation = () => {
                                 >
                                     Enregistrer
                                 </button>
-                            </div>
+                            </div>}
                         </div>
                     </section>
                 </section>

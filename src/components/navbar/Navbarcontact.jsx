@@ -7,7 +7,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import "../../assets/css/navbar.css";
 import { useNavigate } from "react-router-dom";
-
+import logo from "../../assets/images/logoatlas.png"
 const Navbarcontact = () => {
     const navigate = useNavigate();
     return (
@@ -16,14 +16,14 @@ const Navbarcontact = () => {
                 <Navbar
                     key={expand}
                     expand={expand}
-                    className="mt-3 d-flex px-3 px-md-0 flex-sm-column w-100 "
+                    className="mt-3 d-flex px-3 px-md-4 flex-sm-column w-100 "
                 >
                     <Container
                         fluid
                         className="d-none d-md-flex flex-md-row gap-4 justify-content-between mb-sm-3 px-5"
                     >
                         <Navbar.Brand style={{ fontSize: 34 + "px" }} href="/">
-                            Nilservice
+                            <img className="image-logo" src={logo}/>
                         </Navbar.Brand>
 
                         <Navbar.Toggle
@@ -57,12 +57,12 @@ const Navbarcontact = () => {
                                     <a
                                         href=""
                                         onClick={() => {
-                                            navigate("/maintenance");
+                                            navigate("/avantage");
                                         }}
                                     >
                                         <i className="fa-solid fa-plus"></i>{" "}
                                         <span className="annonce">
-                                            Déposer une annonce
+                                            Avantages de la plateforme
                                         </span>
                                     </a>
                                 </button>
@@ -155,10 +155,10 @@ const Navbarcontact = () => {
 
                     <Container fluid>
                         <Navbar.Brand
-                            href="/maintenance"
+                            href="/"
                             className="d-block d-md-none"
                         >
-                            Nilservice
+                         <img className="image-logo" src={logo}/>
                         </Navbar.Brand>
                         <Navbar.Toggle
                             aria-controls={`offcanvasNavbar-expand-${expand}`}
@@ -222,7 +222,7 @@ const Navbarcontact = () => {
                                     <Nav.Link href="/">Accueil</Nav.Link>
 
                                     <NavDropdown
-                                        title="MarketPlace Services"
+                                        title="NilPro"
                                         id={`offcanvasNavbarDropdown-expand-${expand}`}
                                     >
                                         <NavDropdown.Item href="/prestataire/liste?profession=plombier">
@@ -257,48 +257,27 @@ const Navbarcontact = () => {
                                             Autres
                                         </NavDropdown.Item>
                                     </NavDropdown>
-                                    <NavDropdown
-                                        title="MarketPlace Produits"
-                                        id={`offcanvasNavbarDropdown-expand-${expand}`}
-                                    >
-                                        <NavDropdown.Item href="/vendeur/liste?categorie=vetement">
-                                            Vetement
-                                        </NavDropdown.Item>
-
-                                        <NavDropdown.Item href="/vendeur/liste?categorie=meuble">
-                                            Meuble
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Item href="/vendeur/liste?categorie=electromenager">
-                                            Electromenager
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Item href="/vendeur/liste?categorie=appareil">
-                                            Appareil
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item href="/vendeur/liste">
-                                            Autres
-                                        </NavDropdown.Item>
-                                    </NavDropdown>
+                                   <Nav.Link href="/vendeur/liste">NilMarket</Nav.Link>
 
                                     <Nav.Link href="/connexion/academie">
-                                        MarketPlace Academie
+                                        NilAcademy
                                     </Nav.Link>
 
                                     <NavDropdown
-                                        title="Mon compte"
+                                        title="NilEspace"
                                         id={`offcanvasNavbarDropdown-expand-${expand}`}
                                     >
                                         <NavDropdown.Item href="/vendeur/connexion">
-                                            Connexion vendeur
+                                            Connexion Vendeur Pro
                                         </NavDropdown.Item>
                                         <NavDropdown.Item href="/connexion/academie">
-                                            Connexion academie
+                                            Connexion Academy
                                         </NavDropdown.Item>
                                         <NavDropdown.Item href="/prestataire/connexion">
-                                            Connexion prestataire
+                                            Connexion Prestataire Pro
                                         </NavDropdown.Item>
                                         <NavDropdown.Item href="/partenaire/connexion">
-                                            Connexion partenaire
+                                            Connexion Partenaire
                                         </NavDropdown.Item>
                                     </NavDropdown>
                                     <NavDropdown
@@ -307,19 +286,19 @@ const Navbarcontact = () => {
                                     >
                                         <NavDropdown.Item href="/vendeur/step1">
                                             {" "}
-                                            vendeur
+                                            Vendeur Pro
                                         </NavDropdown.Item>
                                         <NavDropdown.Item href="/register/step">
                                             {" "}
-                                            academie
+                                            Academy
                                         </NavDropdown.Item>
                                         <NavDropdown.Item href="/prestataire/step1">
                                             {" "}
-                                            prestataire
+                                            Prestataire Pro
                                         </NavDropdown.Item>
                                         <NavDropdown.Item href="/partenaire/step1">
                                             {" "}
-                                            partenaire
+                                            Partenaire
                                         </NavDropdown.Item>
                                     </NavDropdown>
                                     <Nav.Link
@@ -334,14 +313,14 @@ const Navbarcontact = () => {
                                 </Nav>
                                 <div className="d-md-none">
                                     <a
-                                        href=""
+                                        href="/avantage"
                                         style={{
                                             textDecoration: "none",
                                             color: "black",
                                         }}
                                     >
                                         {" "}
-                                        déposer une annonce
+                                        Avantages de la plateforme
                                     </a>
                                 </div>
                             </Offcanvas.Body>

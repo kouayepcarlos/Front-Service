@@ -39,6 +39,20 @@ export const PrestataireProvider = ({ children }) => {
         retry: false,
         enabled: !!user && location.pathname === "/prestataire/souscrit",
     });
+
+    const { data: solde, refetch:refetchSolde } = useQuery({
+        queryKey: ["solde"],
+        queryFn: authAPIPrestataire.getSolde,
+        retry: false,
+        enabled: !!user && location.pathname === "/prestataire/souscrit",
+      });
+
+     const { data: lastabonnement, refetch:refetchLastabonnement } = useQuery({
+        queryKey: ["lastabonnement"],
+        queryFn: authAPIPrestataire.LastAbonnement,
+        retry: false,
+        enabled: !!user,
+      });
     const publicRoutes = [
         "/prestataire/connexion",
         "/prestataire/liste",
@@ -155,7 +169,7 @@ export const PrestataireProvider = ({ children }) => {
                 localStorage.clear("dataUser");
                 let link = data.link;
                 console.log(link);
-                window.open(link, "_blank");
+               // window.open(link, "_blank");
             }
         },
         onError: (error) => {
@@ -175,7 +189,12 @@ export const PrestataireProvider = ({ children }) => {
                 localStorage.clear("dataUser");
                 let link = data.data.link;
                 console.log(link);
-                window.open(link, "_blank");
+                
+                   window.location.href =link;
+
+
+            // (Optionnel) Feedback à l’utilisateur
+            alert("Vous allez être redirigé vers le paiement. Veuillez finaliser la transaction.");
             }
         },
         onError: (error) => {
@@ -316,6 +335,8 @@ export const PrestataireProvider = ({ children }) => {
             await authAPIPrestataire.withdrawal(amount),
         onSuccess: (data) => {
             console.log(data);
+            if(data?.statut=="success")
+      toast.success(data?.message)
         },
     });
 
@@ -346,6 +367,9 @@ export const PrestataireProvider = ({ children }) => {
                 completedAccountMutation,
                 errorMessageRegister,
                 setErrorMessageRegister,
+                  lastabonnement,
+      refetchLastabonnement,
+      solde,refetchSolde
             }}
         >
             {children}

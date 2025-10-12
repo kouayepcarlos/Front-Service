@@ -40,6 +40,19 @@ export const VendeurProvider = ({ children }) => {
         retry: false,
         
     });
+    const { data: lastabonnement, refetch:refetchLastabonnement } = useQuery({
+            queryKey: ["lastabonnement"],
+            queryFn: authAPIVendeur.LastAbonnement,
+            retry: false,
+            enabled: !!user,
+          });
+
+          const { data: solde, refetch:refetchSolde } = useQuery({
+              queryKey: ["solde"],
+              queryFn: authAPIVendeur.getSolde,
+              retry: false,
+              enabled: !!user,
+            });
     const publicRoutes = [
         "/vendeur/connexion",
         "/vendeur/step1",
@@ -158,7 +171,7 @@ export const VendeurProvider = ({ children }) => {
                 localStorage.clear("dataUser");
                 let link = data.link;
                 console.log(link);
-                window.open(link, "_blank");
+              //  window.open(link, "_blank");
             }
         },
         onError: (error) => {
@@ -178,7 +191,11 @@ export const VendeurProvider = ({ children }) => {
                     localStorage.clear("dataUser");
                     let link = data.data.link;
                     console.log(link);
-                    window.open(link, "_blank");
+                      window.location.href = link;
+
+
+            // (Optionnel) Feedback à l’utilisateur
+            alert("Vous allez être redirigé vers le paiement. Veuillez finaliser la transaction.");
                 }
             },
             onError: (error) => {
@@ -336,6 +353,8 @@ export const VendeurProvider = ({ children }) => {
         mutationFn: async (amount) => await authAPIVendeur.withdrawal(amount),
         onSuccess: (data) => {
             console.log(data);
+            if(data?.statut=="success")
+      toast.success(data?.message)
         },
     });
 
@@ -363,7 +382,8 @@ nouvelAbonnementVendeurMutation,
                 // refetchPrestation,
                 registerVendeurMutation,
                 loginMutationvendeur,
-
+  lastabonnement,
+      refetchLastabonnement,
                 filleuls,
                 refetchFilleuls,
                 RealisationId,
@@ -372,6 +392,8 @@ nouvelAbonnementVendeurMutation,
                 creerBoutique,
                 errorMessageRegister,
                 setErrorMessageRegister,
+                solde,
+                refetchSolde
             }}
         >
             {children}

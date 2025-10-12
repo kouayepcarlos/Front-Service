@@ -11,12 +11,17 @@ import { useRegister } from "../../Contexts/VendeurProvider";
 import Redirection from "../../components/Redirection";
 import { useParams } from "react-router-dom";
 
+
 const FormulaireModificationProduit = () => {
+
     const { Monproduitid, updateProduit } = useRegister();
+    const [loading,setLoading]=useState(false)
     const [produit, setProduit] = useState({});
     const { id } = useParams();
+    
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true)
             try {
                 console.log(id);
                 const result = await Monproduitid.mutateAsync({ id });
@@ -24,6 +29,8 @@ const FormulaireModificationProduit = () => {
                 console.log(result);
             } catch (error) {
                 console.error("Erreur lors de la récupération :", error);
+            }finally{
+                setLoading(false)
             }
         };
 
@@ -32,7 +39,7 @@ const FormulaireModificationProduit = () => {
 
     // Gestion d'erreur et de chargement
     const [error, setError] = useState(false);
-    const [loading, setLoading] = useState(false);
+   
 
     // Met à jour les champs texte du formulaire
     const handleChange = (e) => {
@@ -89,6 +96,7 @@ const FormulaireModificationProduit = () => {
                                         placeholder="Entrez le nom"
                                         value={produit.nom}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </div>
 
@@ -98,6 +106,7 @@ const FormulaireModificationProduit = () => {
                                         type="number"
                                         className="form-control"
                                         name="prix"
+                                        required
                                         placeholder="Entrez le titre"
                                         value={produit.prix}
                                         onChange={handleChange}
@@ -116,7 +125,7 @@ const FormulaireModificationProduit = () => {
                                         value={produit.description}
                                     ></textarea>
                                 </div>
-                                <div className="form-group">
+                                {/* <div className="form-group">
                                     <label htmlFor="email">Categorie</label>
                                     <select
                                         name="categorie"
@@ -132,7 +141,7 @@ const FormulaireModificationProduit = () => {
                                         </option>
                                         <option value="table">table</option>
                                     </select>
-                                </div>
+                                </div> */}
                                 <div className="form-group">
                                     <label htmlFor="email">Disponibilite</label>
                                     <select

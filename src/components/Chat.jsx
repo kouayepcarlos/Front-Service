@@ -93,6 +93,7 @@ const Chat = () => {
               <input
                 type="text"
                 placeholder="Écrivez votre message..."
+                required
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
               />

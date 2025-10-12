@@ -8,7 +8,7 @@ import { authAPI } from '../../fecths/fecthAcademyUser';
 
 
 export default function PayModal({showModal, handleClose}) {
-    const {user, Abonnement}=useAppContext()
+    const {user, Abonnement,nouvelAbonnementsuereMutation}=useAppContext()
     const [data, setData]=useState({
         abonnement:null
     })
@@ -16,18 +16,23 @@ export default function PayModal({showModal, handleClose}) {
     const [message, setMessage]=useState('')
     const [statusPaiement, setStatusPaiement]=useState(null)
 
-    const handlePay= async () =>{
-        setLoading(true)
-        setStatusPaiement("pending")
-       const res= await Abonnement.mutateAsync(data)
+   const nouvelAbonnement = async () => {
 
-       if(res?.paiement && res.paiement.status==="pending"){
-         await checkPaiementStatus(res.paiement.transaction_id)
-       }else{
-            setStatusPaiement("failed")
-            setLoading(true)
-       }
+    setLoading(true);
+    try {
+      await  nouvelAbonnementsuereMutation.mutateAsync({
+        redirect_url: "https://nilservice.net/connexion/academie",
+        //"localhost:5173/connexion/academy",
+        faillure_redirect_url: "https://nilservice.net/page/echec",
+        //"localhost:5173/page/echec"
+      });
+    } catch (error) {
+      console.error("Erreur :", error);
+    } finally {
+      // Désactive le loader
+      setLoading(false);
     }
+  };
 
 
 
@@ -80,18 +85,18 @@ export default function PayModal({showModal, handleClose}) {
                         <p></p>
                         { user.type === "étudiant" && <><div className="d-flex align-items-center p-2">
                             <p>le coût de votre  abonnement est de :</p>
-                            <input type="text" className="form-control text-center" value="1000 fcfa" readOnly />
+                            <input type="text" className="form-control text-center" value="1 500 fcfa" readOnly />
                         </div>
                         <div className="d-block align-items-center   ">
-                            <button className="btn btn-success center" onClick={handlePay}>payez</button>
+                            <button className="btn btn-success center" onClick={()=>{nouvelAbonnement()}}>payez</button>
                         </div></>
                         }
                          { user.type === "élève" && <><div className="d-flex align-items-center p-2 ">
                             <p>le coût de votre  abonnement est de :</p>
-                            <input type="text" className="form-control text-center" value="1000 fcfa" readOnly />
+                            <input type="text" className="form-control text-center" value="1 500 fcfa" readOnly />
                         </div>
                         <div className="d-flex align-items-center    justify-content-end ">
-                            {!loading && <button className="btn btn-success center" onClick={handlePay}>payez</button>}
+                            {!loading && <button className="btn btn-success center" onClick={()=>{nouvelAbonnement()}}>payez</button>}
                             {loading  && <LoaderPaiement/>}
                         </div>
                         <div className="pt-3 mb-0 ">

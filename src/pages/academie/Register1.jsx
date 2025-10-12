@@ -158,7 +158,7 @@ function Register_1() {
                             <p
                                
                             >
-                                Premiere etape
+                                Renseignements Personnelles
                             </p>
                         </div>
                         <section className="row tab-contact mx-md-3">
@@ -179,7 +179,7 @@ function Register_1() {
                                         <form>
                                             <div className="form-group">
                                                 <label htmlFor="name">
-                                                    Nom et Prenom
+                                                    Nom et Prenom <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <input
                                                     value={data.nom}
@@ -194,7 +194,7 @@ function Register_1() {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="email">
-                                                    Email
+                                                    Email <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <input
                                                     value={data.email}
@@ -209,11 +209,12 @@ function Register_1() {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="password">
-                                                    Mot de passe
+                                                    Mot de passe <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <session className="input-container">
                                                     <input
                                                         value={data.password}
+                                                        required
                                                         onChange={handleChange}
                                                         name="password"
                                                         type={
@@ -241,13 +242,14 @@ function Register_1() {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="password_confirmation">
-                                                    Confirmation mot de passe
+                                                    Confirmation mot de passe <span className="text-danger fw-bold fs-1">*</span>
                                                 </label>
                                                 <session className="input-container">
                                                     <input
                                                         value={
                                                             data.password_confirmation
                                                         }
+                                                        required
                                                         onChange={handleChange}
                                                         name="password_confirmation"
                                                         type={

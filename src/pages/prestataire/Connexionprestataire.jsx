@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Footer from "../../components/Footer";
 import NavBar from "../../components/navbar/NavBar";
 import Publicite from "../../components/Publicite";
@@ -10,7 +10,7 @@ import LoaderTransparent from "../../components/LoadersCompoments/LoaderTranspar
 import { useNavigate } from "react-router-dom";
 import Redirection from "../../components/Redirection";
 import { toast } from "react-toastify";
-
+import { useLocation } from "react-router-dom";
 const Connexion = () => {
     const { loginMutationprestataire, messageConnexion, setMessageConnexion } =
         useRegister();
@@ -20,7 +20,20 @@ const Connexion = () => {
         email: "",
         mot_de_passe: "",
     });
-
+  const location = useLocation();
+       const [nom,setNom]=useState(null)
+    
+      useEffect(() => {
+        const params = new URLSearchParams(location.search);
+    
+        // Vérifier si le paramètre existe
+        if (params.has("nom")) {
+          setNom(params.get("nom"));
+        
+        } else {
+          console.log("Pas de paramètre 'nom' dans l'URL");
+        }
+      }, [location]);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -81,6 +94,9 @@ const Connexion = () => {
             await loginMutationprestataire.mutateAsync(finalCredentials);
 
             navigate("/prestataire/informations");
+             setTimeout(() => {
+    window.location.reload();
+}, 100); 
         } catch (error) {
             console.error("Erreur lors de la connexion :", error);
             //   setError("Une erreur est survenue. Veuillez réessayer.");
@@ -96,11 +112,16 @@ const Connexion = () => {
             <div className="my-custom-div">
                 <NavBar />
                 <section className="mb-5">
-                    <Redirection
-                        texte="Vous avez déjà un compte ? Connectez-vous et prester vos servies"
+                  {!nom &&  <Redirection
+                        texte="Vous avez déjà un compte ? Connectez-vous et prester vos services"
                         nomBoutton="Créer votre compte"
                         lien="/prestataire/step1"
-                    />
+                    />}
+                      {nom &&<Redirection
+                                            texte={`Bienvenue ${nom},
+                                            Merci de vous connecter pour commencer `}
+                                           
+                                        /> }
                     <section className="row tab-contact mx-md-3">
                         <div className="col-12 col-md-10 div-contact">
                             <div className="row">
@@ -113,7 +134,7 @@ const Connexion = () => {
                                 </div>
 
                                 <div className="form-contact col-md-6 col-12">
-                                    <div className="form-group">
+                                    {/* <div className="form-group">
                                         <label htmlFor="email">Email</label>
                                         <input
                                             type="text"
@@ -127,7 +148,7 @@ const Connexion = () => {
                                                 credentials.telephone != ""
                                             }
                                         />
-                                    </div>
+                                    </div> */}
                                     <div className="form-group">
                                         <label htmlFor="telephone">
                                             Telephone
@@ -140,7 +161,8 @@ const Connexion = () => {
                                             placeholder="Entrez votre numéro"
                                             value={credentials.telephone}
                                             onChange={handleChange}
-                                            readOnly={credentials.email != ""}
+                                            required
+                                            // readOnly={credentials.email != ""}
                                         />
                                     </div>
                                     <div className="form-group">
@@ -156,6 +178,7 @@ const Connexion = () => {
                                                 placeholder="Entrez votre mot de passe"
                                                 value={credentials.mot_de_passe}
                                                 onChange={handleChange}
+                                                required
                                             />
                                             <span
                                                 className="icon"

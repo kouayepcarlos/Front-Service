@@ -124,6 +124,7 @@ export const authAPIPrestataire = {
         formData.append("cni", credentials.cni);
         formData.append("cv", credentials.cv);
         formData.append("photo", credentials.photo);
+            formData.append("description_courte", credentials.description_courte);
 
         try {
             if (!token) {
@@ -207,6 +208,21 @@ export const authAPIPrestataire = {
             throw error;
         }
     },
+       getSolde: async () => {
+         const token = sessionStorage.getItem("token");
+        try {
+            const res = await API.get("/prestataire/soldeCourant", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            return res.data;
+        } catch (error) {
+            console.error("Erreur lors de la récupération des soldes :", error);
+            return {
+                status: "error",
+                message: error.response?.data?.message || error.message,
+            };
+        }
+    },
 
     // 📋 Récupère toutes les réalisations du prestataire connecté
     allRealisation: async () => {
@@ -264,7 +280,7 @@ export const authAPIPrestataire = {
                 Prestataire.data.data.data
             );
             return Prestataire.data.data.data.filter(
-                (item) => item.statut === 'valide' || item.statut === 'complete'
+                (item) =>  item.statut === 'complete'
               );
         } catch (error) {
             console.error("Erreur lors de la requête :", error);
@@ -325,6 +341,7 @@ export const authAPIPrestataire = {
             return;
         }
 
+        // eslint-disable-next-line no-useless-catch
         try {
             const response = await API.delete(
                 `prestataire/supprimerRealisation/${credentials.id}`,
@@ -356,6 +373,22 @@ export const authAPIPrestataire = {
             };
         }
     },
+       LastAbonnement: async () => {
+         const token = sessionStorage.getItem("token");
+        try {
+            const res = await API.get("/prestataire/lastAbonnement", {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                console.log(res)
+            return res.data.data
+        } catch (error) {
+            console.error("Erreur lors de la récupération des messages :", error);
+            return {
+                status: "error",
+                message: error.response?.data?.message || error.message,
+            };
+        }
+    },
     withdrawal: async (montant) => {
         console.log(montant);
         const token = sessionStorage.getItem("token");
@@ -369,9 +402,14 @@ export const authAPIPrestataire = {
             );
             return res.data;
         } catch (error) {
-            console.log(error);
+            if(error?.response?.data?.data?.data)
+            toast.error(error?.response?.data?.data?.data?.message)
+        else
+            toast.error(error?.message);
             throw error;
         }
+        
+        
     },
     forgotPassword: async (email) => {
         try {

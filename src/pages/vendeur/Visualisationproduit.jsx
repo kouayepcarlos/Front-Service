@@ -11,6 +11,7 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import ProduitImages from "../../components/vendeur/Produitimage";
 
 // Importation des composants partagés
 import { useParams, useNavigate } from "react-router-dom"; // Récupère les paramètres d’URL (par ex. l'id du prestataire)
@@ -27,6 +28,7 @@ import "../../assets/css/modal.css";
 const Visualisationproduit = () => {
     const { boutiques } = useRegister();
     const navigate = useNavigate();
+      const [show2, setShow2] = useState(false);
     const [produit, setProduit] = useState();
     const [produits, setProduits] = useState();
     const [vendeur, setVendeur] = useState();
@@ -34,9 +36,11 @@ const Visualisationproduit = () => {
     const { idboutique, idproduit } = useParams();
     const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    
+ const handleClose = () => {setShow(false),setShow2(true)};
+  const handleShow = () => setShow(true);
 
+  const handleClose2 = () => setShow2(false);
     useEffect(() => {
         if (!boutiques) return; // 🔒 Attendre que boutiques soit défini
 
@@ -69,31 +73,27 @@ const Visualisationproduit = () => {
             <div className="my-custom-div">
                 <NavBar /> {/* Barre de navigation principale */}
                 <section className="mb-5">
-                    <Redirection  texte={`Bienvenue chez ${vendeur?.nom} Votre satisfaction est notre priorité — découvrez 
-nos produits et passez commande en toute confiance`}/>{" "}
+                    <Redirection  texte={`Bienvenue chez ${vendeur?.nom}! Votre satisfaction est notre priorité. Découvrez nos produits et passez vos commandes en toute confiance.`}/>{" "}
                     {/* Zone pour un message de redirection personnalisé */}
                     {/* Section infos prestataire */}
                     <div className="mx-5 pb-5 row">
-                        <div className="col-lg-6 photo">
-                            {/* Photo du prestataire */}
-                            <img
-                                src={produit?.file_url}
-                                alt=""
-                                className="w-100"
-                            />
-                        </div>
+                       <div className="col-lg-6 photo">
+  <ProduitImages
+    image1={produit?.file_url}
+    image2={produit?.file_url2}
+    image3={produit?.file_ur3}
+  />
+</div>
 
                         <div className="col-lg-6 contact-info">
                             <ul>
-                                <li>Nom</li>
+                                <li>Nom de l'article </li>
                                 <li>{produit?.nom}</li>
-                                <li>Description</li>
+                                <li>Description de l'article </li>
                                 <li>{produit?.description}</li>
-                                <li>Prix</li>
+                                <li>Prix de l'article </li>
                                 <li>{produit?.prix}</li>
-                                <li>Categorie</li>
-                                <li> {produit?.categorie}</li>
-                                <li>Statut</li>
+                                <li>Statut de l'article </li>
                                 <li> {produit?.statut}</li>
                                 <li>
                                     {" "}
@@ -101,11 +101,11 @@ nos produits et passez commande en toute confiance`}/>{" "}
                                         className="btn btn-primary"
                                         onClick={handleShow}
                                     >
-                                        Ecrire au vendeur
+                                        Contacter le vendeur
                                     </Button>
                                     <Modal
-                                        show={show}
-                                        onHide={handleClose}
+                                        show={show2}
+                                        onHide={handleClose2}
                                         className="Modal"
                                     >
                                         <Modal.Header closeButton>
@@ -135,7 +135,7 @@ nos produits et passez commande en toute confiance`}/>{" "}
                                                     </p>
                                                 </div>
                                             )}
-                                            <div>
+                                            {/* <div>
                                                 {" "}
                                                 <span>Adresse: &nbsp;</span>{" "}
                                                 <p>
@@ -143,7 +143,7 @@ nos produits et passez commande en toute confiance`}/>{" "}
                                                     {vendeur?.ville},
                                                     {vendeur?.adresse}
                                                 </p>
-                                            </div>
+                                            </div> */}
                                             <div>
                                                 {" "}
                                                 <span>
@@ -162,19 +162,34 @@ nos produits et passez commande en toute confiance`}/>{" "}
                                         <Modal.Footer>
                                             <Button
                                                 variant="secondary"
-                                                onClick={handleClose}
+                                                onClick={handleClose2}
                                             >
                                                 Fermer
                                             </Button>
                                         </Modal.Footer>
                                     </Modal>
+                                      
+                                                       <Modal show={show} onHide={handleClose} className="Modal">
+                                                        <Modal.Header closeButton>
+                                                          <Modal.Title>AVERTISSEMENT</Modal.Title>
+                                                        </Modal.Header>
+                                                        <Modal.Body className="info-vendeur">
+                                                         <p>Toute Transaction qui se fait en dehors de cette plateforme ne nous concerne plus</p>
+                                                         
+                                                        </Modal.Body>
+                                                        <Modal.Footer>
+                                                          <Button variant="secondary" onClick={handleClose}>
+                                                            J'acquiesse
+                                                          </Button>
+                                                        </Modal.Footer>
+                                                      </Modal>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     {/* Section des réalisations du prestataire */}
                     <div className="mx-5 pb-5 produit">
-                        <p>Les Autres produits</p>
+                        <p>Les Autres articles</p>
 
                         <Swiper
                             modules={[Autoplay, Navigation, Pagination]}

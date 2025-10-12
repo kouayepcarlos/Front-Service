@@ -66,10 +66,10 @@ function Register_2() {
                 <section className="mb-5">
                     <Redirection
                         texte={
-                            "Vous avez déjà un compte ? Connectez-vous et consultez les sujets"
+                            "Vous avez déjà un compte ? Connectez-vous"
                         }
                         nomBoutton={"Connectez vous"}
-                        lien={"/connexion/prestataire"}
+                        lien={"/vendeur/connexion"}
                     />
                     <div className="flex-column gap-3 register-div   ">
                         <p>Deuxieme etape</p>
@@ -87,7 +87,7 @@ function Register_2() {
                                     <form>
                                         
                                          <div className="form-group">
-                                            <label htmlFor="phone">Téléphone</label>
+                                            <label htmlFor="phone">Téléphone <span className="text-danger fw-bold fs-1">*</span></label>
                                             <input
                                                 name="telephone"
                                                 value={data.telephone}
@@ -108,8 +108,8 @@ function Register_2() {
                                                 Code de parrainage
                                             </label>
                                             <input
-                                                name="code_parain"
-                                                value={data.code_parain}
+                                                name="code_parrain"
+                                                value={data.code_parrain}
                                                 onChange={handleChange}
                                                 type="text"
                                                 className="form-control"
