@@ -129,7 +129,7 @@ const Souscrit = () => {
             <div className="ml-3 mr-3">
               <div className="">
                 <DataTable
-                  value={getFilleuls.premiereGen}
+                  value={getFilleuls.premiereGen || []}
                   paginator
                   rows={4}
                   tableStyle={{

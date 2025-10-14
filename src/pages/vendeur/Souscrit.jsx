@@ -161,7 +161,7 @@ const Souscrit = () => {
 
                                {solde && <div className="">
                 <DataTable
-                  value={solde?.data}
+                  value={solde?.data || []}
                   paginator
                   rows={4}
                   tableStyle={{ minWidth: "50rem", height: "100%" }}
