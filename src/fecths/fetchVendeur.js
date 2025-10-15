@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import axios from "axios";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
@@ -49,13 +50,7 @@ export const authAPIVendeur = {
 
             return response.data;
         } catch (error) {
-            console.log(error);
-            return (
-                error.response?.data || {
-                    status: "error",
-                    message: error.message,
-                }
-            );
+           throw error
         }
     },
     nouvelAbonnement: async (credentials) => {

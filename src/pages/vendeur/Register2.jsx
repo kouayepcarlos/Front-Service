@@ -9,9 +9,7 @@ import Redirection from "../../components/Redirection";
 import { useRegister } from "../../Contexts/VendeurProvider";
 // import { useState, useMemo } from "react";
 
-
 import { toast } from "react-toastify";
-
 
 /**
  * cette page est dédié à la création de compte utilisateur coté academie qui se fait en trois étape et celle ci
@@ -27,123 +25,111 @@ import { toast } from "react-toastify";
  */
 
 function Register_2() {
-    const { data, setData, nextStep, errorMessageRegister } = useRegister();
- 
+  const { data, setData, nextStep } = useRegister();
 
-    const handleChange = (e) => {
-        setData((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value,
-        }));
-    };
+  const handleChange = (e) => {
+    setData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
-    const controlData = () => {
-        // Validation des champs
-        if (!data.telephone.trim()) {
-            toast.error("Veuillez entrer le téléphone");
-            return;
-        }
-
-        const phoneRegex = /^\d{9}$/;
-        if (data.telephone && !phoneRegex.test(data.telephone)) {
-            toast.error("Le numéro de téléphone est invalide");
-            return;
-        }
-
-        localStorage.setItem("dataUser", JSON.stringify(data));
-        nextStep(3); // Passe à l'étape suivante
-    };
-
-    if (!data || !setData || !nextStep) {
-        return <div>Erreur étape 2</div>;
+  const controlData = () => {
+    // Validation des champs
+    if (!data.telephone.trim()) {
+      toast.error("Veuillez entrer le téléphone");
+      return;
     }
 
-    return (
-        <div className="general">
-            <Publicite />
-            <div className="my-custom-div">
-                <NavBar />
-                <section className="mb-5">
-                    <Redirection
-                        texte={
-                            "Vous avez déjà un compte ? Connectez-vous"
-                        }
-                        nomBoutton={"Connectez vous"}
-                        lien={"/vendeur/connexion"}
-                    />
-                    <div className="flex-column gap-3 register-div   ">
-                        <p>Deuxieme etape</p>
+    const phoneRegex = /^\d{9}$/;
+    if (data.telephone && !phoneRegex.test(data.telephone)) {
+      toast.error("Le numéro de téléphone est invalide");
+      return;
+    }
+
+    localStorage.setItem("dataUser", JSON.stringify(data));
+    nextStep(3); // Passe à l'étape suivante
+  };
+
+  if (!data || !setData || !nextStep) {
+    return <div>Erreur étape 2</div>;
+  }
+
+  return (
+    <div className="general">
+      <Publicite />
+      <div className="my-custom-div">
+        <NavBar />
+        <section className="mb-5">
+          <Redirection
+            texte={"Vous avez déjà un compte ? Connectez-vous"}
+            nomBoutton={"Connectez vous"}
+            lien={"/vendeur/connexion"}
+          />
+          <div className="flex-column gap-3 register-div   ">
+            <p>Deuxieme etape</p>
+          </div>
+          <section className="row tab-contact mx-md-3">
+            <div className="col-12 col-md-10 div-contact">
+              <div className="row">
+                <div className="col-6 d-none d-md-inline">
+                  <img src={conn} className="w-100 img-register" />
+                </div>
+                <div className="form-contact col-md-6 col-12">
+                  <form>
+                    <div className="form-group">
+                      <label htmlFor="phone">
+                        Téléphone{" "}
+                        <span className="text-danger fw-bold fs-1">*</span>
+                      </label>
+                      <input
+                        name="telephone"
+                        value={data.telephone}
+                        onChange={handleChange}
+                        type="text"
+                        required
+                        className="form-control"
+                        id="telephone"
+                        placeholder="Entrez votre numéro de téléphone"
+                      />
                     </div>
-                    <section className="row tab-contact mx-md-3">
-                        <div className="col-12 col-md-10 div-contact">
-                            <div className="row">
-                                <div className="col-6 d-none d-md-inline">
-                                    <img
-                                        src={conn}
-                                        className="w-100 img-register"
-                                    />
-                                </div>
-                                <div className="form-contact col-md-6 col-12">
-                                    <form>
-                                        
-                                         <div className="form-group">
-                                            <label htmlFor="phone">Téléphone <span className="text-danger fw-bold fs-1">*</span></label>
-                                            <input
-                                                name="telephone"
-                                                value={data.telephone}
-                                                onChange={handleChange}
-                                                type="text"
-                                                required
-                                                className="form-control"
-                                                id="telephone"
-                                                placeholder="Entrez votre numéro de téléphone"
-                                            />
-                                           
 
-                                        </div>
-                                       
+                    <div className="form-group">
+                      <label htmlFor="code">Code de parrainage</label>
+                      <input
+                        name="code_parrain"
+                        value={data.code_parrain}
+                        onChange={handleChange}
+                        type="text"
+                        className="form-control"
+                        id="code"
+                        placeholder="Entrez le code de parrainage"
+                      />
+                    </div>
 
-                                        <div className="form-group">
-                                            <label htmlFor="code">
-                                                Code de parrainage
-                                            </label>
-                                            <input
-                                                name="code_parrain"
-                                                value={data.code_parrain}
-                                                onChange={handleChange}
-                                                type="text"
-                                                className="form-control"
-                                                id="code"
-                                                placeholder="Entrez le code de parrainage"
-                                            />
-                                        </div>
-
-                                        <div className="step">
-                                            {" "}
-                                            <a
-                                                onClick={() => nextStep(1)}
-                                                className="btn btn-primary"
-                                            >
-                                                Retour
-                                            </a>
-                                            <a
-                                                onClick={controlData}
-                                                className="btn btn-primary"
-                                            >
-                                                Suivant
-                                            </a>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </section>
-                <Chat />
-                <Footer />
+                    <div className="step">
+                      {" "}
+                      <a
+                        onClick={() => nextStep(1)}
+                        className="btn btn-primary"
+                      >
+                        Retour
+                      </a>
+                      <a onClick={controlData} className="btn btn-primary">
+                        Suivant
+                      </a>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
-        </div>
-    );
+          </section>
+        </section>
+        <Chat />
+        <Footer />
+      </div>
+    </div>
+  );
 }
 
 export default Register_2;

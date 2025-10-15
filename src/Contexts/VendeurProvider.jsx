@@ -165,23 +165,8 @@ export const VendeurProvider = ({ children }) => {
     mutationFn: async (credentials) =>
       await authAPIVendeur.register(credentials),
     onSuccess: (data) => {
-      console.log(data);
 
-      if (data.status === "error") {
-        const errors = data.errors;
-        if (errors.email) {
-          toast.error(
-            "un compte avec cet email existe deja veuillez le changer"
-          );
-
-          navigate("/vendeur/step1");
-        } else if (errors.telephone) {
-          toast.error(
-            "un compte avec ce numéro de téléphone existe deja veuillez le changer ou vous connecter"
-          );
-          navigate("/vendeur/step2");
-        }
-      } else if (data.status === "payment_pending") {
+      if (data.status === "payment_pending") {
         localStorage.clear("dataUser");
         let link = data.link;
         console.log(link);
@@ -189,9 +174,18 @@ export const VendeurProvider = ({ children }) => {
       }
     },
     onError: (error) => {
-      // console.log("Erreur de connexion :", error.response?.data);
-      if (error.response?.data) {
-        //    const errors = error.response?.data.erros;
+     console.log(error);
+      if (error.response && error.response.data) {
+        const errors = error.response.data.errors;
+        // Parcours toutes les clés et messages
+        Object.keys(errors).forEach((key) => {
+          errors[key].forEach((msg) => toast.error(msg));
+        });
+      } else if (error.status === 429) {
+        toast.error(error.response.data.message);
+      } else {
+        // Message générique si erreur inconnue
+        toast.error("Une erreur est survenue, veuillez réessayer.");
       }
     },
   });
@@ -287,6 +281,7 @@ export const VendeurProvider = ({ children }) => {
     onSuccess: (data) => {
       if (data?.message) {
         toast.success(data?.message);
+        window.location.reload()
       }
     },
     onError: (error) => {
@@ -299,6 +294,7 @@ export const VendeurProvider = ({ children }) => {
     onSuccess: (data) => {
       if (data?.message) {
         toast.success(data?.message);
+        window.location.reload()
       }
     },
     onError: (error) => {

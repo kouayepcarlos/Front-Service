@@ -1,10 +1,9 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/css/prestataire/prestataire.css";
 import "../../assets/css/connexion.css";
-
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
 import NavBar from "../../components/navbar/NavBar";
 import Publicite from "../../components/Publicite";

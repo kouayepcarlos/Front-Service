@@ -35,10 +35,10 @@ const ResetPassword = () => {
         }
 
         // Validation du mot de passe
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        const passwordRegex = /^.{8,}$/;;
         if (!passwordRegex.test(password.trim())) {
             toast.error(
-                "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule et un chiffre."
+                "Le mot de passe doit contenir au moins 8 caractères"
             );
             setLoading(false);
             return;

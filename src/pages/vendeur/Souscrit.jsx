@@ -12,10 +12,7 @@ import "../../assets/css/souscrit.css";
 import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 import { toast } from "react-toastify";
 const Souscrit = () => {
-  const token = sessionStorage.getItem("token");
   const [loading, setLoading] = useState(false);
-  const [bilan, setBilan] = useState([]);
-
   const [getFilleuls, setGetFilleuls] = useState({
     premiereGen: [],
     deuxiemeGen: [],
@@ -63,15 +60,6 @@ const Souscrit = () => {
       </span>
     </div>
   );
-
-  // const actionBodyTemplate = (rowData) => {
-  //   return (
-  //     <div className="d-flex justify-content-start no-hover-icons">
-  //      <i className="fa-solid fa-toggle-on" style={{ width: "30px", cursor: "pointer", color: "green" }}></i>
-  //      <i className="fa-solid fa-toggle-off" style={{ width: "40px", cursor: "pointer", color: "red" }}></i>
-  //     </div>
-  //   );
-  // };
 
   useEffect(() => {
     refetchFilleuls();
@@ -139,14 +127,9 @@ const Souscrit = () => {
                   globalFilter={globalFilter}
                   selectionMode="single"
                 >
-                  {/* {getFilleuls.premiereGen?.map((filleul, index)=>{
-
-                    })} */}
                   <Column header="Numero" body={indexTemplate} />
                   <Column field="nom" header="Noms" />
                   <Column field="date_inscription" header="Date" />
-                  {/* <Column field="telephone" header="Telephone" /> */}
-                  {/* <Column field="status" header="Gains" /> */}
                 </DataTable>
 
                 <div className="resultat">
