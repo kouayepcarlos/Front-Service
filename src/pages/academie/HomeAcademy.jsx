@@ -16,10 +16,17 @@ import PayModal from "../../components/academie/PayModal";
 import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
 import LoaderSujet from "../../components/LoadersCompoments/LoaderSujet";
+import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 
 const HomeAcademy = () => {
   // Récupération des données globales depuis le contexte
-  const { listeSujets, user, listeSujetsUniversites } = useAppContext();
+  const {
+    listeSujets,
+    user,
+    listeSujetsUniversites,
+    isLoadingSujet,
+    isLoadingUniv,
+  } = useAppContext();
 
   // État pour gérer l'affichage de la modale de paiement
   const [showPaiement, setShowPaiement] = useState(false);
@@ -67,7 +74,7 @@ const HomeAcademy = () => {
       return listeSujets.listeSujets.filter(
         (sujet) =>
           (filters.annee === "" || sujet.annee === filters.annee) &&
-          (sujet.serie === user?.serie) &&
+          sujet.serie === user?.serie &&
           (filters.matiere === "" || sujet.matiere === filters.matiere)
       );
     }
@@ -93,8 +100,7 @@ const HomeAcademy = () => {
         (sujet) =>
           (filtersUniversites.session === "" ||
             sujet.session === filtersUniversites.session) &&
-          (
-            sujet.filiere === user?.filiere) &&
+          sujet.filiere === user?.filiere &&
           (filtersUniversites.matiere === "" ||
             sujet.matiere === filtersUniversites.matiere)
       );
@@ -189,6 +195,7 @@ const HomeAcademy = () => {
     <div className="general">
       {/* Affichage de la publicité */}
       <Publicite />
+      {(isLoadingSujet || isLoadingUniv) && <LoaderTransparent />}
 
       <div className="my-custom-div ">
         {/* Barre de navigation spécifique à l'Académie */}
@@ -196,7 +203,7 @@ const HomeAcademy = () => {
 
         <section className="">
           {/* Messages de redirection selon le statut de l'utilisateur */}
-          {(user?.status == "inscrit"|| user?.status == "expire") && (
+          {(user?.status == "inscrit" || user?.status == "expire") && (
             <Redirection
               texte={
                 "Payez votre abonnement et accedez aux sujets offert par Nilservice !!"
@@ -232,40 +239,40 @@ const HomeAcademy = () => {
                     </p>
                     <div className="d-flex flex-wrap gap-3 flex-md-nowrap">
                       {/* Filtre par année */}
-                    {loader === false &&  <select
-                        name="annee"
-                        className="form-select"
-                        onChange={handleFilterChange}
-                      >
-                        <option value="">Toutes les années</option>
-                        {[
-                          ...new Set(
-                            sujets?.map((s) => s.annee)
-                          ),
-                        ]?.map((annee) => (
-                          <option key={annee} value={annee}>
-                            {annee}
-                          </option>
-                        ))}
-                      </select>}
-                     
+                      {loader === false && (
+                        <select
+                          name="annee"
+                          className="form-select"
+                          onChange={handleFilterChange}
+                        >
+                          <option value="">Toutes les années</option>
+                          {[...new Set(sujets?.map((s) => s.annee))]?.map(
+                            (annee) => (
+                              <option key={annee} value={annee}>
+                                {annee}
+                              </option>
+                            )
+                          )}
+                        </select>
+                      )}
+
                       {/* Filtre par matière */}
-                    {loader === false &&  <select
-                        name="matiere"
-                        className="form-select"
-                        onChange={handleFilterChange}
-                      >
-                        <option value="">Toutes les matières</option>
-                        {[
-                          ...new Set(
-                            sujets?.map((s) => s.matiere)
-                          ),
-                        ]?.map((matiere) => (
-                          <option key={matiere} value={matiere}>
-                            {matiere}
-                          </option>
-                        ))}
-                      </select>}
+                      {loader === false && (
+                        <select
+                          name="matiere"
+                          className="form-select"
+                          onChange={handleFilterChange}
+                        >
+                          <option value="">Toutes les matières</option>
+                          {[...new Set(sujets?.map((s) => s.matiere))]?.map(
+                            (matiere) => (
+                              <option key={matiere} value={matiere}>
+                                {matiere}
+                              </option>
+                            )
+                          )}
+                        </select>
+                      )}
                     </div>
                   </div>
 
@@ -308,40 +315,43 @@ const HomeAcademy = () => {
                       </p>
                       <div className="d-flex flex-wrap gap-3 flex-md-nowrap">
                         {/* Filtre par session */}
-                      {loader === false &&  <select
-                          name="session"
-                          className="form-select"
-                          onChange={handleFilterUniversites}
-                        >
-                          <option value="">Toutes les sessions</option>
-                          {[
-                            ...new Set(
-                              sujetsUniversites?.map((s) => s.session)
-                            ),
-                          ]?.map((session) => (
-                            <option key={session} value={session}>
-                              {session}
-                            </option>
-                          ))}
-                        </select>}
-                      
-                      {loader === false &&  <select
-                          name="matiere"
-                          className="form-select"
-                          onChange={handleFilterUniversites}
-                        >
-                          <option value="">Toutes les matières</option>
-                          {[
-                            ...new Set(
-                              sujetsUniversites?.map((s) => s.matiere)
-                            ),
-                          ]?.map((matiere) => (
-                            <option key={matiere} value={matiere}>
-                              {matiere}
-                            </option>
-                          ))}
-                        </select>
-}
+                        {loader === false && (
+                          <select
+                            name="session"
+                            className="form-select"
+                            onChange={handleFilterUniversites}
+                          >
+                            <option value="">Toutes les sessions</option>
+                            {[
+                              ...new Set(
+                                sujetsUniversites?.map((s) => s.session)
+                              ),
+                            ]?.map((session) => (
+                              <option key={session} value={session}>
+                                {session}
+                              </option>
+                            ))}
+                          </select>
+                        )}
+
+                        {loader === false && (
+                          <select
+                            name="matiere"
+                            className="form-select"
+                            onChange={handleFilterUniversites}
+                          >
+                            <option value="">Toutes les matières</option>
+                            {[
+                              ...new Set(
+                                sujetsUniversites?.map((s) => s.matiere)
+                              ),
+                            ]?.map((matiere) => (
+                              <option key={matiere} value={matiere}>
+                                {matiere}
+                              </option>
+                            ))}
+                          </select>
+                        )}
                       </div>
                     </div>
 

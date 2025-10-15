@@ -66,28 +66,29 @@ export function AppProvider({ children }) {
   });
 
   // Récupération des filleuls
-  const { data: filleuls, refetch: refetchFilleuls } = useQuery({
+  const { data: filleuls, refetch: refetchFilleuls, isLoading: isLoadingFilleuls, } = useQuery({
     queryKey: ["filleuls"],
     queryFn: authAPI.getFilleuls,
+   
     retry: false,
     enabled: !!user,
   });
 
   // Récupération des filleuls
-  const { data: fichier, refetch: refetchFichier } = useQuery({
+  const { data: fichier, refetch: refetchFichier, isLoading: isLoadingFichier } = useQuery({
     queryKey: ["fichier"],
     queryFn: authAPI.allfichier,
     retry: false,
     enabled: !!user,
   });
 
-  const { data: lastabonnement, refetch: refetchLastabonnement } = useQuery({
+  const { data: lastabonnement, refetch: refetchLastabonnement, isLoading: isLoadingAbonnement } = useQuery({
     queryKey: ["lastabonnement"],
     queryFn: authAPI.LastAbonnement,
     retry: false,
     enabled: !!user,
   });
-  const { data: solde, refetch: refetchSolde } = useQuery({
+  const { data: solde, refetch: refetchSolde, isLoading: isLoadingSolde } = useQuery({
     queryKey: ["solde"],
     queryFn: authAPI.getSolde,
     retry: false,
@@ -95,7 +96,7 @@ export function AppProvider({ children }) {
   });
 
   // Récupération des sujets d'examen
-  const { data: listeSujets, refetch: refetchSujets } = useQuery({
+  const { data: listeSujets, refetch: refetchSujets , isLoading: isLoadingSujet} = useQuery({
     queryKey: ["listeSujets"],
     queryFn: authAPI.fetchSujets,
     retry: false,
@@ -103,7 +104,7 @@ export function AppProvider({ children }) {
   });
 
   // Récupération des sujets d'examen
-  const { data: listeSujetsUniversites, refetch: refetchSujetsUniversites } =
+  const { data: listeSujetsUniversites, refetch: refetchSujetsUniversites, isLoading: isLoadingUniv } =
     useQuery({
       queryKey: ["listeSujetsUniversites"],
       queryFn: authAPI.fetchSujetsUniversites,
@@ -261,7 +262,7 @@ export function AppProvider({ children }) {
       if (data.status == "success") {
         toast.success("Informations ajoutees");
         setTimeout(() => {
-          navigate("/homeAcademy");
+         
           window.location.reload();
         }, 1500);
       }
@@ -550,6 +551,12 @@ export function AppProvider({ children }) {
         addFichier,
         downloadSubjetUniversitecorrectionMutation,
         downloadSubjetcorrectionMutation,
+        isLoadingAbonnement,
+        isLoadingFichier,
+        isLoadingFilleuls,
+        isLoadingSolde,
+        isLoadingSujet,
+        isLoadingUniv
       }}
     >
       {children}

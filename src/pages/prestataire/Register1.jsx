@@ -24,257 +24,201 @@ import { toast } from "react-toastify";
  *
  */
 function Register_1() {
-    //donnees de l utilisateur pour la creation de son compte
-    const { data, setData, nextStep, errorMessageRegister } =
-        useRegister() || {};
+  //donnees de l utilisateur pour la creation de son compte
+  const { data, setData, nextStep } = useRegister() || {};
 
-    const [typePassword, setTypePassword] = useState({
-        password: "password",
-        password_confirmation: "password",
-    });
+  const [typePassword, setTypePassword] = useState({
+    password: "password",
+    password_confirmation: "password",
+  });
 
-    const [icon, setIcon] = useState({
-        password: "fa-regular fa-eye",
-        password_confirmation: "fa-regular fa-eye",
-    });
+  const [icon, setIcon] = useState({
+    password: "fa-regular fa-eye",
+    password_confirmation: "fa-regular fa-eye",
+  });
 
-    // cette foncion est dédiée à la récupération des données de l utilisateur soit nom et prenom
-    // email etc
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+  // cette foncion est dédiée à la récupération des données de l utilisateur soit nom et prenom
+  // email etc
+  const handleChange = (e) => {
+    setData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
-        if (name === "nom") {
-            const nameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\u00A0\s]+$/;
-            if (value === "" || nameRegex.test(value)) {
-                setData((prevState) => ({
-                    ...prevState,
-                    [name]: value,
-                }));
-            } else {
-                return;
-            }
-        }
-        setData((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value,
-        }));
-    };
-
-    // contrôle et validation des données utilisateur afin que les contraintes soit respectés
-    function controlData() {
-        // e.preventDefault()
-        if (
-            !data.nom.trim() ||
-            !data.email.trim() ||
-            !data.mot_de_passe.trim()
-        ) {
-            toast.error("Tous les champs doivent être remplis.");
-        }
-
-        // Validation du nom
-        // const nameRegex = /^[a-zA-Z\s]+$/;
-        // if (!nameRegex.test(data.nom.trim())) {
-        //     setValidation({
-        //         message: "Le nom ne doit contenir que des lettres et des espaces.",
-        //         hidden: false
-        //     });
-        //     return;
-        // }
-
-        // Validation de l'email
-        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-        if (!emailRegex.test(data.email.trim())) {
-            toast.error("Email invalide.");
-            return;
-        }
-
-        // Validation du mot de passe
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
-        if (!passwordRegex.test(data.mot_de_passe.trim())) {
-            toast.error(
-                "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule et un chiffre."
-            );
-            return;
-        }
-
-            setData((prevState) => ({
-                ...prevState,
-                redirect_url:`https://nilservice.net/prestataire/connexion?nom=${data?.nom}`,
-        //"localhost:5173/connexion/prestataire",
-        faillure_redirect_url:"https://nilservice.net/page/echec"
-        //"localhost:5173/page/echec"
-            }));
-        // Sauvegarde et passage à l'étape suivante
-        localStorage.setItem("dataUser", JSON.stringify(data));
-        nextStep(2);
+  // contrôle et validation des données utilisateur afin que les contraintes soit respectés
+  function controlData() {
+    // e.preventDefault()
+    if (!data.nom.trim() || !data.email.trim() || !data.mot_de_passe.trim()) {
+      toast.error("Tous les champs doivent être remplis.");
     }
 
-    function hiddenPassword(field) {
-        setTypePassword((prevState) => ({
-            ...prevState,
-            [field]: prevState[field] === "password" ? "text" : "password",
-        }));
-
-        setIcon((prevState) => ({
-            ...prevState,
-            [field]:
-                prevState[field] === "fa-regular fa-eye"
-                    ? "fa-regular fa-eye-slash"
-                    : "fa-regular fa-eye",
-        }));
+    // Validation de l'email
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailRegex.test(data.email.trim())) {
+      toast.error("Email invalide.");
+      return;
     }
 
-    if (!data || !setData || !nextStep) {
-        return <div>erreur </div>;
-    } else {
-        return (
-            <div className="general">
-                <Publicite />
-                <div className="my-custom-div">
-                    <NavBar />
-                    <section className="mb-5  ">
-                        <Redirection
-                            texte={
-                                "  Vous avez deja un compte ? Connectez vous "
-                            }
-                            nomBoutton={"Connectez vous"}
-                            lien={"/prestataire/connexion"}
-                        />
-                        <div className="flex-column gap-3  register-div  ">
-                            <p>Premiere etape</p>
-                        </div>
-                        <section className="row tab-contact mx-md-3">
-                            <div className="col-12 col-md-10  div-contact ">
-                                <div className="row">
-                                    {" "}
-                                    <div className="col-6 d-none d-md-inline">
-                                        <img
-                                            src={conn}
-                                            className="w-100 img-register"
-                                        />
-                                    </div>
-                                    <div className="form-contact col-md-6 col-12">
-                                        <form>
-                                            <div className="form-group">
-                                                <label htmlFor="name">
-                                                    Nom et Prenom <span className="text-danger fw-bold fs-1">*</span>
-                                                </label>
-                                                <input
-                                                    value={data.nom}
-                                                    onChange={handleChange}
-                                                    name="nom"
-                                                    type="texte"
-                                                    required
-                                                    className="form-control"
-                                                    id="name"
-                                                    placeholder="Entrez votre nom et prenom"
-                                                />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="email">
-                                                    Email <span className="text-danger fw-bold fs-1">*</span>
-                                                </label>
-                                                <input
-                                                    value={data.email}
-                                                    onChange={handleChange}
-                                                    name="email"
-                                                    type="email"
-                                                    required
-                                                    className="form-control"
-                                                    id="email"
-                                                    placeholder="Entrez votre adresse mail"
-                                                />
-                                            </div>
+    // Validation du mot de passe
+    const passwordRegex = /^.{8,}$/;
+    if (!passwordRegex.test(data.mot_de_passe.trim())) {
+      toast.error("Le mot de passe doit contenir au moins 8 caractères.");
+      return;
+    }
 
-                                            <div className="form-group">
-                                                <label htmlFor="password">
-                                                    Mot de passe <span className="text-danger fw-bold fs-1">*</span>
-                                                </label>
-                                                <session className="input-container">
-                                                    <input
-                                                        value={
-                                                            data.mot_de_passe
-                                                        }
-                                                        onChange={handleChange}
-                                                        required
-                                                        name="mot_de_passe"
-                                                        type={
-                                                            typePassword.password
-                                                        }
-                                                        className="form-control"
-                                                        id="passe"
-                                                        placeholder="Entrez votre mot de passe"
-                                                    />
-                                                    <span
-                                                        className="icon"
-                                                        onClick={() =>
-                                                            hiddenPassword(
-                                                                "password"
-                                                            )
-                                                        }
-                                                    >
-                                                        <i
-                                                            className={
-                                                                icon.password
-                                                            }
-                                                        ></i>
-                                                    </span>
-                                                </session>
-                                            </div>
+    setData((prevState) => ({
+      ...prevState,
+      redirect_url: `https://nilservice.net/prestataire/connexion?nom=${data?.nom}`,
+      faillure_redirect_url: "https://nilservice.net/page/echec",
+    }));
+    // Sauvegarde et passage à l'étape suivante
+    localStorage.setItem("dataUser", JSON.stringify(data));
+    nextStep(2);
+  }
 
-                                            <div className="form-group">
-                                                <label htmlFor="password_confirmation">
-                                                    Confirmation mot de passe
-                                                </label>
-                                                <session className="input-container">
-                                                    <input
-                                                        value={
-                                                            data.mot_de_passe_confirmation
-                                                        }
-                                                        onChange={handleChange}
-                                                        name="mot_de_passe_confirmation"
-                                                        type={
-                                                            typePassword.password_confirmation
-                                                        }
-                                                        required
-                                                        className="form-control"
-                                                        id="mot_de_passe_confirmation"
-                                                        placeholder="Entrez de nouveau votre mot de passe"
-                                                    />
-                                                    <span
-                                                        className="icon"
-                                                        onClick={() =>
-                                                            hiddenPassword(
-                                                                "password_confirmation"
-                                                            )
-                                                        }
-                                                    >
-                                                        <i
-                                                            className={
-                                                                icon.password_confirmation
-                                                            }
-                                                        ></i>
-                                                    </span>
-                                                </session>
-                                            </div>
-                                            <a
-                                                className="btn btn-primary"
-                                                onClick={() => controlData()}
-                                            >
-                                                Suivant
-                                            </a>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </section>
-                    <Chat />
-                    <Footer />
-                </div>
+  function hiddenPassword(field) {
+    setTypePassword((prevState) => ({
+      ...prevState,
+      [field]: prevState[field] === "password" ? "text" : "password",
+    }));
+
+    setIcon((prevState) => ({
+      ...prevState,
+      [field]:
+        prevState[field] === "fa-regular fa-eye"
+          ? "fa-regular fa-eye-slash"
+          : "fa-regular fa-eye",
+    }));
+  }
+
+  if (!data || !setData || !nextStep) {
+    return <div>erreur </div>;
+  } else {
+    return (
+      <div className="general">
+        <Publicite />
+        <div className="my-custom-div">
+          <NavBar />
+          <section className="mb-5  ">
+            <Redirection
+              texte={"  Vous avez deja un compte ? Connectez vous "}
+              nomBoutton={"Connectez vous"}
+              lien={"/prestataire/connexion"}
+            />
+            <div className="flex-column gap-3  register-div  ">
+              <p>Premiere etape</p>
             </div>
-        );
-    }
+            <section className="row tab-contact mx-md-3">
+              <div className="col-12 col-md-10  div-contact ">
+                <div className="row">
+                  {" "}
+                  <div className="col-6 d-none d-md-inline">
+                    <img src={conn} className="w-100 img-register" />
+                  </div>
+                  <div className="form-contact col-md-6 col-12">
+                    <form>
+                      <div className="form-group">
+                        <label htmlFor="name">
+                          Nom et Prenom{" "}
+                          <span className="text-danger fw-bold fs-1">*</span>
+                        </label>
+                        <input
+                          value={data.nom}
+                          onChange={handleChange}
+                          name="nom"
+                          type="texte"
+                          required
+                          className="form-control"
+                          id="name"
+                          placeholder="Entrez votre nom et prenom"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="email">
+                          Email{" "}
+                          <span className="text-danger fw-bold fs-1">*</span>
+                        </label>
+                        <input
+                          value={data.email}
+                          onChange={handleChange}
+                          name="email"
+                          type="email"
+                          required
+                          className="form-control"
+                          id="email"
+                          placeholder="Entrez votre adresse mail"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="password">
+                          Mot de passe{" "}
+                          <span className="text-danger fw-bold fs-1">*</span>
+                        </label>
+                        <session className="input-container">
+                          <input
+                            value={data.mot_de_passe}
+                            onChange={handleChange}
+                            required
+                            name="mot_de_passe"
+                            type={typePassword.password}
+                            className="form-control"
+                            id="passe"
+                            placeholder="Entrez votre mot de passe"
+                          />
+                          <span
+                            className="icon"
+                            onClick={() => hiddenPassword("password")}
+                          >
+                            <i className={icon.password}></i>
+                          </span>
+                        </session>
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="password_confirmation">
+                          Confirmation mot de passe
+                        </label>
+                        <session className="input-container">
+                          <input
+                            value={data.mot_de_passe_confirmation}
+                            onChange={handleChange}
+                            name="mot_de_passe_confirmation"
+                            type={typePassword.password_confirmation}
+                            required
+                            className="form-control"
+                            id="mot_de_passe_confirmation"
+                            placeholder="Entrez de nouveau votre mot de passe"
+                          />
+                          <span
+                            className="icon"
+                            onClick={() =>
+                              hiddenPassword("password_confirmation")
+                            }
+                          >
+                            <i className={icon.password_confirmation}></i>
+                          </span>
+                        </session>
+                      </div>
+                      <a
+                        className="btn btn-primary"
+                        onClick={() => controlData()}
+                      >
+                        Suivant
+                      </a>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </section>
+          <Chat />
+          <Footer />
+        </div>
+      </div>
+    );
+  }
 }
 
 export default Register_1;

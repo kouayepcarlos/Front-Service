@@ -19,9 +19,10 @@ import { useMemo } from "react";
 import LoaderSujet from "../../components/LoadersCompoments/LoaderSujet";
 import { useRef } from "react";
 import { toast } from "react-toastify";
+import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 const AllFichier = () => {
   // Récupération des données globales depuis le contexte
-  const { addFichier, fichier, user } = useAppContext();
+  const { addFichier, fichier,isLoadingFichier, user } = useAppContext();
 
   // // État pour gérer l'affichage de la modale de paiement
   const [showPaiement, setShowPaiement] = useState(false);
@@ -152,6 +153,7 @@ const AllFichier = () => {
 
   return (
     <div className="general">
+      {isLoadingFichier && <LoaderTransparent/>}
       {/* Affichage de la publicité */}
       <Publicite />
 

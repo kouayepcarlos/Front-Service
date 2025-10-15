@@ -6,19 +6,12 @@ import { authAPIPartenaire } from "../fecths/fetchPartenaire";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation, matchPath } from "react-router-dom";
-// import LoaderTransparent from "../components/LoadersCompoments/LoaderTransparent";
 
 const PartenaireContext = createContext();
 
 export const PartenaireProvider = ({ children }) => {
-  const [errorMessageRegister, setErrorMessageRegister] = useState({
-    error: "",
-    message: "",
-  });
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Fonction pour aller à l etape suivante
   const nextStep = (step) => navigate(`/partenaire/step${step}`);
 
   const [data, setData] = useState({
@@ -27,17 +20,34 @@ export const PartenaireProvider = ({ children }) => {
     email: null,
     password: "",
     telephone: "",
+   
   });
   const [user, setUser] = useState(null);
-  const { data: solde, refetch: refetchSolde } = useQuery({
+
+  const {
+    data: solde,
+    refetch: refetchSolde,
+    isLoading: isLoadingSolde,
+  } = useQuery({
     queryKey: ["solde"],
     queryFn: authAPIPartenaire.getSolde,
     retry: false,
     enabled: !!sessionStorage.getItem("token"),
   });
+
+  const {
+    data: me,
+    refetch: refetchMe,
+    isLoading: isLoadingMe,
+  } = useQuery({
+    queryKey: ["me"],
+    queryFn: authAPIPartenaire.me,
+    retry: false,
+    enabled: !!sessionStorage.getItem("token"),
+  });
+
   const publicRoutes = [
     "/partenaire/connexion",
-
     "/partenaire/passe_oublie",
     "/partenaire/reset",
     "/partenaire/step1",
@@ -51,11 +61,10 @@ export const PartenaireProvider = ({ children }) => {
         const check = await authAPIPartenaire.checkout();
         if (check) {
           if (check.response?.status === 401) {
-            console.warn("Token invalide ou expiré");
             sessionStorage.removeItem("token");
             navigate("/partenaire/connexion");
           } else {
-            console.error("Erreur inconnue :", check);
+            //console.error("Erreur inconnue :", check);
           }
         } else {
           setUser(JSON.parse(sessionStorage.getItem("user")));
@@ -83,9 +92,26 @@ export const PartenaireProvider = ({ children }) => {
     enabled: !!user,
   });
 
-  const { data: objectifs, refetch: refetchObjectifs } = useQuery({
+  const {
+    data: objectifs,
+    refetch: refetchObjectifs,
+    isLoading: isLoadingObjectif,
+  } = useQuery({
     queryKey: ["objctifs"],
     queryFn: authAPIPartenaire.getObjectifs,
+    retry: false,
+    enabled:
+      !!sessionStorage.getItem("token") &&
+      location.pathname === "/partenaire/mesobjectifs",
+  });
+
+  const {
+    data: monobjectif,
+    refetch: refetchMonObjectifs,
+    isLoading: isLoadingMonObjectif,
+  } = useQuery({
+    queryKey: ["monobjectif"],
+    queryFn: authAPIPartenaire.objectifEncours,
     retry: false,
     enabled:
       !!sessionStorage.getItem("token") &&
@@ -95,7 +121,6 @@ export const PartenaireProvider = ({ children }) => {
   useEffect(() => {
     const storage = localStorage.getItem("dataUser");
     // console.log(storage);
-
     if (storage) {
       setData(JSON.parse(storage));
     } else {
@@ -107,33 +132,28 @@ export const PartenaireProvider = ({ children }) => {
     mutationFn: async (credentials) =>
       await authAPIPartenaire.register(credentials),
     onSuccess: (data) => {
-      console.log(data);
-
-      if (data.status === "error") {
-        const errors = data.errors;
-        if (errors.email) {
-          toast.error(
-            "un compte avec cet email existe deja veuillez le changer"
-          );
-
-          navigate("/partenaire/step1");
-        } else if (errors.telephone) {
-          toast.error(
-            "un compte avec ce numéro de téléphone existe deja veuillez le changer ou vous connecter"
-          );
-          navigate("/partenaire/step2");
-        }
-      } else if (data.status === "payment_pending") {
+      if (data.status === "success") {
         localStorage.clear("dataUser");
-        let link = data.link;
+        let link = data.data.link.data.link;
+        console.log("carlos test");
         console.log(link);
-        // window.open(link, "_blank");
+        return { status: "payment_pending", link };
       }
     },
     onError: (error) => {
-      // console.log("Erreur de connexion :", error.response?.data);
-      if (error.response?.data) {
-        //    const errors = error.response?.data.erros;
+      console.log(error)
+      if (error.response && error.response.data ) {
+        const errors = error.response.data;
+        // Parcours toutes les clés et messages
+        Object.keys(errors).forEach((key) => {
+          errors[key].forEach((msg) => toast.error(msg));
+        });
+      } else if(error.status === 429){
+        toast.error(error.response.data.message)
+      }
+      else{
+        // Message générique si erreur inconnue
+        toast.error("Une erreur est survenue, veuillez réessayer.");
       }
     },
   });
@@ -147,10 +167,7 @@ export const PartenaireProvider = ({ children }) => {
         localStorage.clear("dataUser");
         let link = data.data.link;
         console.log(link);
-
         window.location.href = link;
-
-        // (Optionnel) Feedback à l’utilisateur
         alert(
           "Vous allez être redirigé vers le paiement. Veuillez finaliser la transaction."
         );
@@ -163,6 +180,7 @@ export const PartenaireProvider = ({ children }) => {
       }
     },
   });
+
   const withdrawal = useMutation({
     mutationFn: async (amount) => await authAPIPartenaire.withdrawal(amount),
     onSuccess: (data) => {
@@ -170,6 +188,7 @@ export const PartenaireProvider = ({ children }) => {
       if (data?.statut == "success") toast.success(data?.message);
     },
   });
+
   const loginMutationpartenaire = useMutation({
     mutationFn: async (credentials) =>
       await authAPIPartenaire.login(credentials),
@@ -179,60 +198,18 @@ export const PartenaireProvider = ({ children }) => {
         sessionStorage.setItem("token", data.token);
         setUser(data?.partenaire);
         console.log("user", user);
-        toast.success("SUCCESS");
+        toast.success("Connexion reuissie");
       } else {
         toast.warning(
           "Connexion réussie, mais aucune information utilisateur reçue."
         );
       }
-      //                 localStorage.clear('dataUser');
-      //                let  link = data.data.link.data.link
-      // console.log(link)
-      //                 window.open(link,'_blank');
     },
     onError: (error) => {
       //   console.log("Erreur de connexion :", error.response?.data);
       const errors = error.response?.data;
       if (errors?.message === "Identifiants incorrects") {
         toast.error("Identifiants incorrects");
-      } else {
-        toast.error("Erreur du serveur. Veuillez réessayer plus tard.");
-      }
-    },
-  });
-  const me = useMutation({
-    mutationFn: async () => await authAPIPartenaire.me(),
-    onSuccess: (data) => {
-      if (data) {
-        return data;
-      } else {
-        //console.log(response)
-      }
-      // console.log("delete reuissi");
-    },
-    onError: (error) => {
-      const errors = error.response?.data;
-      if (errors?.message === "fichier introuvable") {
-        toast.error("fichier introuvable");
-      } else {
-        toast.error("Erreur du serveur. Veuillez réessayer plus tard.");
-      }
-    },
-  });
-  const monobjectif = useMutation({
-    mutationFn: async () => await authAPIPartenaire.objectifEncours(),
-    onSuccess: (data) => {
-      if (data) {
-        return data;
-      } else {
-        //console.log(response)
-      }
-      // console.log("delete reuissi");
-    },
-    onError: (error) => {
-      const errors = error.response?.data;
-      if (errors?.message === "fichier introuvable") {
-        toast.error("fichier introuvable");
       } else {
         toast.error("Erreur du serveur. Veuillez réessayer plus tard.");
       }
@@ -262,15 +239,20 @@ export const PartenaireProvider = ({ children }) => {
         me,
         nextStep,
         registerPartenaireMutation,
-        errorMessageRegister,
         loginMutationpartenaire,
         monobjectif,
+        isLoadingMonObjectif,
         lastabonnement,
         refetchLastabonnement,
         logout,
         solde,
         refetchSolde,
         withdrawal,
+        isLoadingSolde,
+        refetchMe,
+        isLoadingMe,
+        refetchMonObjectifs,
+        isLoadingObjectif,
       }}
     >
       {children}

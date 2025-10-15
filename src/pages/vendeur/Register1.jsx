@@ -90,16 +90,10 @@ function Register_1() {
         }
 
         // Validation du mot de passe
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        const passwordRegex = /^\d{8}$/;
         if (!passwordRegex.test(data.mot_de_passe.trim())) {
             toast.error(
-                "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule et un chiffre."
-            );
-            return;
-        }
-         if (!passwordRegex.test(data.mot_de_passe_confirmation.trim())) {
-            toast.error(
-                "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule et un chiffre."
+                "Le mot de passe doit contenir au moins 8 caractères."
             );
             return;
         }

@@ -6,8 +6,9 @@ import Chat from "../../components/Chat";
 import { useRegister } from "../../Contexts/VendeurProvider";
 import Redirection from "../../components/Redirection";
 import { useState, useMemo, useEffect } from "react";
+import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 const Homevendeur = () => {
-    const { boutiques } = useRegister();
+    const { boutiques ,isLoadingBoutique} = useRegister();
 
     const [filters, setFilters] = useState({
         pays: "",
@@ -56,6 +57,7 @@ const Homevendeur = () => {
 
     return (
         <div className="general">
+            {isLoadingBoutique && <LoaderTransparent/>}
             <Publicite />
             <div className="my-custom-div">
                 <NavBar />

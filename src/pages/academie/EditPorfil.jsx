@@ -16,6 +16,7 @@ const EditPorfil = () => {
   const {
     user,
     lastabonnement,
+    isLoadingAbonnement,
     completedAccountMutation,
     nouvelAbonnementsuereMutation,
   } = useAppContext();
@@ -111,7 +112,7 @@ const EditPorfil = () => {
   }, [lastabonnement]);
   return (
     <div className="general">
-      {loading && <LoaderTransparent />}
+      {(loading || isLoadingAbonnement) && <LoaderTransparent />}
       <Publicite />
       <div className="my-custom-div">
         <Navbaracademie />

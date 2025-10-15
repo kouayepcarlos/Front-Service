@@ -32,8 +32,15 @@ const Souscrit = () => {
     // 'deuxiemeGen':[],
     retraitTotal: 0,
   });
-  const { user, refetchFilleuls, filleuls, withdrawal, solde } =
-    useAppContext();
+  const {
+    user,
+    refetchFilleuls,
+    filleuls,
+    withdrawal,
+    solde,
+    isLoadingSolde,
+    isLoadingFilleuls,
+  } = useAppContext();
   const [globalFilter, setGlobalFilter] = useState("");
 
   const header = (
@@ -81,9 +88,8 @@ const Souscrit = () => {
     refetchFilleuls();
   }, []);
   console.log(filleuls);
- 
+
   useEffect(() => {
-   
     if (filleuls) {
       setGetFilleuls({
         premiereGen: filleuls.premiere_generation,
@@ -106,25 +112,24 @@ const Souscrit = () => {
   };
 
   const handleWithdraw = async () => {
-    setLoading(true)
-     if(solde?.data[0]?.net <=0){
-      toast.error("le montant est insuffisant pour effectuer le retrait")
+    setLoading(true);
+    if (solde?.data[0]?.net <= 0) {
+      toast.error("le montant est insuffisant pour effectuer le retrait");
       return;
     }
-    try{
-    await withdrawal.mutateAsync(solde?.data[0]?.net);
-    refetchFilleuls()
-    }catch(error){
-
-    }finally{
-      setLoading(false)
+    try {
+      await withdrawal.mutateAsync(solde?.data[0]?.net);
+      refetchFilleuls();
+    } catch (error) {
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
       <div className="general">
-        {loading && <LoaderTransparent/>}
+        {(loading || isLoadingFilleuls || isLoadingSolde) && <LoaderTransparent />}
         <Publicite />
         <div className="my-custom-div">
           <Navbaracademie />
@@ -165,29 +170,29 @@ const Souscrit = () => {
 
               <br />
 
-         {solde && <div className="">
-                <DataTable
-                  value={solde?.data || []}
-                  paginator
-                  rows={4}
-                  tableStyle={{ minWidth: "50rem", height: "100%" }}
-                  header={header2}
-                  globalFilter={globalFilter}
-                  selectionMode="single"
-                >
-                  <Column field="solde" header="Gain total" />
-                  <Column field="retrait" header="Total retrait" />
-                  {/* <Column field="password" header="Mot de passe" /> */}
-                  <Column field="net" header="Reste à retirer" />
-                </DataTable>
+              {solde && (
+                <div className="">
+                  <DataTable
+                    value={solde?.data || []}
+                    paginator
+                    rows={4}
+                    tableStyle={{ minWidth: "50rem", height: "100%" }}
+                    header={header2}
+                    globalFilter={globalFilter}
+                    selectionMode="single"
+                  >
+                    <Column field="solde" header="Gain total" />
+                    <Column field="retrait" header="Total retrait" />
+                    {/* <Column field="password" header="Mot de passe" /> */}
+                    <Column field="net" header="Reste à retirer" />
+                  </DataTable>
 
-                <button className="resultat" onClick={handleWithdraw}>
-                  FAIRE UN RETRAIT
-                </button>
-              </div>
-}
+                  <button className="resultat" onClick={handleWithdraw}>
+                    FAIRE UN RETRAIT
+                  </button>
+                </div>
+              )}
             </div>
-         
           </section>
 
           <Chat />

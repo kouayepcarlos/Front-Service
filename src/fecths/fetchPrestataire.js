@@ -16,6 +16,7 @@ export const authAPIPrestataire = {
     // 🔐 Fonction de connexion d’un prestataire
     login: async (credentials) => {
         try {
+            console.log(credentials)
             const response = await API.post("/prestataire/login", credentials); // Envoie email/téléphone + mot de passe
 
             if (response.data?.prestataire) {

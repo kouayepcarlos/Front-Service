@@ -1,9 +1,10 @@
+/* eslint-disable no-empty */
+/* eslint-disable no-unused-vars */
 import Footer from "../../components/Footer";
 import Publicite from "../../components/Publicite";
 import "../../assets/css/connexion.css";
 import Chat from "../../components/Chat";
 import Redirection from "../../components/Redirection";
-// import { useAppContext } from "../../Contexts/AppProvider";
 import { useRegister } from "../../Contexts/PartenaireProvider";
 import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 import { useState } from "react";
@@ -11,31 +12,25 @@ import conn from "../../assets/images/connexion.jpg";
 import NavBar from "../../components/navbar/NavBar";
 
 const Register_final = () => {
-  const { data, nextStep, registerPartenaireMutation } = useRegister();
+  const { data, nextStep, registerPartenaireMutation ,setData} = useRegister();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      setData((prev)=>({
+        ...prev,
+          redirect_url: `https://nilservice.net/partenaire/connexion?nom=${data?.nom}`,
+      faillure_redirect_url: "https://nilservice.net/page/echec",
+      }))
       const res = await registerPartenaireMutation.mutateAsync(data);
-
-      console.log("voici le lien en dessous");
-      console.log(res);
-
       if (res?.status === "payment_pending" && res?.link) {
-        // Ouvrir le lien dans un nouvel onglet
-        //window.open(res.link, "_blank");
-
         window.location.href = res.link;
-
-        // (Optionnel) Feedback à l’utilisateur
         alert(
           "Vous allez être redirigé vers le paiement. Veuillez finaliser la transaction."
         );
       }
     } catch (error) {
-      // Gestion des erreurs d'enregistrement
-      //  console.error("Erreur lors de l'enregistrement :", error);
     } finally {
       setLoading(false);
     }
@@ -87,11 +82,9 @@ const Register_final = () => {
                     </li>
 
                     <li>
-                                        <span> Code du parrain:</span>
-                                            {data.code_parrain
-                                                ? data.code_parrain
-                                                : "Aucun"}
-                                        </li> 
+                      <span> Code du parrain:</span>
+                      {data.code_parrain ? data.code_parrain : "Aucun"}
+                    </li>
                   </ul>
 
                   <div className="step">
@@ -103,14 +96,6 @@ const Register_final = () => {
                       S enregistrer
                     </a>
                   </div>
-                  {registerPartenaireMutation.isError && (
-                    <div>
-                      <p>
-                        quelque chose s'est mal passé veuillez réessayez plus
-                        tard
-                      </p>{" "}
-                    </div>
-                  )}
                 </div>
 
                 <div className="col-6 col-lg-5 d-none d-md-inline">

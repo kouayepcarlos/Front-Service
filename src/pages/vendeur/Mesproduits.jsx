@@ -24,10 +24,11 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useState } from "react";
+import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 
 // Composant principal
 const Realisations = () => {
-    const {produit=[]} = useRegister()
+    const {produit=[],isLoadingProduit} = useRegister()
      const [searchTerm, setSearchTerm] = useState("");
 const navigate = useNavigate()
     useEffect(()=>{
@@ -43,6 +44,7 @@ console.log(produit)
   });
     return (
         <div className="general">
+            {isLoadingProduit && <LoaderTransparent/>}
             <Publicite /> {/* Bannière ou publicité en haut */}
             <div className="my-custom-div">
                 <Navbarvendeur /> {/* Barre de navigation spécifique aux prestataires */}

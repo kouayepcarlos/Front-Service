@@ -18,7 +18,7 @@ export const PrestataireProvider = ({ children }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const { data: realisation, refetch: refetchRealisation } = useQuery({
+    const { data: realisation, refetch: refetchRealisation, isLoading: isLoadingRealisation } = useQuery({
         queryKey: ["realisation"],
         queryFn: authAPIPrestataire.allRealisation,
         retry: false,
@@ -26,28 +26,28 @@ export const PrestataireProvider = ({ children }) => {
             !!sessionStorage.getItem("token") &&
             location.pathname === "/prestataire/realisation", //la fonction est executee si la page est /prestataire/realisation et qu'il existe un token
     });
-    const { data: prestation, refetch: refetchPrestation } = useQuery({
+    const { data: prestation, refetch: refetchPrestation, isLoading: isLoadingPrestataire } = useQuery({
         queryKey: ["prestation"],
         queryFn: authAPIPrestataire.allPrestataires,
         retry: false,
         enabled: location.pathname === "/prestataire/liste",
     });
     // Récupération des filleuls
-    const { data: filleuls, refetch: refetchFilleuls } = useQuery({
+    const { data: filleuls, refetch: refetchFilleuls, isLoading: isLoadingFilleuls } = useQuery({
         queryKey: ["filleuls"],
         queryFn: authAPIPrestataire.getFilleuls,
         retry: false,
         enabled: !!user && location.pathname === "/prestataire/souscrit",
     });
 
-    const { data: solde, refetch:refetchSolde } = useQuery({
+    const { data: solde, refetch:refetchSolde, isLoading: isLoadingSolde } = useQuery({
         queryKey: ["solde"],
         queryFn: authAPIPrestataire.getSolde,
         retry: false,
         enabled: !!user && location.pathname === "/prestataire/souscrit",
       });
 
-     const { data: lastabonnement, refetch:refetchLastabonnement } = useQuery({
+     const { data: lastabonnement, refetch:refetchLastabonnement, isLoading: isLoadingAbonnement } = useQuery({
         queryKey: ["lastabonnement"],
         queryFn: authAPIPrestataire.LastAbonnement,
         retry: false,
@@ -271,6 +271,7 @@ export const PrestataireProvider = ({ children }) => {
         onSuccess: (data) => {
             if (data.status == "success") {
                 toast.success("Informations ajoutees");
+                window.location.reload()
             }
         },
         onError: (error) => {
@@ -369,7 +370,12 @@ export const PrestataireProvider = ({ children }) => {
                 setErrorMessageRegister,
                   lastabonnement,
       refetchLastabonnement,
-      solde,refetchSolde
+      solde,refetchSolde,
+      isLoadingAbonnement,
+      isLoadingFilleuls,
+      isLoadingPrestataire,
+      isLoadingRealisation,
+      isLoadingSolde
             }}
         >
             {children}

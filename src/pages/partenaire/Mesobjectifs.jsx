@@ -6,37 +6,16 @@ import Chat from "../../components/Chat";
 import Publicite from "../../components/Publicite";
 import Redirection from "../../components/Redirection";
 import Footer from "../../components/Footer";
-import Navbarprestataire from "../../components/navbar/Navbarprestataire";
 import { useRegister } from "../../Contexts/PartenaireProvider";
 import "../../assets/css/souscrit.css";
 import Navbarpartenaire from "../../components/navbar/Navbarpartenaire";
 import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 
 const Mesobjectifs = () => {
-  const token = sessionStorage.getItem("token");
-  const [loading, setLoading] = useState(true);
-  const [bilan, setBilan] = useState([]);
-  const [user, setUser] = useState({});
   const [Objectifs, setObjectifs] = useState([]);
-  const { objectifs, withdrawal, me } = useRegister();
+  const { objectifs, me = {}, isLoadingObjectif } = useRegister();
   const [globalFilter, setGlobalFilter] = useState("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const result = await me.mutateAsync();
-        console.log(result);
-        setUser(result.partenaire);
-      } catch (error) {
-        console.error("Erreur lors de la récupération :", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
   const header = (
     <div className="d-flex justify-content-between ">
       <h2 className="font-semibold" style={{ color: "#ef8f0a" }}>
@@ -53,19 +32,8 @@ const Mesobjectifs = () => {
     </div>
   );
 
-  // const actionBodyTemplate = (rowData) => {
-  //   return (
-  //     <div className="d-flex justify-content-start no-hover-icons">
-  //      <i className="fa-solid fa-toggle-on" style={{ width: "30px", cursor: "pointer", color: "green" }}></i>
-  //      <i className="fa-solid fa-toggle-off" style={{ width: "40px", cursor: "pointer", color: "red" }}></i>
-  //     </div>
-  //   );
-  // };
-
   useEffect(() => {
-    console.log(objectifs);
-    setObjectifs(objectifs?.liste_des_objectifs);
-    console.log(objectifs?.liste_des_objectifs);
+    objectifs && setObjectifs(objectifs);
   }, [objectifs]);
 
   const indexTemplate = (rowData, options) => {
@@ -78,10 +46,10 @@ const Mesobjectifs = () => {
         <Publicite />
         <div className="my-custom-div">
           <Navbarpartenaire />
-          {loading && <LoaderTransparent/>}
+          {isLoadingObjectif && <LoaderTransparent />}
           <section className="mb-5  ">
             <Redirection
-              texte={`Hello ${user?.nom} ,ceci est votre espace membre,consulter tous vos objectifs `}
+              texte={`Hello ${me?.nom} ,ceci est votre espace membre,consulter tous vos objectifs `}
             />
             <div className="ml-3 mr-3">
               <div className="">
@@ -97,9 +65,6 @@ const Mesobjectifs = () => {
                   globalFilter={globalFilter}
                   selectionMode="single"
                 >
-                  {/* {getFilleuls.premiereGen?.map((filleul, index)=>{
-
-                    })} */}
                   <Column header="Numero" body={indexTemplate} />
                   <Column
                     field="objectif_parrainages"

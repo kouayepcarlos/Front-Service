@@ -9,10 +9,11 @@ import apercu from "../../assets/images/apercu.png"; // Image par défaut pour l
 import { useState, useMemo, useEffect } from "react";
 import { useRegister } from "../../Contexts/PrestataireProvider";
 import { useSearchParams } from "react-router-dom";
+import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 
 const Homeprestataire = () => {
 
-  const {prestation} = useRegister()
+  const {prestation,isLoadingPrestataire} = useRegister()
    // Données fictives des prestataires (simule une réponse d’API)
     // const prestation = [
     //     {
@@ -102,6 +103,7 @@ const Homeprestataire = () => {
     }, [filtered]);
     return (
         <div className="general">
+            {isLoadingPrestataire && <LoaderTransparent/>}
             <Publicite />
             <div className="my-custom-div">
                 <NavBar />

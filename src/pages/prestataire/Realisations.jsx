@@ -27,11 +27,12 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 
 // Composant principal
 const Realisations = () => {
 
-    const {realisation,deleterealisation} = useRegister()
+    const {realisation,deleterealisation, isLoadingRealisation} = useRegister()
    // Liste statique des réalisations simulant une réponse d’API
     // const realisation = [
     //     {
@@ -53,7 +54,7 @@ const Realisations = () => {
 
     return (
         <div className="general">
-            
+            { isLoadingRealisation && <LoaderTransparent/>}
             <Publicite /> {/* Bannière ou publicité en haut */}
             <div className="my-custom-div">
                 <Navbarprestataire /> {/* Barre de navigation spécifique aux prestataires */}

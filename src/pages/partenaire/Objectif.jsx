@@ -1,4 +1,3 @@
-import React from "react";
 import { useState, useEffect } from "react";
 import Footer from "../../components/Footer";
 import Chat from "../../components/Chat";
@@ -10,101 +9,95 @@ import "../../assets/css/partenaire/objectif.css";
 import { useNavigate } from "react-router-dom";
 import { useRegister } from "../../Contexts/PartenaireProvider";
 import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
+
 const Objectif = () => {
-    const { monobjectif } = useRegister();
-const [loading,setLoading]=useState(false)
-    
-    const [nombre, setNombre] = useState(0);
-    const [now, setNow] = useState(0);
-    const [nom, setNom] = useState("Marie");
+  const { monobjectif, isLoadingMonObjectif } = useRegister();
+  const [loading, setLoading] = useState(false);
+  const [nombre, setNombre] = useState(0);
+  const [now, setNow] = useState(0);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true)
-            try {
-                const result = await monobjectif.mutateAsync();
-                console.log(result);
-                const objectif = result?.objectif?.objectif_parrainages ?? 0;
-                const realises = result?.objectif?.parrainages_realises ?? 0;
-
-                setNombre(objectif);
-
-                if (objectif > 0) {
-                    const progression = (realises * 100) / objectif;
-                    setNow(progression);
-                } else {
-                    setNow(0);
-                }
-            } catch (error) {
-                console.error("Erreur lors de la récupération :", error);
-            }finally{
-                setLoading(false)
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    const navigate = useNavigate();
-    const variant = (now) => {
-        if (now <= 25) return "danger";
-        else if (now <= 50) return "warning";
-        else if (now <= 75) return "info";
-        else return "success";
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const result = monobjectif;
+        const objectif = result?.objectif_parrainages ?? 0;
+        const realises = result?.parrainages_realises ?? 0;
+        setNombre(objectif);
+        if (objectif > 0) {
+          const progression = (realises * 100) / objectif;
+          setNow(progression);
+        } else {
+          setNow(0);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération :", error);
+      } finally {
+        setLoading(false);
+      }
     };
-    return (
-        <div className="general">
-            {/* {loading && <LoaderTransparent />} */}
-            {loading && <LoaderTransparent/>}
-            <Publicite />
-            <div className="my-custom-div">
-                <Navbarpartenaire />
-                <section className="mb-5">
-                    <Redirection
-                        texte={`Bonjour , voici votre espace partenaire ou vous verrez vos objectifs `}
-                    />
-                    <section className="objectif-section">
-                        <div className="black-div">
-                            Votre objectif cette semaine est de parraine :
-                            {nombre} personnes
-                        </div>
-                        <ProgressBar
-                            className="progress "
-                            now={now}
-                            variant={variant(now)}
-                            label={
-                                <span
-                                    style={{
-                                        color: "black",
-                                        fontWeight: "bold",
-                                    }}
-                                >
-                                    Votre progression est de {now}%
-                                </span>
-                            }
-                        />
-                        <div
-                            className="black-div parrainer"
-                            onClick={() => {
-                                navigate("/partenaire/parrainage");
-                            }}
-                        >
-                            {" "}
-                            Voir la liste des personnes parraines
-                        </div>
-                        <div
-                            className="blue-div"
-                            onClick={() => navigate("/partenaire/mesobjectifs")}
-                        >
-                            Calendrier des objectifs obtenues
-                        </div>
-                    </section>
-                </section>
-                <Chat />
-                <Footer />
+    fetchData();
+  }, [monobjectif]);
+
+  const navigate = useNavigate();
+  const variant = (now) => {
+    if (now <= 25) return "danger";
+    else if (now <= 50) return "warning";
+    else if (now <= 75) return "info";
+    else return "success";
+  };
+
+  return (
+    <div className="general">
+      {(loading || isLoadingMonObjectif) && <LoaderTransparent />}
+      <Publicite />
+      <div className="my-custom-div">
+        <Navbarpartenaire />
+        <section className="mb-5">
+          <Redirection
+            texte={`Bonjour , voici votre espace partenaire ou vous verrez vos objectifs `}
+          />
+          <section className="objectif-section">
+            <div className="black-div">
+              Votre objectif cette semaine est de parraine :{nombre} personnes
             </div>
-        </div>
-    );
+            <ProgressBar
+              className="progress "
+              now={now}
+              variant={variant(now)}
+              label={
+                <span
+                  style={{
+                    color: "black",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Votre progression est de {now}%
+                </span>
+              }
+            />
+            <div
+              className="black-div parrainer"
+              onClick={() => {
+                navigate("/partenaire/parrainage");
+              }}
+            >
+              {" "}
+              Voir la liste des personnes parraines
+            </div>
+            <div
+              className="blue-div"
+              onClick={() => navigate("/partenaire/mesobjectifs")}
+            >
+              Calendrier des objectifs obtenues
+            </div>
+          </section>
+        </section>
+        <Chat />
+        <Footer />
+      </div>
+    </div>
+  );
 };
 
 export default Objectif;

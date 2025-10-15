@@ -15,7 +15,8 @@ import "../../assets/css/homepage.css";
 
 const EditPorfil = () => {
     const navigate = useNavigate();
-    const { user,lastabonnement, Maboutique, creerBoutique,nouvelAbonnementVendeurMutation, updateBoutique } = useRegister();
+    const { user,lastabonnement,
+        isLoadingAbonnement, Maboutique, creerBoutique,nouvelAbonnementVendeurMutation, updateBoutique } = useRegister();
 const [loading,setLoading]=useState(true)
     const [data, setData] = useState({
         logo:null
@@ -155,7 +156,7 @@ const [loading,setLoading]=useState(true)
 
     return (
         <div className="general">
-            {loading && <LoaderTransparent/>}
+            {(loading || isLoadingAbonnement) && <LoaderTransparent/>}
             <Publicite />
             <div className="my-custom-div">
                 <Navbarvendeur />

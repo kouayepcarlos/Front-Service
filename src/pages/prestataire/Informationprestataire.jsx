@@ -22,6 +22,7 @@ const EditPorfil = () => {
     me,
     nouvelAbonnementPrestataireMutation,
     lastabonnement,
+    isLoadingAbonnement
   } = useRegister();
   const [data, setData] = useState({});
   const [pays, setPays] = useState({});
@@ -158,7 +159,7 @@ const EditPorfil = () => {
 
   return (
     <div className="general">
-      {loading && <LoaderTransparent />}
+      {(loading || isLoadingAbonnement) && <LoaderTransparent />}
       <Publicite />
       <div className="my-custom-div">
         <Navbarprestataire />
