@@ -63,7 +63,7 @@ const ResetPassword = () => {
       }
       if (res.status === 200) {
         toast.success("mot de passe mis a jour connecez-vous");
-        navigate("/connexion/academie");
+        navigate("/partenaire/connexion");
       }
     } catch (error) {
     } finally {

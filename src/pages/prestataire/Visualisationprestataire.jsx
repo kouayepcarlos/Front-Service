@@ -1,18 +1,11 @@
 /* eslint-disable react/prop-types */ // Désactive les avertissements ESLint sur les props non typées (à activer en prod)
-
-// Importation des bibliothèques et fichiers nécessaires
 import "bootstrap/dist/css/bootstrap.min.css"; // CSS Bootstrap pour les composants
 import "../../assets/css/prestataire/prestataire.css"; // Styles personnalisés du prestataire
-import apercu from "../../assets/images/apercu.png"; // Image de démonstration utilisée pour les tests
-
-// Swiper : bibliothèque pour créer un carrousel responsive
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-
-// Importation des composants partagés
 import { useParams } from "react-router-dom"; // Récupère les paramètres d’URL (par ex. l'id du prestataire)
 import Footer from "../../components/Footer";
 import NavBar from "../../components/navbar/NavBar";
@@ -26,50 +19,18 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 const Visualisationprestataire = () => {
   const { PrestataireId, RealisationId } = useRegister();
-  // Liste de réalisations simulée (à remplacer plus tard par appel API selon l'id du prestataire)
-  // const realisations = [
-  //     {
-  //         id: 1,
-  //         title: "realisation1",
-  //         file_url: apercu,
-  //     },
-  //     {
-  //         id: 2,
-  //         title: "realisation2",
-  //         file_url: apercu,
-  //     },
-  //     {
-  //         id: 3,
-  //         title: "realisation4",
-  //         file_url: apercu,
-  //     },
-  // ];
-
-  // Données statiques du prestataire affiché
-  // const prestation = {
-  //     id: 1,
-  //     photo: apercu,
-  //     nom: "prestataire1",
-  //     pays: "cameroun",
-  //     ville: "yaounde",
-  //     quartier: "bastos",
-  //     profession: "electricien",
-  //     description: "description",
-  //     email: "email@gmail.com",
-  //     telephone: "688193877",
-  // };
-
   const [prestation, setPrestation] = useState();
   const [realisations, setRealisations] = useState();
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
-  const handleClose = () => {setShow(false),setShow2(true)};
+  const handleClose = () => {
+    setShow(false), setShow2(true);
+  };
   const handleShow = () => setShow(true);
 
   const handleClose2 = () => setShow2(false);
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,8 +58,10 @@ const Visualisationprestataire = () => {
       <div className="my-custom-div">
         <NavBar /> {/* Barre de navigation principale */}
         <section className="mb-5">
-          <Redirection texte="Votre satisfaction est notre priorité — découvrez 
-nos services" />{" "}
+          <Redirection
+            texte="Votre satisfaction est notre priorité — découvrez 
+nos services"
+          />{" "}
           {/* Zone pour un message de redirection personnalisé */}
           {/* Section infos prestataire */}
           <div className="mx-5 pb-5 row">
@@ -112,25 +75,22 @@ nos services" />{" "}
               <ul>
                 <li>Nom</li>
                 <li>{prestation?.nom}</li>
-
                 <li> Adresse</li>
                 <li>
                   {prestation?.pays}, {prestation?.ville} -{" "}
                   {prestation?.quartier}
                 </li>
-
                 <li> Profession</li>
                 <li>{prestation?.profession}</li>
-
                 <li>Description</li>
                 <li>{prestation?.description}</li>
                 <br />
                 <li>
-                    
-                  {" "}
-                {prestation?.checked === "actif" &&   <Button className="btn btn-primary" onClick={handleShow}>
-                    Contacter le prestataire
-                  </Button>}
+                  {prestation?.checked === "actif" && (
+                    <Button className="btn btn-primary" onClick={handleShow}>
+                      Contacter le prestataire
+                    </Button>
+                  )}
                   <Modal show={show2} onHide={handleClose2} className="Modal">
                     <Modal.Header closeButton>
                       <Modal.Title>Informations Prestataire</Modal.Title>
@@ -150,7 +110,6 @@ nos services" />{" "}
                         <span>Telephone: &nbsp;</span>{" "}
                         <p>{prestation?.telephone}</p>
                       </div>
-                     
                     </Modal.Body>
                     <Modal.Footer>
                       <Button variant="secondary" onClick={handleClose2}>
@@ -158,13 +117,15 @@ nos services" />{" "}
                       </Button>
                     </Modal.Footer>
                   </Modal>
-                   <Modal show={show} onHide={handleClose} className="Modal">
+                  <Modal show={show} onHide={handleClose} className="Modal">
                     <Modal.Header closeButton>
                       <Modal.Title>AVERTISSEMENT</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className="info-vendeur">
-                     <p>Toute Transaction qui se fait en dehors de cette plateforme ne nous concerne plus</p>
-                     
+                      <p>
+                        Toute Transaction qui se fait en dehors de cette
+                        plateforme ne nous concerne plus
+                      </p>
                     </Modal.Body>
                     <Modal.Footer>
                       <Button variant="secondary" onClick={handleClose}>

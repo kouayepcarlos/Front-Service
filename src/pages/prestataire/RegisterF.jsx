@@ -83,7 +83,7 @@ const Register_final = () => {
                     </li>
                     <li>
                       <span> Code du parrain:</span>
-                      {data.code_parain ? data.code_parain : "null"}
+                      {data.code_parain ? data.code_parain : "Aucun"}
                     </li>
                   </ul>
 

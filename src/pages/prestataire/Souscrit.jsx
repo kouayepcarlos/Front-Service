@@ -13,17 +13,15 @@ import { toast } from "react-toastify";
 import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 
 const Souscrit = () => {
-  const token = sessionStorage.getItem("token");
   const [loading, setLoading] = useState(false);
-  const [bilan, setBilan] = useState([]);
-
   const [getFilleuls, setGetFilleuls] = useState({
     premiereGen: [],
     deuxiemeGen: [],
     retraitTotal: 0,
   });
   const {
-    user,
+    me={},
+    isLoadingMe,
     refetchFilleuls,
     solde,
     isLoadingSolde,
@@ -65,15 +63,6 @@ const Souscrit = () => {
     </div>
   );
 
-  // const actionBodyTemplate = (rowData) => {
-  //   return (
-  //     <div className="d-flex justify-content-start no-hover-icons">
-  //      <i className="fa-solid fa-toggle-on" style={{ width: "30px", cursor: "pointer", color: "green" }}></i>
-  //      <i className="fa-solid fa-toggle-off" style={{ width: "40px", cursor: "pointer", color: "red" }}></i>
-  //     </div>
-  //   );
-  // };
-
   useEffect(() => {
     refetchFilleuls();
   }, []);
@@ -113,13 +102,13 @@ const Souscrit = () => {
   return (
     <>
       <div className="general">
-        {(loading || isLoadingFilleuls || isLoadingSolde) && <LoaderTransparent />}
+        {(loading || isLoadingFilleuls || isLoadingSolde || isLoadingMe) && <LoaderTransparent />}
         <Publicite />
         <div className="my-custom-div">
           <Navbarprestataire />
           <section className="mb-5  ">
             <Redirection
-              texte={`Hello ${user?.nom} ,ceci est votre espace memre,consulter toutes personnes qui ont sosucrit avec votre code parain`}
+              texte={`Hello ${me?.nom} ,ceci est votre espace memre,consulter toutes personnes qui ont sosucrit avec votre code parain`}
               nomBoutton={"Parrainez un ami"}
               lien={""}
             />

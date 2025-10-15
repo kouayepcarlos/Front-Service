@@ -73,8 +73,6 @@ const ForgotPassword = () => {
                                             <button className="btn btn-primary"onClick={handleSend} >
                                                 Envoyer le lien
                                             </button>
-                                
-
                                         </div>
                                     </div>
                                 </div>

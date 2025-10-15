@@ -1,16 +1,12 @@
-//import React from "react";
 import Footer from "../../components/Footer";
 import "../../assets/css/homepage.css";
-// import Partenaire from "../../components/Partenaire";
 import Chat from "../../components/Chat";
 import Publicite from "../../components/Publicite";
 import { useRegister } from "../../Contexts/PrestataireProvider";
 import Navbarprestataire from "../../components/navbar/Navbarprestataire";
 import { useState, useEffect } from "react";
-import { FaRegCopy, FaCheck } from "react-icons/fa"; // Icône pour copier le code de parrainage
-// import { Navigate } from "react-router-dom";
+import { FaRegCopy, FaCheck } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
 import Select from "react-select";
 import { Country, City } from "country-state-city";
 import { toast } from "react-toastify";
@@ -19,19 +15,34 @@ import LoaderTransparent from "../../components/LoadersCompoments/LoaderTranspar
 const EditPorfil = () => {
   const {
     completedAccountMutation,
-    me,
+    me = {},
+    refetchMe,
+    isLoadingMe,
     nouvelAbonnementPrestataireMutation,
     lastabonnement,
-    isLoadingAbonnement
+    isLoadingAbonnement,
   } = useRegister();
   const [data, setData] = useState({});
   const [pays, setPays] = useState({});
   const [ville, setVille] = useState({});
   const [copied, setCopied] = useState(false);
-  const [maBoutique, setmaBoutique] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [date, setDate] = useState(null);
-  const [user, setUser] = useState();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log(data);
+    setLoading(true);
+    try {
+      await completedAccountMutation.mutateAsync(data);
+      refetchMe();
+    } catch (error) {
+      console.error("Erreur :", error);
+    } finally {
+      setLoading(false); // Désactive le loader
+    }
+  };
 
   const difference = () => {
     if (!lastabonnement) return;
@@ -45,14 +56,13 @@ const EditPorfil = () => {
     const diffJours = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     setDate(diffJours);
   };
+
   const nouvelAbonnement = async () => {
     setLoading(true);
     try {
       await nouvelAbonnementPrestataireMutation.mutateAsync({
         redirect_url: "https://nilservice.net/prestataire/connexion",
-        //"localhost:5173/connexion/prestataire",
         faillure_redirect_url: "https://nilservice.net/page/echec",
-        //"localhost:5173/page/echec"
       });
     } catch (error) {
       console.error("Erreur :", error);
@@ -66,26 +76,10 @@ const EditPorfil = () => {
       [e.target.name]: e.target.value,
     }));
   };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    console.log(data);
-    setLoading(true);
-    try {
-      await completedAccountMutation.mutateAsync(data);
-      const result = await me.mutateAsync();
-      console.log(result);
-      setUser(result);
-    } catch (error) {
-      console.error("Erreur :", error);
-    } finally {
-      setLoading(false); // Désactive le loader
-    }
-  };
 
   // Fonction pour copier le code de parrainage dans le presse-papiers
   const handleCopy = () => {
-    navigator.clipboard.writeText(user.code);
+    navigator.clipboard.writeText(me?.code);
     setCopied(true); // Changer l'icône en icône de validation
   };
 
@@ -93,23 +87,7 @@ const EditPorfil = () => {
     if (copied) setTimeout(() => setCopied(false), 500); // Revenir à l'icône de copie après 2s
   }, [copied]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      console.log(lastabonnement);
-      try {
-        const result = await me.mutateAsync();
-        console.log(result);
-        setUser(result);
-      } catch (error) {
-        console.error("Erreur lors de la récupération :", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+ 
 
   useEffect(() => {
     difference();
@@ -145,21 +123,15 @@ const EditPorfil = () => {
     }
 
     if (selectedFile.size > 1024 * 1024) {
-      //  console.log(selectedFile.size);
       toast.error("Le fichier doit être inférieur à 1024ko.");
-
       return;
     }
-
-    // Vérifier l'extension du fichier
-
-    // Si tout est bon, on met à jour le fichier
     handleChangeWithName(e.target.name, selectedFile);
   };
 
   return (
     <div className="general">
-      {(loading || isLoadingAbonnement) && <LoaderTransparent />}
+      {(loading || isLoadingAbonnement || isLoadingMe) && <LoaderTransparent />}
       <Publicite />
       <div className="my-custom-div">
         <Navbarprestataire />
@@ -172,52 +144,35 @@ const EditPorfil = () => {
           </h2>
           <ul className="list-group list-group-flush">
             <li className="list-group-item">
-              <strong>Nom :</strong> {user?.nom}
+              <strong>Nom :</strong> {me?.nom}
             </li>
             <li className="list-group-item">
-              <strong>Téléphone :</strong> {user?.telephone}
+              <strong>Téléphone :</strong> {me?.telephone}
             </li>
             <li className="list-group-item">
-              <strong>Email :</strong> {user?.email}
+              <strong>Email :</strong> {me?.email}
             </li>
             <li className="list-group-item">
-              <strong>Profession :</strong> {user?.profession}
+              <strong>Profession :</strong> {me?.profession}
             </li>
             <li className="list-group-item">
-              <strong>Pays :</strong> {user?.pays}
+              <strong>Pays :</strong> {me?.pays}
             </li>
             <li className="list-group-item">
-              <strong>Ville :</strong> {user?.ville}
+              <strong>Ville :</strong> {me?.ville}
             </li>
             <li className="list-group-item">
-              <strong>Quartier :</strong> {user?.quartier}
+              <strong>Quartier :</strong> {me?.quartier}
             </li>
             <li className="list-group-item">
-              <strong>Description courte:</strong> {user?.description_courte}
+              <strong>Description courte:</strong> {me?.description_courte}
             </li>
             <li className="list-group-item">
-              <strong>Description longue :</strong> {user?.description}
+              <strong>Description longue :</strong> {me?.description}
             </li>
-            {/* {user?.cv && (
-                            <li className="list-group-item">
-                                <strong>CV :</strong> <a href={user?.cv}>CV</a>
-                            </li>
-                        )}
-                        {user?.cni && (
-                            <li className="list-group-item">
-                                <strong>CNI :</strong>{" "}
-                                <a href={user?.cni}>CNI</a>
-                            </li>
-                        )}
-                        {user?.photo && (
-                            <li className="list-group-item">
-                                <strong>Photo :</strong>{" "}
-                                <a href={user?.photo}>Photo</a>
-                            </li>
-                        )} */}
           </ul>
           <br />
-          {user?.statut != "inscrit" && (
+          {me?.statut != "inscrit" && (
             <div>
               {" "}
               {date > 0 && <p>votre abonnement expire dans {date} jours </p>}
@@ -227,7 +182,7 @@ const EditPorfil = () => {
             </div>
           )}
           <div>
-            {user?.statut != "inscrit" ? (
+            {me?.statut != "inscrit" ? (
               <button
                 className="btn btn-primary"
                 onClick={() => {
@@ -255,7 +210,7 @@ const EditPorfil = () => {
               <input
                 type="text"
                 className="form-control text-center"
-                value={user?.code}
+                value={me?.code}
                 readOnly
               />
               {!copied && (
@@ -275,11 +230,11 @@ const EditPorfil = () => {
           >
             Vos statistiques de parrainage ici
           </button>
-          {user?.statut == "inscrit" && !user.pays && (
+          {me?.statut == "inscrit" && !me?.pays && (
             <p>Payez votre abonnement pour completer vos information</p>
           )}
-          {/* {(!user.filiere && !user.serie) && ( */}
-          {!user?.pays && user?.statut == "en_attente" && (
+          {/* {(!me?.filiere && !me?.serie) && ( */}
+          {!me?.pays && me?.statut == "en_attente" && (
             <form className="mt-4" onSubmit={handleSubmit}>
               <p className="text-center text-danger">Complétez votre profil</p>
               <div className="form-group">
