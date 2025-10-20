@@ -75,14 +75,6 @@ const Souscrit = () => {
     </div>
   );
 
-  // const actionBodyTemplate = (rowData) => {
-  //   return (
-  //     <div className="d-flex justify-content-start no-hover-icons">
-  //      <i className="fa-solid fa-toggle-on" style={{ width: "30px", cursor: "pointer", color: "green" }}></i>
-  //      <i className="fa-solid fa-toggle-off" style={{ width: "40px", cursor: "pointer", color: "red" }}></i>
-  //     </div>
-  //   );
-  // };
 
   useEffect(() => {
     refetchFilleuls();

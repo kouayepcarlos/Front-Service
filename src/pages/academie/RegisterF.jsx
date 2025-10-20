@@ -4,14 +4,13 @@ import Publicite from "../../components/Publicite";
 import "../../assets/css/connexion.css";
 import Chat from "../../components/Chat";
 import Redirection from "../../components/Redirection";
-// import { useAppContext } from "../../Contexts/AppProvider";
 import { useRegister } from "../../Contexts/RegisterProvider";
 import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
 import { useState } from "react";
 import conn from "../../assets/images/connexion.jpg";
 
 const Register_final = () => {
-  const { data, setData, nextStep, registerUserMutation } = useRegister();
+  const { data, nextStep, registerUserMutation } = useRegister();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
@@ -23,12 +22,9 @@ const Register_final = () => {
       console.log(res);
 
       if (res?.status === "payment_pending" && res?.link) {
-        // Ouvrir le lien dans un nouvel onglet
-        // window.open(res.link, "_blank");
+        
         console.log("le lien de redirection ", res.link);
         window.location.href = res.link;
-
-        // (Optionnel) Feedback à l’utilisateur
         alert(
           "Vous allez être redirigé vers le paiement. Veuillez finaliser la transaction."
         );
@@ -108,14 +104,7 @@ const Register_final = () => {
                       S'enregistrer
                     </a>
                   </div>
-                  {registerUserMutation.isError && (
-                    <div>
-                      <p>
-                        quelque chose s'est mal passé veuillez réessayez plus
-                        tard
-                      </p>{" "}
-                    </div>
-                  )}
+                 
                 </div>
 
                 <div className="col-6 col-lg-5 d-none d-md-inline">

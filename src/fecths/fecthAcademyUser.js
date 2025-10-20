@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -100,13 +101,7 @@ export const authAPI = {
       const response = await API.post("usersacademy/register", credentials);
       return response.data;
     } catch (error) {
-      console.log(error);
-      return (
-        error.response?.data || {
-          status: "error",
-          message: error.message,
-        }
-      );
+     throw error
     }
   },
 

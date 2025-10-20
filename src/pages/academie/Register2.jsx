@@ -25,220 +25,192 @@ import { useEffect } from "react";
  */
 
 function Register_2() {
-    const { data, setData, nextStep, errorMessageRegister } = useRegister();
+  const { data, setData, nextStep, errorMessageRegister } = useRegister();
 
-    const ErroTag = ({ text }) => {
-        return (
-            <>
-                <div>
-                    <p>{text}</p>
-                </div>
-            </>
-        );
-    };
+  const ErroTag = ({ text }) => {
+    return (
+      <>
+        <div>
+          <p>{text}</p>
+        </div>
+      </>
+    );
+  };
 
-    useEffect(()=>{
-        alert("Le numero utilisé pour la transaction sera le même pour toutes vos operations dans l'application !!")
-    },[])
+  useEffect(() => {
+    alert(
+      "Le numero utilisé pour la transaction sera le même pour toutes vos operations dans l'application !!"
+    );
+  }, []);
 
-    const handleChange = (e) => {
-        setData((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value,
-        }));
-    };
+  const handleChange = (e) => {
+    setData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
-    const controlData = () => {
-        // Validation des champs
-        
-        if (!data.telephone_parent.trim() || !data.type.trim()) {
-            toast.error(
-                "Veuillez entrer le téléphone et sélectionner votre catégorie"
-            );
-            return;
-        }
+  const controlData = () => {
+    // Validation des champs
 
-        const phoneRegex = /^\d{9}$/;
-        if (data.telephone && !phoneRegex.test(data.telephone)) {
-            toast.error("Le numéro de téléphone est invalide");
-            return;
-        }
-        if (data.telephone_parent && !phoneRegex.test(data.telephone_parent)) {
-            toast.error("Le numéro de téléphone est invalide");
-            return;
-        }
-
-      
-        setData((prevState) => ({
-            ...prevState,
-            redirect_url: `https://nilservice.net/connexion/academie?nom=${data?.nom}`,
-            //"localhost:5173/connexion/academie",
-            faillure_redirect_url: "https://nilservice.net/page/echec",
-            abonnement:"bibliothèque"
-            //"localhost:5173/page/echec"
-        }));
-        
-        localStorage.setItem("dataUser", JSON.stringify(data));
-        nextStep(3); // Passe à l'étape suivante
-    };
-
-    if (!data || !setData || !nextStep) {
-        return <div>Erreur étape 2</div>;
+    if (!data.telephone_parent.trim() || !data.type.trim()) {
+      toast.error(
+        "Veuillez entrer le téléphone et sélectionner votre catégorie"
+      );
+      return;
     }
 
-    return (
-        <div className="general">
-            <Publicite />
-            <div className="my-custom-div">
-                <Navbar />
-                <section className="mb-5">
-                    <Redirection
-                        texte={
-                            "Vous avez déjà un compte ? Connectez-vous et consultez les sujets"
-                        }
-                        nomBoutton={"Connectez vous"}
-                        lien={"/connexion/academie"}
-                    />
-                    <div className="flex-column gap-3 register-div   ">
-                        <p>Affiliation</p>
+    const phoneRegex = /^\d{9}$/;
+    if (data.telephone && !phoneRegex.test(data.telephone)) {
+      toast.error("Le numéro de téléphone est invalide");
+      return;
+    }
+    if (data.telephone_parent && !phoneRegex.test(data.telephone_parent)) {
+      toast.error("Le numéro de téléphone est invalide");
+      return;
+    }
+
+    setData((prevState) => ({
+      ...prevState,
+      redirect_url: `https://nilservice.net/connexion/academie?nom=${data?.nom}`,
+      //"localhost:5173/connexion/academie",
+      faillure_redirect_url: "https://nilservice.net/page/echec",
+      abonnement: "bibliothèque",
+      //"localhost:5173/page/echec"
+    }));
+
+    localStorage.setItem("dataUser", JSON.stringify(data));
+    nextStep(3); // Passe à l'étape suivante
+  };
+
+  if (!data || !setData || !nextStep) {
+    return <div>Erreur étape 2</div>;
+  }
+
+  return (
+    <div className="general">
+      <Publicite />
+      <div className="my-custom-div">
+        <Navbar />
+        <section className="mb-5">
+          <Redirection
+            texte={
+              "Vous avez déjà un compte ? Connectez-vous et consultez les sujets"
+            }
+            nomBoutton={"Connectez vous"}
+            lien={"/connexion/academie"}
+          />
+          <div className="flex-column gap-3 register-div   ">
+            <p>Affiliation</p>
+          </div>
+          <section className="row tab-contact mx-md-3">
+            <div
+              className="col-12 col-md-10 div-contact"
+              style={{ margin: "auto", borderRadius: "10px" }}
+            >
+              <div className="row">
+                <div className="col-6 d-none d-md-inline">
+                  <img src={conn} className="w-100 img-register" />
+                </div>
+                <div className="form-contact col-md-6 col-12">
+                  <form>
+                    <div className="form-group">
+                      <label htmlFor="phone">
+                        Numero de transaction{" "}
+                        <span className="text-danger fw-bold fs-1">*</span>
+                      </label>
+                      <input
+                        name="telephone_parent"
+                        value={data.telephone_parent || ""}
+                        onChange={handleChange}
+                        type="text"
+                        required
+                        className="form-control"
+                        id="name"
+                        placeholder="Entrez le numéro de téléphone du parent"
+                      />
+                      {errorMessageRegister.status === "telephone" && (
+                        <ErroTag text={errorMessageRegister.message} />
+                      )}
                     </div>
-                    <section className="row tab-contact mx-md-3">
-                        <div
-                            className="col-12 col-md-10 div-contact"
-                            style={{ margin: "auto", borderRadius: "10px" }}
-                        >
-                            <div className="row">
-                                <div className="col-6 d-none d-md-inline">
-                                    <img
-                                        src={conn}
-                                        className="w-100 img-register"
-                                    />
-                                </div>
-                                <div className="form-contact col-md-6 col-12">
-                                    <form>
-                                        <div className="form-group">
-                                            <label htmlFor="phone">
-                                               Numero de transaction <span className="text-danger fw-bold fs-1">*</span>
-                                            </label>
-                                            <input
-                                                name="telephone_parent"
-                                                value={
-                                                    data.telephone_parent || ""
-                                                }
-                                                onChange={handleChange}
-                                                type="text"
-                                                required
-                                                className="form-control"
-                                                id="name"
-                                                placeholder="Entrez le numéro de téléphone du parent"
-                                            />
-                                            {errorMessageRegister.status ===
-                                                "telephone" && (
-                                                <ErroTag
-                                                    text={
-                                                        errorMessageRegister.message
-                                                    }
-                                                />
-                                            )}
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="phone">
-                                                Téléphone 
-                                            </label>
-                                            <input
-                                                name="telephone"
-                                                value={data.telephone || ""}
-                                                onChange={handleChange}
-                                                type="text"
-                                                required
-                                                className="form-control"
-                                                id="name"
-                                                placeholder="Entrez votre numéro de téléphone"
-                                            />
-                                            {errorMessageRegister.status ===
-                                                "telephone" && (
-                                                <ErroTag
-                                                    text={
-                                                        errorMessageRegister.message
-                                                    }
-                                                />
-                                            )}
-                                        </div>
+                    <div className="form-group">
+                      <label htmlFor="phone">Téléphone</label>
+                      <input
+                        name="telephone"
+                        value={data.telephone || ""}
+                        onChange={handleChange}
+                        type="text"
+                        required
+                        className="form-control"
+                        id="name"
+                        placeholder="Entrez votre numéro de téléphone"
+                      />
+                      {errorMessageRegister.status === "telephone" && (
+                        <ErroTag text={errorMessageRegister.message} />
+                      )}
+                    </div>
 
-                                        <div className="form-group">
-                                            <label htmlFor="code">
-                                                Code de parrainage
-                                            </label>
-                                            <input
-                                                name="code_parrain"
-                                                value={
-                                                    data.code_parrain || null
-                                                }
-                                                onChange={handleChange}
-                                                type="text"
-                                                className="form-control"
-                                                id="code"
-                                                placeholder="Entrez le code de parrainage"
-                                            />
-                                        </div>
+                    <div className="form-group">
+                      <label htmlFor="code">Code de parrainage</label>
+                      <input
+                        name="code_parrain"
+                        value={data.code_parrain || null}
+                        onChange={handleChange}
+                        type="text"
+                        className="form-control"
+                        id="code"
+                        placeholder="Entrez le code de parrainage"
+                      />
+                    </div>
 
-                                        <div className="form-group">
-                                            <label htmlFor="type">
-                                                Vous êtes ? <span className="text-danger fw-bold fs-1">*</span>
-                                            </label>
+                    <div className="form-group">
+                      <label htmlFor="type">
+                        Vous êtes ?{" "}
+                        <span className="text-danger fw-bold fs-1">*</span>
+                      </label>
 
-                                            <select
-                                                name="type"
-                                                id="type"
-                                                onChange={handleChange}
-                                                value={data.type}
-                                                style={{
-                                                    height: "50px",
-                                                    paddingLeft: "10px",
-                                                    borderRadius: "10px",
-                                                    border: "2px solid black",
-                                                }}
-                                            >
-                                                <option value="">
-                                                    Veuillez Sélectionner
-                                                </option>
+                      <select
+                        name="type"
+                        id="type"
+                        onChange={handleChange}
+                        value={data.type}
+                        style={{
+                          height: "50px",
+                          paddingLeft: "10px",
+                          borderRadius: "10px",
+                          border: "2px solid black",
+                        }}
+                      >
+                        <option value="">Veuillez Sélectionner</option>
 
-                                                <option value="élève">
-                                                    Élève
-                                                </option>
-                                                <option value="étudiant">
-                                                    Étudiant
-                                                </option>
-                                            </select>
-                                        </div>
+                        <option value="élève">Élève</option>
+                        <option value="étudiant">Étudiant</option>
+                      </select>
+                    </div>
 
-                                       
-                                        <div className="step">
-                                            {" "}
-                                            <a
-                                                onClick={() => nextStep(1)}
-                                                className="btn btn-primary"
-                                            >
-                                                Retour
-                                            </a>
-                                            <a
-                                                onClick={controlData}
-                                                className="btn btn-primary"
-                                            >
-                                                Suivant
-                                            </a>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </section>
-                <Chat />
-                <Footer />
+                    <div className="step">
+                      {" "}
+                      <a
+                        onClick={() => nextStep(1)}
+                        className="btn btn-primary"
+                      >
+                        Retour
+                      </a>
+                      <a onClick={controlData} className="btn btn-primary">
+                        Suivant
+                      </a>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
-        </div>
-    );
+          </section>
+        </section>
+        <Chat />
+        <Footer />
+      </div>
+    </div>
+  );
 }
 
 export default Register_2;

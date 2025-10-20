@@ -84,7 +84,7 @@ const ChatA = () => {
 
     loadMessages();
 
-    const interval = setInterval(loadMessages, 5000); // refresh auto
+    const interval = setInterval(loadMessages, 2000); // refresh auto
     return () => clearInterval(interval);
   }, []);
 

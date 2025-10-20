@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { Button } from "primereact/button";
 import { useAdminContext } from "../../Contexts/AdminProvider";
@@ -20,15 +20,12 @@ const Inscription = () => {
     event.preventDefault();
     setLoading(true);
     try {
-
-         // Validation du mot de passe
-                const passwordRegex = /^\d{6}$/;
-                if (!passwordRegex.test(passe.trim())) {
-                   toast.error(
-                            "Le mot de passe doit contenir au moins 6 caractères.",
-                     );
-                     return;
-                }
+      // Validation du mot de passe
+      const passwordRegex = /^\d{6}$/;
+      if (!passwordRegex.test(passe.trim())) {
+        toast.error("Le mot de passe doit contenir au moins 6 caractères.");
+        return;
+      }
       await addAdminMutation.mutateAsync({
         nom,
         email,
@@ -79,7 +76,6 @@ const Inscription = () => {
                 required
               />
             </div>
-
             <Button
               type="submit"
               label="Enregistrer"
