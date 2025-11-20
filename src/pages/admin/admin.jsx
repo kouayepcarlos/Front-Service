@@ -78,7 +78,7 @@ const ListeAdmin = () => {
                         selectionMode="single"
                     >
                         <Column
-                            field="id"
+                              body={(rowData, { rowIndex }) => rowIndex + 1}
                             header="N°"
                             style={{ width: "10%" }}
                         />

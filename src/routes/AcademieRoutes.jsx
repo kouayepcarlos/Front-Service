@@ -43,7 +43,7 @@ const AcademieRoutes = () => {
                     <Route path="passe_oublie" element={<PasseOublie />} />
                     <Route path="anciensujet" element={<Anciensujet />} />
                     <Route path="voirplus" element={<Voirplus />} />
-                    <Route path="homeAcademy" element={<HomeAcademy />} />
+                    <Route path="homeacademy" element={<HomeAcademy />} />
                     <Route path="souscrit" element={<Souscrit />} />
                     <Route path="configuration" element={<EditProfil />} />
                     <Route path="chat" element={<ChatA />} />

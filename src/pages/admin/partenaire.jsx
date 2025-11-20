@@ -131,7 +131,7 @@ const Partenaire = () => {
             globalFilter={globalFilter}
             selectionMode="single"
           >
-            <Column field="id" header="N°" style={{ width: "10%" }} />
+            <Column   body={(rowData, { rowIndex }) => rowIndex + 1} header="N°" style={{ width: "10%" }} />
             <Column field="nom" header="Noms" />
             <Column field="prenom" header="Prenoms" />
             <Column field="email" header="Email" />

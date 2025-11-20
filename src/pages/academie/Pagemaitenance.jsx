@@ -22,7 +22,7 @@ const Pagemaintenanceacademie= () => {
                 <Redirection
                         texte="Profitez des services offerts par NilService et n'oubliez pas que vous pouvez gagner de l'argent en parrainant"
                         nomBoutton="Consulter les sujets"
-                        lien="/homeAcademy"
+                        lien="/homeacademy"
                     />
                     <section className="row tab-contact mx-md-3">
                         <p>Page en maintenance</p>

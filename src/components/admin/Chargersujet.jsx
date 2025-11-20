@@ -215,9 +215,7 @@ const Chargersujet = () => {
                   <option value="Fico">Fico</option>
                   <option value="Info">Info </option>
                   <option value="Mathematiques">Mathematiques </option>
-                  <option value="Biochimie">BC</option>
-                  <option value="Boa">Boa</option>
-                  <option value="Bio">Bio</option>
+                  <option value="Bio/Boa/Bc">Bio/Boa/Bc</option>
                   <option value="Physique">Physique</option>
                   <option value="Droit">Droit</option>
                   <option value="ESSEC">ESSEC</option>
@@ -277,6 +275,7 @@ const Chargersujet = () => {
                   <option value="rattrapage"> rattrapage</option>
                   <option value="td">td</option>
                   <option value="cc">CC</option>
+                   <option value="autres"> autres</option>
                 </Form.Select>
               </div>
             )}

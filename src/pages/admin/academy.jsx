@@ -49,7 +49,7 @@ const Academy = () => {
                         globalFilter={globalFilter}
                         selectionMode="single"
                     >
-                        <Column field="id" header="N°" style={{ width: "10%" }} />
+                        <Column   body={(rowData, { rowIndex }) => rowIndex + 1} header="N°" style={{ width: "10%" }} />
                         <Column field="nom" header="Nom" />
                         <Column field="telephone" header="Numéro" />
                         <Column field="etablissement" header="Etablissement" />

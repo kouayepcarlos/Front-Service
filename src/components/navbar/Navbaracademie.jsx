@@ -216,7 +216,7 @@ const Navbaracademie = () => {
                     fontWeight: 500,
                   }}
                 >
-                  <Nav.Link href="/homeAcademy">Accueil</Nav.Link>
+                  <Nav.Link href="/homeacademy">Accueil</Nav.Link>
                   {user.serie != null && <Nav.Link href="/chat">Chat</Nav.Link>}
 
                   <Nav.Link href="/bibliotheque">Ajout fichier</Nav.Link>

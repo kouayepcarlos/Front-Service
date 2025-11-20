@@ -94,7 +94,7 @@ const AdminMessages = () => {
             globalFilter={globalFilter}
             selectionMode="single"
           >
-            <Column field="id" header="ID" style={{ width: "5%" }} />
+            <Column   body={(rowData, { rowIndex }) => rowIndex + 1} header="ID" style={{ width: "5%" }} />
             <Column field="nom" header="Nom" />
             <Column field="numero" header="Téléphone" />
             <Column field="message" header="Message" />

@@ -119,45 +119,22 @@ const ModificationExamen = () => {
                     }}
                   >
                     <option value="">Filière</option>
-                    <option value="Seco1">Seco1</option>
-                    <option value="Seco2">Seco2</option>
-                    <option value="Seco3">Seco3</option>
-                    <option value="Gestion 3">Gestion 3</option>
-                    <option value="Ecomo 3">Ecomo 3</option>
-                    <option value="Seco4">Seco4</option>
-                    <option value="Ecomo4">Ecomo4</option>
-                    <option value="marketing 4">Marketing 4</option>
-                    <option value="Fico 4">Fico 4</option>
-                    <option value="Informaticien 1">Informaticien 1</option>
-                    <option value="Informaticien 2">Informaticien 2</option>
-                    <option value="Informatique 3">Informatique 3</option>
-                    <option value="Mathematiques 1">Mathematiques 1</option>
-                    <option value="Mathematiques 2">Mathematiques 2</option>
-                    <option value="Mathematiques 3">Mathematiques 3</option>
-                    <option value="Biochimie 1">Biochimie 1</option>
-                    <option value="Biochimie 2">Biochimie 2</option>
-                    <option value="Biochimie 3">Biochimie 3</option>
-                    <option value="Boa 1">Boa 1</option>
-                    <option value="Boa 2">Boa 2</option>
-                    <option value="Boa 3">Boa 3</option>
-                    <option value="Bio 1">Bio 1</option>
-                    <option value="Bio 2">Bio 2</option>
-                    <option value="Bio 3">Bio 3</option>
-                    <option value="Physique 1">Physique 1</option>
-                    <option value="Physique 2">Physique 2</option>
-                    <option value="Physique 3">Physique 3</option>
-                    <option value="Droit 1">Droit 1</option>
-                    <option value="Droit 2">Droit 2</option>
-                    <option value="Droit 3">Droit 3</option>
-                    <option value="ESSEC 1">ESSEC 1</option>
-                    <option value="ESSEC 2">ESSEC 2</option>
-                    <option value="ESSEC 3">ESSEC 3</option>
-                    <option value="ENSPD 1">ENSPD 1</option>
-                    <option value="ENSPD 2">ENSPD 2</option>
-                    <option value="ENSPD 3">ENSPD 3</option>
-                    <option value="Médecine 1">Médecine 1</option>
-                    <option value="Médecine 2">Médecine 2</option>
-                    <option value="Médecine 3">Médecine 3</option>
+                    <option value="Seco">Seco</option>
+                  <option value="Ste">Ste</option>
+                  <option value="Gestion">Gestion</option>
+                  <option value="Ecomo">Ecomo</option>
+                  <option value="Seco">Seco</option>
+                  <option value="Ecomo">Ecomo</option>
+                  <option value="marketing">Marketing</option>
+                  <option value="Fico">Fico</option>
+                  <option value="Info">Info </option>
+                  <option value="Mathematiques">Mathematiques </option>
+                  <option value="Bio/Boa/Bc">Bio/Boa/Bc</option>
+                  <option value="Physique">Physique</option>
+                  <option value="Droit">Droit</option>
+                  <option value="ESSEC">ESSEC</option>
+                  <option value="ENSPD">ENSPD</option>
+                  <option value="Médecine">Médecine</option>
                   </Form.Select>
                 </div>
               )}

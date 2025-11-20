@@ -32,7 +32,7 @@ const publicRoutes = [
   "/",
   "/forgot-password",
   "/reset-password",
-  // '/homeAcademy'
+  // '/homeacademy'
 ];
 
 // Durée de session en millisecondes (30 minutes)
@@ -222,7 +222,7 @@ export function AppProvider({ children }) {
     onSuccess: (data) => {
       if (data?.user) {
         setUser(data.user);
-        // toast.success("SUCCESS");
+         toast.success("Connexion reuissie");
       } else {
         toast.warning(
           "Connexion réussie, mais aucune information utilisateur reçue."

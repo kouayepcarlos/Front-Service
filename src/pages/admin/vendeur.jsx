@@ -56,7 +56,7 @@ const Vendeur = () => {
             globalFilter={globalFilter}
             selectionMode="single"
           >
-            <Column field="id" header="N°" style={{ width: "10%" }} />
+            <Column   body={(rowData, { rowIndex }) => rowIndex + 1} header="N°" style={{ width: "10%" }} />
             <Column   body={(rowData) => rowData.vendeur?.nom || '—'}  header="Nom" />
             <Column body={(rowData) => rowData.vendeur?.telephone || '—'} header="Téléphone" />
             <Column body={(rowData) => rowData.vendeur?.email || '—'} header="Email" />

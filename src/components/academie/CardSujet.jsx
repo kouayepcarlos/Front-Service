@@ -61,7 +61,7 @@ const CardSujets = ({ ListeSujets, isAccess, groupe = "" }) => {
         <h2 className="text-start  mb-4 fw-bold">Anciens Examen de {groupe}</h2>
       )}
       {user.type === "étudiant" && (
-        <h2 className="text-start  mb-4 fw-bold">Anciens {groupe}s</h2>
+      groupe != "autres" ? ( <h2 className="text-start  mb-4 fw-bold">Anciens {groupe}s</h2>) : (<h2 className="text-start  mb-4 fw-bold">Autres PDF</h2>) 
       )}
      
        

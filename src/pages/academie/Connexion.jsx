@@ -58,7 +58,7 @@ const Connexion = () => {
    */
 //   useEffect(() => {
 //     if (user) {
-//       navigate('/homeAcademy');
+//       navigate('/homeacademy');
 //     }
 
 //     // Réinitialiser le message de connexion à chaque montage du composant
@@ -93,7 +93,7 @@ const Connexion = () => {
 
     const navigate=useNavigate()
   
-    const from = location.state?.from || "/homeAcademy";
+    const from = location.state?.from || "/homeacademy";
 
     
     // Gérer la soumission du formulaire
@@ -114,7 +114,7 @@ const Connexion = () => {
             console.log(credentials)
             await loginUserMutation.mutateAsync(credentials);
 
-            // navigate("/homeAcademy"); // Redirection après connexion
+            // navigate("/homeacademy"); // Redirection après connexion
         } catch (error) {
         setLoading(false);
 
@@ -126,6 +126,9 @@ const Connexion = () => {
     useEffect(() => {
         if (user) {
         navigate(from, { replace: true });
+         setTimeout(() => {
+        window.location.reload();
+      }, 100);
         setLoading(true);
         }
     }, [user, from, navigate]);

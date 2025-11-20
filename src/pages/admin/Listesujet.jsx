@@ -9,6 +9,8 @@ import ModificationUniversite from "../../components/admin/ModificationUniversit
 import ModificationExamen from "../../components/admin/ModificationExamen";
 import { useAdminContext } from "../../Contexts/AdminProvider";
 import Addcorrection from "../../components/admin/Addcorrection";
+import LoaderTransparent from "../../components/LoadersCompoments/LoaderTransparent";
+
 
 /**
  * c'est la page de gestion des sujets 
@@ -27,6 +29,9 @@ const Listesujet = () => {
     const [categorie, setCategorie] = useState("");
     const [globalFilter, setGlobalFilter] = useState("");
     const [sujet,setSujet]=useState(null)
+     const [loading, setLoading] = useState(false);
+
+   
 
     const modifsujet = async (data) => {//permet de recuperer les informations du sujet a modifier et d'ouvrir le form de modification
       //  console.log(data);
@@ -71,11 +76,17 @@ const Listesujet = () => {
                 <i
                     className="fa-solid fa-eye"
                     style={{ width: "40px", cursor: "pointer" }}
-                    onClick={() => {
-                        downloadSubjetMutation.mutateAsync({
+                    onClick={async() => {
+                        setLoading(true)
+                        try{
+                       await  downloadSubjetMutation.mutateAsync({
                             id: rowData.id,
                             categorie: rowData.categorie,
                         });
+                    }
+                    catch(error){
+                    //
+                    }finally{setLoading(false)}
                     }}
                 ></i>
             </div>
@@ -84,6 +95,7 @@ const Listesujet = () => {
 
     return (
         <>
+        {loading && <LoaderTransparent/>}
             <Navbaradmin />
             <Sidebar />
             <div className="content">
@@ -106,7 +118,7 @@ const Listesujet = () => {
                         <Column field="matiere" header="Matiere" />
                          <Column  field="titre" header="Titre" />
                         <Column
-                            field="updated_at"
+                            
                             header="Annee"
                             body={(rowData) =>
                                
@@ -115,11 +127,11 @@ const Listesujet = () => {
                             }
                         />
                         <Column
-                            field="serie"
+                            
                             header="Serie/Filiere"
                             body={(rowData) =>
                                 ( rowData.serie === 'null' || !rowData.serie)
-                                ?  ( rowData.concours === 'null' || !rowData.concours)? rowData.filiere:rowData.concours
+                                ?  ( rowData.concours === 'null' || !rowData.concours)? `${rowData.filiere} ${rowData.niveau}`:rowData.concours
                                 : rowData.serie
                         }
                         />

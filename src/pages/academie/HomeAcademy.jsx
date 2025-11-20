@@ -58,7 +58,7 @@ const HomeAcademy = () => {
 
   // États pour stocker les sujets et les filtres appliqués
   const [sujets, setSujets] = useState([]); // Liste des sujets
-
+useEffect(()=>{console.log("hello",listeSujetsUniversites)},[listeSujetsUniversites])
   const [filters, setFilters] = useState({
     annee: "",
     serie: "",
@@ -246,33 +246,40 @@ const HomeAcademy = () => {
                           onChange={handleFilterChange}
                         >
                           <option value="">Toutes les années</option>
-                          {[...new Set(sujets?.map((s) => s.annee))]?.map(
-                            (annee) => (
-                              <option key={annee} value={annee}>
-                                {annee}
-                              </option>
-                            )
-                          )}
+                          {[
+                            ...new Set(
+                              sujets
+                                ?.filter((s) => isAccess(s, user))
+                                ?.map((s) => s.annee)
+                            ),
+                          ]?.map((annee) => (
+                            <option key={annee} value={annee}>
+                              {annee}
+                            </option>
+                          ))}
                         </select>
                       )}
 
                       {/* Filtre par matière */}
-                      {loader === false && (
-                        <select
-                          name="matiere"
-                          className="form-select"
-                          onChange={handleFilterChange}
-                        >
-                          <option value="">Toutes les matières</option>
-                          {[...new Set(sujets?.map((s) => s.matiere))]?.map(
-                            (matiere) => (
-                              <option key={matiere} value={matiere}>
-                                {matiere}
-                              </option>
-                            )
-                          )}
-                        </select>
-                      )}
+                      {loader === false &&
+                        [
+                          ...new Set(
+                            sujets
+                              .filter((s) => isAccess(s, user)) // ✅ On garde seulement les sujets accessibles
+                              .map((s) => s.matiere)
+                          ),
+                        ]?.map((matiere, index) => (
+                          <div className="pt-0" key={index}>
+                            <CardSujets
+                              ListeSujets={sujets.filter(
+                                (s) =>
+                                  s.matiere === matiere && isAccess(s, user) // ✅ Sujet accessible + correspond à la matière
+                              )}
+                              isAccess={isAccess}
+                              groupe={matiere}
+                            />
+                          </div>
+                        ))}
                     </div>
                   </div>
 
@@ -324,7 +331,9 @@ const HomeAcademy = () => {
                             <option value="">Toutes les sessions</option>
                             {[
                               ...new Set(
-                                sujetsUniversites?.map((s) => s.session)
+                                sujetsUniversites
+                                  .filter((s) => isAccess(s, user)) // ✅ Garde seulement les sujets accessibles
+                                  ?.map((s) => s.session)
                               ),
                             ]?.map((session) => (
                               <option key={session} value={session}>
@@ -343,7 +352,9 @@ const HomeAcademy = () => {
                             <option value="">Toutes les matières</option>
                             {[
                               ...new Set(
-                                sujetsUniversites?.map((s) => s.matiere)
+                                sujetsUniversites
+                                  .filter((s) => isAccess(s, user)) // ✅ Garde seulement les sujets accessibles
+                                  ?.map((s) => s.matiere)
                               ),
                             ]?.map((matiere) => (
                               <option key={matiere} value={matiere}>
@@ -364,19 +375,23 @@ const HomeAcademy = () => {
                     )}
 
                     {loader === false &&
-                      [...new Set(sujetsUniversites?.map((s) => s.type))]?.map(
-                        (type, index) => (
-                          <div className="pt-0" key={index}>
-                            <CardSujets
-                              ListeSujets={sujetsUniversites.filter((s) =>
-                                isAccess(s, user)
-                              )}
-                              isAccess={isAccess}
-                              groupe={type}
-                            />
-                          </div>
-                        )
-                      )}
+                      [
+                        ...new Set(
+                          sujetsUniversites
+                            .filter((s) => isAccess(s, user)) // ✅ Garde seulement les sujets accessibles
+                            .map((s) => s.type)
+                        ),
+                      ]?.map((type, index) => (
+                        <div className="pt-0" key={index}>
+                          <CardSujets
+                            ListeSujets={sujetsUniversites.filter(
+                              (s) => s.type === type && isAccess(s, user) // ✅ Filtrage par type + accès autorisé
+                            )}
+                            isAccess={isAccess}
+                            groupe={type}
+                          />
+                        </div>
+                      ))}
                     {/* Message si aucun sujet n'est disponible */}
                     {sujetsUniversites.length === 0 && (
                       <div className="container card-error">

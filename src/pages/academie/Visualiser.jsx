@@ -30,7 +30,7 @@ useEffect(() => {
         {/* Barre de navigation spécifique à l'Académie */}
         <Navbaracademie />
         <section className="mb-0 " >
-          <button className='btn btn-primary ml-3 ' onClick={()=> navigate("/homeAcademy")}>Retouner a HomeAcademy</button>
+          <button className='btn btn-primary ml-3 ' onClick={()=> navigate("/homeacademy")}>Retouner a HomeAcademy</button>
           <div className='message-pdf-container'>
            <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
                                  <Viewer fileUrl={file} defaultScale={scale}/>
