@@ -71,7 +71,11 @@ const EditPorfil = () => {
       toast.error("entrez le nom de votre etablissement");
       return;
     }
-    if (user?.type === "élève" && !data.serie.trim()) {
+    if(user?.type === "élève" && !data.concours.trim()){
+      toast.error("choisissez votre categorie");
+      return;
+    }
+    if (user?.type === "élève" && data.concours.trim() == "false" && !data.serie.trim()) {
       toast.error("choisissez votre serie");
       return;
     }
@@ -150,7 +154,14 @@ const EditPorfil = () => {
                 <strong>Niveau :</strong> {user?.niveau}
               </li>
             )}
-            {user?.serie && (
+
+             {user?.concours === "true" && (
+              <li className="list-group-item">
+                <strong>Categorie :</strong> Concours
+              </li>
+            )}
+
+            {user?.serie && user?.concours === "false" && (
               <li className="list-group-item">
                 <strong>Série :</strong> {user?.serie}
               </li>
@@ -255,26 +266,43 @@ const EditPorfil = () => {
                     value={data.filiere}
                   >
                     <option value="">-- Sélectionner --</option>
- <option value="Seco">Seco</option>
-   <option value="Ste">Ste</option>
-  <option value="Gestion">Gestion</option>
-  <option value="Ecomo">Ecomo</option>
-  <option value="Seco">Seco</option>
-  <option value="Ecomo">Ecomo</option>
-  <option value="marketing">Marketing</option>
-  <option value="Fico">Fico</option>
-  <option value="Info">Info </option>
-  <option value="Mathematiques">Mathematiques </option>
-<option value="Bio/Boa/Bc">Bio/Boa/Bc</option>
-  <option value="Physique">Physique</option>
-  <option value="Droit">Droit</option>
-  <option value="ESSEC">ESSEC</option>
-  <option value="ENSPD">ENSPD</option>
-  <option value="Médecine">Médecine</option>
+                    <option value="Seco">Seco</option>
+                    <option value="Ste">Ste</option>
+                    <option value="Gestion">Gestion</option>
+                    <option value="Ecomo">Ecomo</option>
+                    <option value="Seco">Seco</option>
+                    <option value="Ecomo">Ecomo</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="Fico">Fico</option>
+                    <option value="Info">Info </option>
+                    <option value="Mathematiques">Mathematiques </option>
+                    <option value="Bio/Boa/Bc">Bio/Boa/Bc</option>
+                    <option value="Physique">Physique</option>
+                    <option value="Droit">Droit</option>
+                    <option value="ESSEC">ESSEC</option>
+                    <option value="ENSPD">ENSPD</option>
+                    <option value="Médecine">Médecine</option>
                   </select>
                 </div>
               )}
-              {user?.type === "élève" && (
+               {user?.type === "élève" && (
+                 <div className="mb-3">
+                  <label className="form-label">Votre categorie</label>
+
+                  <select
+                    className="form-select"
+                    name="concours"
+                    onChange={handleChange}
+                    value={data.concours}
+                    id="serie"
+                  >
+                    <option value="">-- Sélectionner --</option>
+                    <option value="true">Concours</option>
+                    <option value="false">Serie</option>
+                     </select>
+                </div>
+               )}
+              {user?.type === "élève" && user?.concours === "false" && (
                 <div className="mb-3">
                   <label className="form-label">Votre série</label>
 
@@ -285,7 +313,7 @@ const EditPorfil = () => {
                     value={data.serie}
                     id="serie"
                   >
-                      <option value="">-- Sélectionner --</option>
+                    <option value="">-- Sélectionner --</option>
                     <option value="C">C</option>
                     <option value="D">D</option>
                     <option value="A">A</option>

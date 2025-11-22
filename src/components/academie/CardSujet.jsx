@@ -57,9 +57,14 @@ const CardSujets = ({ ListeSujets, isAccess, groupe = "" }) => {
   return (
     <div className="mx-5 pb-5  ">
       {loading && <LoaderTransparent />}
-      {user.type === "élève" && (
+      {user.type === "élève" && user.concours === "false" &&  (
         <h2 className="text-start  mb-4 fw-bold">Anciens Examen de {groupe}</h2>
       )}
+
+       {user.type === "élève" && user.concours === "true" &&  (
+        <h2 className="text-start  mb-4 fw-bold">Anciennes epreuves de {groupe}</h2>
+      )}
+
       {user.type === "étudiant" && (
       groupe != "autres" ? ( <h2 className="text-start  mb-4 fw-bold">Anciens {groupe}s</h2>) : (<h2 className="text-start  mb-4 fw-bold">Autres PDF</h2>) 
       )}

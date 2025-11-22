@@ -95,18 +95,20 @@ const ModificationExamen = () => {
               )}
               {type == "CONCOURS" && (
                 <div className="flex flex-column h-12rem pr-3 mb-3 gap-5">
-                  <Form.Control
-                    type="text"
-                    name="concours"
-                    className="mb-3 h-12rem"
-                    placeholder="Type concours"
-                    value={concours}
-                    onChange={(e) => {
-                      setConcours(e.target.value.toLowerCase()),
-                        setSerie(""),
-                        setFiliere("");
-                    }}
-                  />
+                  <Form.Select
+                                   aria-label="choix filière"
+                                   value={filiere}
+                                   onChange={(e) => {
+                                    setConcours(e.target.value),
+                                       setSerie(""),
+                                       setFiliere("");
+                                   }}
+                                 >
+                                   <option value="">Choisissez le concours</option>
+                                   <option value="ESSEC">ESSEC</option>
+                                   <option value="ENSPD">ENSPD</option>
+                                   <option value="Médecine">Médecine</option>
+                                 </Form.Select>
                 </div>
               )}
               {type == "BTS" && (
@@ -132,9 +134,6 @@ const ModificationExamen = () => {
                   <option value="Bio/Boa/Bc">Bio/Boa/Bc</option>
                   <option value="Physique">Physique</option>
                   <option value="Droit">Droit</option>
-                  <option value="ESSEC">ESSEC</option>
-                  <option value="ENSPD">ENSPD</option>
-                  <option value="Médecine">Médecine</option>
                   </Form.Select>
                 </div>
               )}

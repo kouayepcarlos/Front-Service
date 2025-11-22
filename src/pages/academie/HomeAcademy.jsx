@@ -58,11 +58,14 @@ const HomeAcademy = () => {
 
   // États pour stocker les sujets et les filtres appliqués
   const [sujets, setSujets] = useState([]); // Liste des sujets
-useEffect(()=>{console.log("hello",listeSujetsUniversites)},[listeSujetsUniversites])
+  useEffect(() => {
+    console.log("hello", listeSujetsUniversites);
+  }, [listeSujetsUniversites]);
   const [filters, setFilters] = useState({
     annee: "",
     serie: "",
     matiere: "",
+    concours : ""
   });
   // Gère les changements de sélection dans les filtres
   const handleFilterChange = (e) => {
@@ -75,7 +78,8 @@ useEffect(()=>{console.log("hello",listeSujetsUniversites)},[listeSujetsUniversi
         (sujet) =>
           (filters.annee === "" || sujet.annee === filters.annee) &&
           sujet.serie === user?.serie &&
-          (filters.matiere === "" || sujet.matiere === filters.matiere)
+          (filters.matiere === "" || sujet.matiere === filters.matiere) && 
+          (filters.concours === "" || sujet.concours === filters.concours)
       );
     }
     return [];
@@ -140,9 +144,15 @@ useEffect(()=>{console.log("hello",listeSujetsUniversites)},[listeSujetsUniversi
 
   useEffect(() => {
     if (listeSujets && user?.type === "élève") {
-      setSujets(
-        listeSujets.listeSujets.filter((sujet) => sujet.serie === user?.serie)
-      );
+      if (user?.concours === "true") {
+        setSujets(
+          listeSujets.listeSujets.filter((sujet) => sujet?.type === "CONCOURS")
+        );
+      } else {
+        setSujets(
+          listeSujets.listeSujets.filter((sujet) => sujet.serie === user?.serie)
+        );
+      }
     } else if (listeSujetsUniversites && user?.type === "étudiant") {
       setSujetsUniversites(
         listeSujetsUniversites.data.filter(
@@ -180,6 +190,10 @@ useEffect(()=>{console.log("hello",listeSujetsUniversites)},[listeSujetsUniversi
     }
 
     if (user?.type === "élève") {
+      if (user?.concours === "true") {
+        console.log("concours ok");
+        return sujet?.type === "CONCOURS";
+      }
       return user?.serie?.toLowerCase() === sujet.serie?.toLowerCase();
     }
 
@@ -212,14 +226,14 @@ useEffect(()=>{console.log("hello",listeSujetsUniversites)},[listeSujetsUniversi
               handlClick={handleShowPaiement}
             />
           )}
-          {user?.status == "en_attente" && !user?.filiere && !user?.serie && (
+          {user?.status == "en_attente" && !user?.filiere && !user?.serie && !user?.concours && (
             <Redirection
               texte={"Complétez votre profil pour accéder aux sujets !!"}
               nomBoutton={"Profil"}
               handlClick={handleNavigate}
             />
           )}
-          {user?.status == "actif" && (user?.filiere || user?.serie) && (
+          {user?.status == "actif" && (user?.filiere || user?.serie || user?.concours) && (
             <>
               <Redirection
                 texte={`Salut ${user?.nom}, profitez des sujets offert par NilService et n'oubliez pas que vous pouvez gagner de l'argent en parrainant`}
@@ -260,26 +274,44 @@ useEffect(()=>{console.log("hello",listeSujetsUniversites)},[listeSujetsUniversi
                         </select>
                       )}
 
-                      {/* Filtre par matière */}
-                      {loader === false &&
-                        [
-                          ...new Set(
-                            sujets
-                              .filter((s) => isAccess(s, user)) // ✅ On garde seulement les sujets accessibles
-                              .map((s) => s.matiere)
-                          ),
-                        ]?.map((matiere, index) => (
-                          <div className="pt-0" key={index}>
-                            <CardSujets
-                              ListeSujets={sujets.filter(
-                                (s) =>
-                                  s.matiere === matiere && isAccess(s, user) // ✅ Sujet accessible + correspond à la matière
-                              )}
-                              isAccess={isAccess}
-                              groupe={matiere}
-                            />
-                          </div>
-                        ))}
+                       <select
+                          name="matiere"
+                          className="form-select"
+                          onChange={handleFilterChange}
+                        >
+                          <option value="">Toutes les matieres</option>
+                          {[
+                            ...new Set(
+                              sujets
+                                ?.filter((s) => isAccess(s, user))
+                                ?.map((s) => s.matiere)
+                            ),
+                          ]?.map((annee) => (
+                            <option key={annee} value={annee}>
+                              {annee}
+                            </option>
+                          ))}
+                        </select>
+
+                        {user.concours === "true" &&  <select
+                          name="concours"
+                          className="form-select"
+                          onChange={handleFilterChange}
+                        >
+                          <option value="">Tous les concours</option>
+                          {[
+                            ...new Set(
+                              sujets
+                                ?.filter((s) => isAccess(s, user))
+                                ?.map((s) => s.concours)
+                            ),
+                          ]?.map((annee) => (
+                            <option key={annee} value={annee}>
+                              {annee}
+                            </option>
+                          ))}
+                        </select> }
+                
                     </div>
                   </div>
 

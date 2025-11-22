@@ -82,9 +82,6 @@ const ModificationUniversite = () => {
                 <option value="Bio/Boa/Bc">Bio/Boa/Bc</option>
                 <option value="Physique">Physique</option>
                 <option value="Droit">Droit</option>
-                <option value="ESSEC">ESSEC</option>
-                <option value="ENSPD">ENSPD</option>
-                <option value="Médecine">Médecine</option>
               </Form.Select>
             </div>
 

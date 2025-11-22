@@ -20,7 +20,7 @@ const SlideGridconcours = ({ sujets, isAccess, handleDownload,handleDownloadcorr
                     />
                     <div className="card-bodyy d-flex flex-column">
                       <h5 className="card-title text-dark">{`${sujet.matiere}`}</h5>
-                      <p className="card-text text-dark">{`${sujet.type}  ${sujet.annee}`}</p>
+                      <p className="card-text text-dark">{`${sujet.type} ${sujet?.concours}  ${sujet.annee}`}</p>
 
                       {console.log(
                         "SUJET actuel:",

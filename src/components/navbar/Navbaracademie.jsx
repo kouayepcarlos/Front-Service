@@ -219,22 +219,14 @@ const Navbaracademie = () => {
                   <Nav.Link href="/homeacademy">Accueil</Nav.Link>
                   {user.serie != null && <Nav.Link href="/chat">Chat</Nav.Link>}
 
-                  <Nav.Link href="/bibliotheque">Ajout fichier</Nav.Link>
-                  <Nav.Link href="/allfichier">Bibliotheque</Nav.Link>
+                     {user.concours != "true" && <Nav.Link href="/bibliotheque">Ajout fichier</Nav.Link>}
+               {user.concours != "true" && <Nav.Link href="/allfichier">Bibliotheque</Nav.Link>}
 
-                  <Nav.Link
-                    style={{
-                      color: "#ef8f0a",
-                      fontWeight: "bolder",
-                    }}
-                    href="/connexion/academie"
-                  >
-                    NilAcademy
-                  </Nav.Link>
+                 
 
-                  {/* <Nav.Link href="/contact">
+                  <Nav.Link href="/contact">
                                         Contact
-                                    </Nav.Link> */}
+                                    </Nav.Link>
                 </Nav>
                 <div className="d-md-none">
                   <a
